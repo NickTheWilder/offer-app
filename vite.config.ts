@@ -1,25 +1,21 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import path from "path";
-import runtimeErrorOverlay from "@replit/vite-plugin-runtime-error-modal";
+
+// This is a frontend-only Vite configuration
+// When connecting to a real backend, you'll need to configure proxy settings
+// to route API requests to your backend server.
 
 export default defineConfig({
-  build: { chunkSizeWarningLimit: 3500 },
-  clearScreen: false,
-  css: {
-      devSourcemap: true,
-      modules: {
-          generateScopedName: "[local]_[hash:base64:8]",
-      },
-  },
-  plugins: [
-    react(),
-  ],
-  resolve: {
-    alias: {
-      "@": path.resolve(import.meta.dirname, "src"),
-      "@shared": path.resolve(import.meta.dirname, "shared"),
-      "@assets": path.resolve(import.meta.dirname, "attached_assets"),
+    plugins: [react()],
+    server: {
+        port: 3000,
     },
-  },
+    resolve: {
+        alias: {
+            "@": path.resolve(__dirname, "src"),
+            "@shared": path.resolve(__dirname, "shared"),
+            "@assets": path.resolve(__dirname, "./attached_assets"),
+        },
+    },
 });

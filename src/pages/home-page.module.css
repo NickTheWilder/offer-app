@@ -1,147 +1,147 @@
 .container {
-  background-color: #f9fafb;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
+    background-color: #f9fafb;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
 .main {
-  flex-grow: 1;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 1rem;
+    flex-grow: 1;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1rem;
 }
 
 @media (min-width: 768px) {
-  .main {
-    padding: 2rem 1rem;
-  }
+    .main {
+        padding: 2rem 1rem;
+    }
 }
 
 .dashboardSection {
-  width: 100%;
+    width: 100%;
 }
 
 .sectionHeader {
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1.5rem;
 }
 
 @media (min-width: 768px) {
-  .sectionHeader {
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-  }
+    .sectionHeader {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+    }
 }
 
 .sectionTitle {
-  font-size: 1.25rem;
-  font-weight: 600;
-  color: #1f2937;
-  margin-bottom: 1rem;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #1f2937;
+    margin-bottom: 1rem;
 }
 
 @media (min-width: 768px) {
-  .sectionTitle {
-    margin-bottom: 0;
-  }
+    .sectionTitle {
+        margin-bottom: 0;
+    }
 }
 
 .filtersContainer {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
 }
 
 @media (min-width: 768px) {
-  .filtersContainer {
-    flex-direction: row;
-    align-items: center;
-    gap: 1rem;
-  }
+    .filtersContainer {
+        flex-direction: row;
+        align-items: center;
+        gap: 1rem;
+    }
 }
 
 .searchContainer {
-  position: relative;
-  width: 100%;
+    position: relative;
+    width: 100%;
 }
 
 @media (min-width: 768px) {
-  .searchContainer {
-    width: 16rem;
-  }
+    .searchContainer {
+        width: 16rem;
+    }
 }
 
 .searchInput {
-  width: 100%;
-  padding: 0.5rem 0.5rem 0.5rem 2.5rem;
-  border: 1px solid #d1d5db;
-  border-radius: 0.5rem;
-  font-size: 0.875rem;
+    width: 100%;
+    padding: 0.5rem 0.5rem 0.5rem 2.5rem;
+    border: 1px solid #d1d5db;
+    border-radius: 0.5rem;
+    font-size: 0.875rem;
 }
 
 .searchIcon {
-  position: absolute;
-  left: 0.75rem;
-  top: 0.75rem;
-  color: #9ca3af;
+    position: absolute;
+    left: 0.75rem;
+    top: 0.75rem;
+    color: #9ca3af;
 }
 
 .categorySelect {
-  padding: 0.5rem 1rem;
-  border-radius: 0.5rem;
-  border: 1px solid #d1d5db;
-  font-size: 0.875rem;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    border: 1px solid #d1d5db;
+    font-size: 0.875rem;
 }
 
 .loadingContainer {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 5rem 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5rem 0;
 }
 
 .spinnerIcon {
-  height: 2rem;
-  width: 2rem;
-  color: var(--primary-color);
-  animation: spin 1s linear infinite;
+    height: 2rem;
+    width: 2rem;
+    color: var(--primary-color);
+    animation: spin 1s linear infinite;
 }
 
 @keyframes spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 .emptyContainer {
-  text-align: center;
-  padding: 5rem 0;
-  background-color: white;
-  border-radius: 0.5rem;
-  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    text-align: center;
+    padding: 5rem 0;
+    background-color: white;
+    border-radius: 0.5rem;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
 }
 
 .emptyIcon {
-  height: 4rem;
-  width: 4rem;
-  margin: 0 auto 1rem auto;
-  color: #d1d5db;
+    height: 4rem;
+    width: 4rem;
+    margin: 0 auto 1rem auto;
+    color: #d1d5db;
 }
 
 .emptyTitle {
-  font-size: 1.125rem;
-  font-weight: 500;
-  color: #4b5563;
-  margin-bottom: 0.5rem;
+    font-size: 1.125rem;
+    font-weight: 500;
+    color: #4b5563;
+    margin-bottom: 0.5rem;
 }
 
 .emptyText {
-  color: #6b7280;
-  font-size: 0.875rem;
+    color: #6b7280;
+    font-size: 0.875rem;
 }

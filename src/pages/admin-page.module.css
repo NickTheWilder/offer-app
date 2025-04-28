@@ -1,37 +1,37 @@
 .adminPage {
-  background-color: #f9fafb;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
+    background-color: #f9fafb;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
 .mainContent {
-  flex-grow: 1;
-  width: 100%;
-  max-width: 1300px;
-  margin: 0 auto;
-  padding: 1rem;
+    flex-grow: 1;
+    width: 100%;
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 1rem;
 }
 
 .loadingContainer {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
 }
 
 .loadingSpinner {
-  height: 2rem;
-  width: 2rem;
-  animation: spin 1s linear infinite;
-  color: var(--primary-color);
+    height: 2rem;
+    width: 2rem;
+    animation: spin 1s linear infinite;
+    color: var(--primary-color);
 }
 
 @keyframes spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
 }

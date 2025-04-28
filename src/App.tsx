@@ -8,31 +8,23 @@ import AdminPage from "@/pages/admin-page";
 import { ProtectedRoute } from "./lib/protected-route";
 
 function Router() {
-  return (
-    <Switch>
-      <Route path="/">
-        {() => <ProtectedRoute path="/" component={HomePage} />}
-      </Route>
-      <Route path="/admin">
-        {() => <ProtectedRoute path="/admin" component={AdminPage} />}
-      </Route>
-      <Route path="/auth">
-        {() => <AuthPage />}
-      </Route>
-      <Route>
-        {() => <NotFound />}
-      </Route>
-    </Switch>
-  );
+    return (
+        <Switch>
+            <Route path="/">{() => <ProtectedRoute path="/" component={HomePage} />}</Route>
+            <Route path="/admin">{() => <ProtectedRoute path="/admin" component={AdminPage} />}</Route>
+            <Route path="/auth">{() => <AuthPage />}</Route>
+            <Route>{() => <NotFound />}</Route>
+        </Switch>
+    );
 }
 
-function App() {
-  return (
-    <TooltipProvider>
-      <Toaster />
-      <Router />
-    </TooltipProvider>
-  );
+function App(): JSX.Element {
+    return (
+        <TooltipProvider>
+            <Toaster />
+            <Router />
+        </TooltipProvider>
+    );
 }
 
 export default App;
