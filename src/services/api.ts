@@ -1,16 +1,12 @@
-import type { User, InsertUser, AuctionItem, InsertAuctionItem, Bid, InsertBid } from "shared/schema";
-import { mockAuctionItems, mockBids, mockUsers, getCategories } from "./mockData";
+import type { User, InsertUser, AuctionItem, InsertAuctionItem, Bid, InsertBid } from "../types/schema";
+import { mockBids, mockUsers } from "./mockData";
+import * as GraphQLAPI from "./graphql-api";
 
 /**
- * MOCK API SERVICE
+ * API SERVICE
  *
- * This file provides mock implementations of all the API endpoints used in the application.
- * In a real application, these functions would make actual HTTP requests to a backend server.
- *
- * When connecting to a real backend:
- * 1. Replace each function with actual fetch/axios calls to your API endpoints
- * 2. Ensure proper error handling and authentication
- * 3. Update the return types to match your actual API responses
+ * This file provides API implementations for the application.
+ * Auction items use GraphQL API, while authentication still uses mock data.
  */
 
 // Simulate network delay to make the app feel realistic
@@ -31,8 +27,7 @@ try {
     console.error("Failed to load session from localStorage", e);
 }
 
-// Local storage for items and bids (allows modifications during the session)
-let items = [...mockAuctionItems];
+// Local storage for bids (allows modifications during the session)
 let bids = [...mockBids];
 
 // ===== Authentication API =====
@@ -99,103 +94,39 @@ export async function getCurrentUser(): Promise<User | null> {
 // ===== Auction Items API =====
 
 export async function getAuctionItems(filter?: { category?: string; status?: string }): Promise<AuctionItem[]> {
-    await simulateDelay();
-
-    let filteredItems = [...items];
-
-    if (filter?.category) {
-        filteredItems = filteredItems.filter((item) => item.category === filter.category);
-    }
-
-    if (filter?.status) {
-        filteredItems = filteredItems.filter((item) => item.status === filter.status);
-    }
-
-    return filteredItems;
+    return await GraphQLAPI.getAuctionItems(filter);
 }
 
 export async function getAuctionItem(id: number): Promise<AuctionItem | null> {
-    await simulateDelay();
-    return items.find((item) => item.id === id) || null;
+    return await GraphQLAPI.getAuctionItem(id);
 }
 
 export async function createAuctionItem(itemData: InsertAuctionItem): Promise<AuctionItem> {
-    await simulateDelay();
-
     if (!currentUser || currentUser.role !== "admin") {
         throw new Error("Unauthorized");
     }
 
-    // Ensure all required fields have values
-    const newItem: AuctionItem = {
-        id: items.length + 1,
-        name: itemData.name,
-        description: itemData.description || null,
-        images: itemData.images || null,
-        startingBid: itemData.startingBid,
-        minimumBidIncrement: itemData.minimumBidIncrement || 5,
-        buyNowPrice: itemData.buyNowPrice || null,
-        estimatedValue: itemData.estimatedValue || null,
-        category: itemData.category,
-        tags: itemData.tags || null,
-        auctionType: itemData.auctionType || "silent",
-        displayOrder: itemData.displayOrder || 0,
-        donorName: itemData.donorName || null,
-        donorPublic: itemData.donorPublic || false,
-        status: itemData.status || "draft",
-        restrictions: itemData.restrictions || null,
-        additionalDetails: itemData.additionalDetails || null,
-        startTime: itemData.startTime || null,
-        endTime: itemData.endTime || null,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-    };
-
-    items.push(newItem);
-    return newItem;
+    return await GraphQLAPI.createAuctionItem(itemData);
 }
 
 export async function updateAuctionItem(id: number, itemData: Partial<AuctionItem>): Promise<AuctionItem> {
-    await simulateDelay();
-
     if (!currentUser || currentUser.role !== "admin") {
         throw new Error("Unauthorized");
     }
 
-    const index = items.findIndex((item) => item.id === id);
-    if (index === -1) {
-        throw new Error("Item not found");
-    }
-
-    const updatedItem = {
-        ...items[index],
-        ...itemData,
-        updatedAt: new Date(),
-    };
-
-    items[index] = updatedItem;
-    return updatedItem;
+    return await GraphQLAPI.updateAuctionItem(id, itemData);
 }
 
 export async function deleteAuctionItem(id: number): Promise<boolean> {
-    await simulateDelay();
-
     if (!currentUser || currentUser.role !== "admin") {
         throw new Error("Unauthorized");
     }
 
-    const index = items.findIndex((item) => item.id === id);
-    if (index === -1) {
-        return false;
-    }
-
-    items.splice(index, 1);
-    return true;
+    return await GraphQLAPI.deleteAuctionItem(id);
 }
 
 export async function getItemCategories(): Promise<string[]> {
-    await simulateDelay();
-    return getCategories();
+    return await GraphQLAPI.getItemCategories();
 }
 
 // ===== Bids API =====
@@ -220,13 +151,17 @@ export async function getBidsByUser(userId: number): Promise<(Bid & { item: Auct
     const userBids = bids.filter((bid) => bid.bidderId === userId);
 
     // Attach item data to each bid
-    return userBids.map((bid) => {
-        const item = items.find((item) => item.id === bid.itemId);
-        if (!item) {
-            throw new Error(`Item with ID ${bid.itemId} not found`);
-        }
-        return { ...bid, item };
-    });
+    const bidsWithItems = await Promise.all(
+        userBids.map(async (bid) => {
+            const item = await GraphQLAPI.getAuctionItem(bid.itemId);
+            if (!item) {
+                throw new Error(`Item with ID ${bid.itemId} not found`);
+            }
+            return { ...bid, item };
+        })
+    );
+    
+    return bidsWithItems;
 }
 
 export async function getCurrentWinningBid(itemId: number): Promise<Bid | null> {
@@ -249,7 +184,7 @@ export async function createBid(bidData: InsertBid): Promise<Bid> {
     }
 
     // Check if the item exists
-    const item = items.find((item) => item.id === bidData.itemId);
+    const item = await GraphQLAPI.getAuctionItem(bidData.itemId);
     if (!item) {
         throw new Error("Item not found");
     }
@@ -304,14 +239,12 @@ export async function createBid(bidData: InsertBid): Promise<Bid> {
 
     // If this is the first bid and item is in published state, update to active
     if (item.status === "published") {
-        const itemIndex = items.findIndex((i) => i.id === item.id);
-        items[itemIndex] = { ...items[itemIndex], status: "active" };
+        await GraphQLAPI.updateAuctionItem(item.id, { status: "active" });
     }
 
     // If this is a buy now bid, mark the item as sold
     if (bidData.isBuyNow) {
-        const itemIndex = items.findIndex((i) => i.id === item.id);
-        items[itemIndex] = { ...items[itemIndex], status: "sold" };
+        await GraphQLAPI.updateAuctionItem(item.id, { status: "sold" });
     }
 
     return newBid;
@@ -322,9 +255,8 @@ export async function createBid(bidData: InsertBid): Promise<Bid> {
 export async function seedDemoData(): Promise<{ message: string }> {
     await simulateDelay();
 
-    // Reset items and bids to initial state
-    items = [...mockAuctionItems];
+    // Reset bids to initial state
     bids = [...mockBids];
 
-    return { message: "Demo data initialized successfully" };
+    return { message: "Bid demo data initialized successfully" };
 }

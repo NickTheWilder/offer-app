@@ -4,7 +4,7 @@ import { Loader2, ShoppingCart } from "lucide-react";
 import styles from "./buy-now-modal.module.css";
 import { createBid } from "@/services/api";
 import { useAuth } from "@/hooks/use-auth";
-import type { AuctionItem } from "shared/schema";
+import type { AuctionItem } from "../types/schema";
 
 interface BuyNowModalProps {
     item: AuctionItem;

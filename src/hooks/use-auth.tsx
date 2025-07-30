@@ -6,8 +6,8 @@ import { queryClient } from "../lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 import type { z } from "zod";
 import { getCurrentUser, loginUser, logoutUser, registerUser } from "@/services/api";
-import type { User } from "shared/schema";
-import { insertUserSchema } from "shared/schema";
+import type { User } from "../types/schema";
+import { insertUserSchema } from "../types/schema";
 
 /**
  * Authentication Context Provider

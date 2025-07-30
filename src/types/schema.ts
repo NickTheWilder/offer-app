@@ -52,7 +52,7 @@ export interface AuctionItem {
     endTime: Date | null;
     status: "draft" | "published" | "active" | "sold" | "unsold";
     restrictions: string | null;
-    additionalDetails: Record<string, string> | null;
+    additionalDetails: Record<string, any> | null;
     createdAt: Date | null;
     updatedAt: Date | null;
 }

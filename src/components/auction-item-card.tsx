@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import type { AuctionItem } from "shared/schema";
+import type { AuctionItem } from "../types/schema";
 import { useAuth } from "@/hooks/use-auth";
 import { useQuery } from "@tanstack/react-query";
 import { formatDistanceToNow } from "date-fns";

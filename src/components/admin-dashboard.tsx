@@ -7,7 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import styles from "./admin-dashboard.module.css";
 import { getAuctionItems, createAuctionItem, updateAuctionItem, deleteAuctionItem, getItemCategories } from "@/services/api";
-import type { AuctionItem } from "shared/schema";
+import type { AuctionItem } from "../types/schema";
 
 // Item form schema for validation
 const itemFormSchema = z.object({
@@ -61,6 +61,8 @@ export default function AdminDashboard(): JSX.Element {
                 ...data,
                 images: data.images || [],
                 tags: data.tags || [],
+                auctionType: "silent" as const,
+                displayOrder: 0,
                 startTime: data.startTime ? new Date(data.startTime) : null,
                 endTime: data.endTime ? new Date(data.endTime) : null,
             };
@@ -94,6 +96,8 @@ export default function AdminDashboard(): JSX.Element {
                 ...itemData,
                 images: itemData.images || [],
                 tags: itemData.tags || [],
+                auctionType: "silent" as const,
+                displayOrder: 0,
                 startTime: itemData.startTime ? new Date(itemData.startTime) : null,
                 endTime: itemData.endTime ? new Date(itemData.endTime) : null,
             };
@@ -393,12 +397,45 @@ export default function AdminDashboard(): JSX.Element {
                                                     </div>
                                                     {categoryDropdownOpen && (
                                                         <div className={styles.categoryDropdown}>
-                                                            {categories &&
+                                                            {categories && categories.length > 0 ? (
                                                                 categories.map((category) => (
                                                                     <div key={category} className={styles.categoryOption} onClick={() => handleCategorySelect(category)}>
                                                                         {category}
                                                                     </div>
-                                                                ))}
+                                                                ))
+                                                            ) : (
+                                                                <div className={styles.categoryOption}>
+                                                                    <input
+                                                                        type="text"
+                                                                        placeholder="Enter new category"
+                                                                        {...form.register("category")}
+                                                                        className={styles.newCategoryInput}
+                                                                        autoFocus
+                                                                        onBlur={() => setCategoryDropdownOpen(false)}
+                                                                        onKeyDown={(e) => {
+                                                                            if (e.key === 'Enter') {
+                                                                                setCategoryDropdownOpen(false);
+                                                                            }
+                                                                        }}
+                                                                    />
+                                                                </div>
+                                                            )}
+                                                            {categories && categories.length > 0 && (
+                                                                <div className={styles.categoryOption}>
+                                                                    <input
+                                                                        type="text"
+                                                                        placeholder="Or enter new category"
+                                                                        className={styles.newCategoryInput}
+                                                                        onKeyDown={(e) => {
+                                                                            if (e.key === 'Enter' && e.currentTarget.value.trim()) {
+                                                                                form.setValue("category", e.currentTarget.value.trim());
+                                                                                setCategoryDropdownOpen(false);
+                                                                            }
+                                                                        }}
+                                                                        onBlur={() => setCategoryDropdownOpen(false)}
+                                                                    />
+                                                                </div>
+                                                            )}
                                                         </div>
                                                     )}
                                                 </div>

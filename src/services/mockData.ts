@@ -1,4 +1,4 @@
-import type { AuctionItem, Bid, User } from "shared/schema";
+import type { Bid, User } from "../types/schema";
 
 // Mock users
 export const mockUsers: User[] = [
@@ -26,141 +26,33 @@ export const mockUsers: User[] = [
     },
 ];
 
-// Mock auction items
-export const mockAuctionItems: AuctionItem[] = [
-    {
-        id: 1,
-        name: "Handmade Quilt",
-        description: "Beautiful handmade quilt donated by the quilting circle. Full size, 100% cotton.",
-        images: ["https://images.unsplash.com/photo-1587862602960-d8a9a0f70141"],
-        startingBid: 50.0,
-        minimumBidIncrement: 5.0,
-        buyNowPrice: 200.0,
-        estimatedValue: 175.0,
-        category: "Handcrafts",
-        tags: ["quilt", "handmade", "bedding"],
-        auctionType: "silent",
-        displayOrder: 1,
-        donorName: "Church Quilting Circle",
-        donorPublic: true,
-        status: "active",
-        restrictions: null,
-        additionalDetails: null,
-        startTime: null,
-        endTime: null,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-    },
-    {
-        id: 2,
-        name: "Dinner for 4 at Luigi's",
-        description: "Gift certificate for dinner for four at Luigi's Italian Restaurant, including appetizers and dessert.",
-        images: ["https://images.unsplash.com/photo-1555396273-367ea4eb4db5"],
-        startingBid: 75.0,
-        minimumBidIncrement: 10.0,
-        buyNowPrice: 300.0,
-        estimatedValue: 250.0,
-        category: "Dining",
-        tags: ["dining", "restaurant", "gift certificate"],
-        auctionType: "silent",
-        displayOrder: 2,
-        donorName: "Luigi's Italian Restaurant",
-        donorPublic: true,
-        status: "active",
-        restrictions: null,
-        additionalDetails: null,
-        startTime: null,
-        endTime: null,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-    },
-    {
-        id: 3,
-        name: "Vacation Cabin Weekend",
-        description: "Weekend stay at a mountain cabin. Two bedrooms, hot tub, hiking trails nearby.",
-        images: ["https://images.unsplash.com/photo-1586375300773-8384e3e4916f"],
-        startingBid: 200.0,
-        minimumBidIncrement: 25.0,
-        buyNowPrice: 800.0,
-        estimatedValue: 650.0,
-        category: "Travel",
-        tags: ["vacation", "cabin", "weekend getaway"],
-        auctionType: "silent",
-        displayOrder: 3,
-        donorName: "Smith Family",
-        donorPublic: true,
-        status: "active",
-        restrictions: null,
-        additionalDetails: null,
-        startTime: null,
-        endTime: null,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-    },
-    {
-        id: 4,
-        name: "Homemade Pie for a Year",
-        description: "One homemade pie delivered to your home each month for a year. Your choice of flavors.",
-        images: ["https://images.unsplash.com/photo-1535920527002-b35e96722969"],
-        startingBid: 100.0,
-        minimumBidIncrement: 10.0,
-        buyNowPrice: 400.0,
-        estimatedValue: 300.0,
-        category: "Food",
-        tags: ["pie", "baking", "dessert"],
-        auctionType: "silent",
-        displayOrder: 4,
-        donorName: "Mary Johnson",
-        donorPublic: true,
-        status: "active",
-        restrictions: null,
-        additionalDetails: null,
-        startTime: null,
-        endTime: null,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-    },
-    {
-        id: 5,
-        name: "Professional Family Portrait Session",
-        description: "Professional photography session including 10 digital images and one 8x10 print.",
-        images: ["https://images.unsplash.com/photo-1609220136736-443140cffec6"],
-        startingBid: 150.0,
-        minimumBidIncrement: 15.0,
-        buyNowPrice: 500.0,
-        estimatedValue: 450.0,
-        category: "Services",
-        tags: ["photography", "portrait", "family"],
-        auctionType: "silent",
-        displayOrder: 5,
-        donorName: "Capture Photography Studio",
-        donorPublic: true,
-        status: "active",
-        restrictions: null,
-        additionalDetails: null,
-        startTime: null,
-        endTime: null,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-    },
-];
-
 // Mock bids
 export const mockBids: Bid[] = [
     {
         id: 1,
         itemId: 1,
         bidderId: 2,
-        amount: 50.0,
+        amount: 55.0,
+        timestamp: new Date(Date.now() - 1 * 60 * 60 * 1000), // 1 hour ago
+        isWinning: false,
+        isBuyNow: false,
+    },
+    {
+        id: 2,
+        itemId: 1,
+        bidderId: 1,
+        amount: 65.0,
+        timestamp: new Date(Date.now() - 30 * 60 * 1000), // 30 minutes ago
+        isWinning: true,
+        isBuyNow: false,
+    },
+    {
+        id: 3,
+        itemId: 2,
+        bidderId: 2,
+        amount: 85.0,
         timestamp: new Date(Date.now() - 2 * 60 * 60 * 1000), // 2 hours ago
         isWinning: true,
         isBuyNow: false,
     },
 ];
-
-// Extract unique categories from auction items
-export function getCategories(): string[] {
-    const categorySet = new Set<string>();
-    mockAuctionItems.forEach((item) => categorySet.add(item.category));
-    return Array.from(categorySet);
-}

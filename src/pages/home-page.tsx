@@ -7,7 +7,7 @@ import BidModal from "@/components/bid-modal";
 import BuyNowModal from "@/components/buy-now-modal";
 import { useAuth } from "@/hooks/use-auth";
 import { useQuery } from "@tanstack/react-query";
-import type { AuctionItem } from "shared/schema";
+import type { AuctionItem } from "../types/schema";
 import { useLocation } from "wouter";
 import { Loader2 } from "lucide-react";
 import styles from "./home-page.module.css";

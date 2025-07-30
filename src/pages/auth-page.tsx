@@ -69,7 +69,7 @@ export default function AuthPage(): JSX.Element {
             await seedDemoData();
             toast({
                 title: "Demo data initialized",
-                description: "Demo users and auction items have been created. You can now login with the demo accounts.",
+                description: "Demo bid data has been reset. You can now login with the demo accounts.",
                 duration: 5000,
             });
         } catch (error) {
