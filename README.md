@@ -1,82 +1,83 @@
-# Offer - Frontend
+# Church Bazaar Auction Software - Frontend
 
-This is the frontend implementation of the Offer application. This frontend-only version uses mock data services for demonstration purposes and can be deployed independently of the backend.
+This is the frontend implementation of a church bazaar auction software MVP designed to compete with platforms like Give Smart and Greater Giving. The application provides a cleaner, more intuitive interface with simplified workflows and better mobile experience.
 
 ## Features
 
 - Authentication system with login/register capabilities
 - Admin dashboard for managing auction items
-- Bidding system for auction items
-- Responsive design for both desktop and mobile
+- Silent auction bidding system with real-time updates
+- Responsive design optimized for mobile devices
 - Item filtering by category and status
+- GraphQL integration ready for backend connection
 
 ## Tech Stack
 
 - React 18 with TypeScript
 - React Hook Form for form handling
-- React Query for data fetching and state management
-- CSS Modules for styling
+- Apollo Client for GraphQL data fetching
+- React Query for additional state management
+- CSS Modules for component styling
 - Wouter for routing
+- GraphQL Code Generator for type-safe API calls
 
 ## Project Structure
 
 ```
-client/
-├── src/
-│   ├── components/     # Reusable components
-│   ├── hooks/          # Custom React hooks
-│   ├── lib/            # Utility functions
-│   ├── pages/          # Page components
-│   ├── services/       # Mock API services
-│   └── App.tsx         # Main application component
-└── public/             # Static assets
+src/
+├── components/         # Reusable UI components
+├── hooks/             # Custom React hooks
+├── lib/               # Utility functions and client setup
+├── pages/             # Page components
+├── services/          # API services and mock data
+├── types/             # TypeScript type definitions
+│   └── generated/     # Auto-generated GraphQL types
+└── App.tsx            # Main application component
+shared/
+└── schema.ts          # Shared data models
 ```
 
 ## Getting Started
 
+### Prerequisites
+This project uses [Bun](https://bun.sh/) as the JavaScript runtime and package manager. Install Bun first if you haven't already.
+
 ### Development
 
 ```bash
-# Navigate to the client directory
-cd client
-
 # Install dependencies
-npm install
+bun install
 
-# Start development server
-npm run dev
+# Start development server (includes GraphQL proxy)
+bun run dev
+
+# Generate GraphQL types (when schema changes)
+bun run codegen
 ```
 
-## Connecting to a Backend
+## Backend Integration
 
-This frontend application is designed to be easily connected to a real backend API. To connect to a backend:
+This frontend is designed to work with a GraphQL backend API. The application includes:
 
-1. Replace the mock API services in `src/services/api.ts` with real API calls.
-2. Configure the Vite dev server proxy in `vite.config.ts` to route API requests to your backend.
-3. Update authentication logic in `src/hooks/use-auth.tsx` to work with your backend's authentication system.
+### GraphQL Setup
+- **Apollo Client** configured to connect to `/graphql` endpoint
+- **Vite proxy** routes GraphQL requests to `http://localhost:5000`
+- **Code generation** creates TypeScript types from GraphQL schema
+- **Mock services** provide fallback data during development
 
-### API Service Integration
+### Backend Connection Status
+The application currently supports:
+- ✅ GraphQL client configuration ready
+- ✅ Type-safe GraphQL queries and mutations
+- ✅ Mock data services for independent development
+- ⚠️ Authentication integration pending
+- ⚠️ Real-time subscriptions not yet implemented
 
-The mock API service in `src/services/api.ts` follows the same interface that would be expected from a real backend API. When connecting to a real backend, replace each function with actual HTTP requests.
-
-Example:
-
-```typescript
-// Replace this mock implementation
-export async function getAuctionItems(): Promise<AuctionItem[]> {
-    await simulateDelay();
-    return mockAuctionItems;
-}
-
-// With a real API call
-export async function getAuctionItems(): Promise<AuctionItem[]> {
-    const response = await fetch("/api/items");
-    if (!response.ok) {
-        throw new Error("Failed to fetch items");
-    }
-    return response.json();
-}
-```
+### Switching from Mock to Real API
+1. Start your GraphQL backend server on `http://localhost:5000/graphql`
+2. Update `src/services/graphql-api.ts` to use real GraphQL operations
+3. Configure authentication in `src/hooks/use-auth.tsx` for your auth system
+4. Remove or replace mock data in `src/services/api.ts`
 
 ## Authentication
 
