@@ -1,31 +1,12 @@
-import type { JSX } from 'react';
-import { useState, useEffect } from "react";
+import type { JSX } from "react";
+import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { useForm } from "@tanstack/react-form";
-import { PlusCircle, Loader2, Edit, Trash2, } from "lucide-react";
+import { PlusCircle, Loader2, Edit, Trash2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { getAuctionItems, deleteAuctionItem } from "@/services/graphql-api";
 import styles from "./admin-dashboard.module.css";
 import type { AuctionItem } from "../types/schema";
-import { AddNewItemForm } from './add-new-item-form';
-
-type ItemFormValues = {
-    name: string;
-    description?: string;
-    images?: string[];
-    startingBid: number;
-    minimumBidIncrement: number;
-    buyNowPrice?: number;
-    estimatedValue?: number;
-    category: string;
-    tags?: string[];
-    donorName?: string;
-    donorPublic: boolean;
-    startTime?: string;
-    endTime?: string;
-    status: "draft" | "published" | "active" | "sold" | "unsold";
-    restrictions?: string;
-};
+import { AddNewItemForm } from "./add-new-item-form";
 
 export default function AdminDashboard(): JSX.Element {
     const { toast } = useToast();
@@ -68,68 +49,6 @@ export default function AdminDashboard(): JSX.Element {
             });
         },
     });
-
-    // TanStack Form
-    const form = useForm({
-        defaultValues: {
-            name: "",
-            description: "",
-            images: [],
-            startingBid: 0,
-            minimumBidIncrement: 5,
-            buyNowPrice: undefined,
-            estimatedValue: undefined,
-            category: "",
-            tags: [],
-            donorName: "",
-            donorPublic: false,
-            startTime: "",
-            endTime: "",
-            status: "draft" as const,
-            restrictions: "",
-        } as ItemFormValues,
-        onSubmit: async ({ value }) => {
-            // This will be handled by the child component's mutations
-            console.log("Form submitted:", value);
-        },
-    });
-
-    // Reset form when selected item changes
-    useEffect(() => {
-        if (selectedItem) {
-            form.setFieldValue("name", selectedItem.name);
-            form.setFieldValue("description", selectedItem.description || "");
-            form.setFieldValue("images", selectedItem.images || []);
-            form.setFieldValue("startingBid", selectedItem.startingBid);
-            form.setFieldValue("minimumBidIncrement", selectedItem.minimumBidIncrement);
-            form.setFieldValue("buyNowPrice", selectedItem.buyNowPrice || undefined);
-            form.setFieldValue("estimatedValue", selectedItem.estimatedValue || undefined);
-            form.setFieldValue("category", selectedItem.category);
-            form.setFieldValue("tags", selectedItem.tags || []);
-            form.setFieldValue("donorName", selectedItem.donorName || "");
-            form.setFieldValue("donorPublic", selectedItem.donorPublic || false);
-            form.setFieldValue("startTime", selectedItem.startTime ? new Date(selectedItem.startTime).toISOString().substring(0, 16) : "");
-            form.setFieldValue("endTime", selectedItem.endTime ? new Date(selectedItem.endTime).toISOString().substring(0, 16) : "");
-            form.setFieldValue("status", selectedItem.status);
-            form.setFieldValue("restrictions", selectedItem.restrictions || "");
-        } else if (newItemMode) {
-            form.setFieldValue("name", "");
-            form.setFieldValue("description", "");
-            form.setFieldValue("images", []);
-            form.setFieldValue("startingBid", 0);
-            form.setFieldValue("minimumBidIncrement", 5);
-            form.setFieldValue("buyNowPrice", undefined);
-            form.setFieldValue("estimatedValue", undefined);
-            form.setFieldValue("category", "");
-            form.setFieldValue("tags", []);
-            form.setFieldValue("donorName", "");
-            form.setFieldValue("donorPublic", false);
-            form.setFieldValue("startTime", "");
-            form.setFieldValue("endTime", "");
-            form.setFieldValue("status", "draft" as const);
-            form.setFieldValue("restrictions", "");
-        }
-    }, [selectedItem, newItemMode, form]);
 
     // Format currency
     const formatCurrency = (amount: number | null) => {
@@ -248,14 +167,13 @@ export default function AdminDashboard(): JSX.Element {
                         {/* Main content - Item Form */}
                         <div className={styles.mainContent}>
                             {selectedItem || newItemMode ? (
-                              <AddNewItemForm 
-                                form={form}
-                                selectedItem={selectedItem}
-                                onSuccess={() => {
-                                  setSelectedItem(null);
-                                  setNewItemMode(false);
-                                }}
-                              />
+                                <AddNewItemForm
+                                    selectedItem={selectedItem}
+                                    onSuccess={() => {
+                                        setSelectedItem(null);
+                                        setNewItemMode(false);
+                                    }}
+                                />
                             ) : (
                                 <div className={styles.noSelection}>
                                     <div className={styles.noSelectionContent}>
