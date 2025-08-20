@@ -1,5 +1,5 @@
 /* eslint-disable */
-import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/core';
+import type { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/core';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
@@ -251,28 +251,28 @@ export type UuidOperationFilterInput = {
 export type GetAuctionItemsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetAuctionItemsQuery = { __typename?: 'Query', auctionItems: Array<{ __typename?: 'AuctionItem', id: string, name: string, description: string, imageURL: string, startingBid: number, minimumBidIncrement: number, buyNowPrice?: number | null, estimatedValue?: number | null, category?: string | null, auctionType: AuctionType, donorName: string, isDonorPublic: boolean, status: AuctionStatus, restrictions: string }> };
+export type GetAuctionItemsQuery = { auctionItems: Array<{ id: string, name: string, description: string, imageURL: string, startingBid: number, minimumBidIncrement: number, buyNowPrice?: number | null, estimatedValue?: number | null, category?: string | null, auctionType: AuctionType, donorName: string, isDonorPublic: boolean, status: AuctionStatus, restrictions: string }> };
 
 export type GetAuctionItemQueryVariables = Exact<{
   id: Scalars['UUID']['input'];
 }>;
 
 
-export type GetAuctionItemQuery = { __typename?: 'Query', auctionItems: Array<{ __typename?: 'AuctionItem', id: string, name: string, description: string, imageURL: string, startingBid: number, minimumBidIncrement: number, buyNowPrice?: number | null, estimatedValue?: number | null, category?: string | null, auctionType: AuctionType, donorName: string, isDonorPublic: boolean, status: AuctionStatus, restrictions: string }> };
+export type GetAuctionItemQuery = { auctionItems: Array<{ id: string, name: string, description: string, imageURL: string, startingBid: number, minimumBidIncrement: number, buyNowPrice?: number | null, estimatedValue?: number | null, category?: string | null, auctionType: AuctionType, donorName: string, isDonorPublic: boolean, status: AuctionStatus, restrictions: string }> };
 
 export type CreateAuctionItemMutationVariables = Exact<{
   input: CreateAuctionItemInput;
 }>;
 
 
-export type CreateAuctionItemMutation = { __typename?: 'Mutation', createAuctionItem: { __typename?: 'AuctionItem', id: string, name: string, description: string, imageURL: string, startingBid: number, minimumBidIncrement: number, buyNowPrice?: number | null, estimatedValue?: number | null, category?: string | null, auctionType: AuctionType, donorName: string, isDonorPublic: boolean, status: AuctionStatus, restrictions: string } };
+export type CreateAuctionItemMutation = { createAuctionItem: { id: string, name: string, description: string, imageURL: string, startingBid: number, minimumBidIncrement: number, buyNowPrice?: number | null, estimatedValue?: number | null, category?: string | null, auctionType: AuctionType, donorName: string, isDonorPublic: boolean, status: AuctionStatus, restrictions: string } };
 
 export type UpdateAuctionItemMutationVariables = Exact<{
   input: UpdateAuctionItemInput;
 }>;
 
 
-export type UpdateAuctionItemMutation = { __typename?: 'Mutation', updateAuctionItem: { __typename?: 'AuctionItem', id: string, name: string, description: string, imageURL: string, startingBid: number, minimumBidIncrement: number, buyNowPrice?: number | null, estimatedValue?: number | null, category?: string | null, auctionType: AuctionType, donorName: string, isDonorPublic: boolean, status: AuctionStatus, restrictions: string } };
+export type UpdateAuctionItemMutation = { updateAuctionItem: { id: string, name: string, description: string, imageURL: string, startingBid: number, minimumBidIncrement: number, buyNowPrice?: number | null, estimatedValue?: number | null, category?: string | null, auctionType: AuctionType, donorName: string, isDonorPublic: boolean, status: AuctionStatus, restrictions: string } };
 
 
 export const GetAuctionItemsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetAuctionItems"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"auctionItems"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"imageURL"}},{"kind":"Field","name":{"kind":"Name","value":"startingBid"}},{"kind":"Field","name":{"kind":"Name","value":"minimumBidIncrement"}},{"kind":"Field","name":{"kind":"Name","value":"buyNowPrice"}},{"kind":"Field","name":{"kind":"Name","value":"estimatedValue"}},{"kind":"Field","name":{"kind":"Name","value":"category"}},{"kind":"Field","name":{"kind":"Name","value":"auctionType"}},{"kind":"Field","name":{"kind":"Name","value":"donorName"}},{"kind":"Field","name":{"kind":"Name","value":"isDonorPublic"}},{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"restrictions"}}]}}]}}]} as unknown as DocumentNode<GetAuctionItemsQuery, GetAuctionItemsQueryVariables>;
