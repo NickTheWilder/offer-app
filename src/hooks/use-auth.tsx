@@ -1,4 +1,4 @@
-import type { JSX } from 'react';
+import type { JSX } from "react";
 import type { ReactNode } from "react";
 import { createContext, useContext } from "react";
 import type { UseMutationResult } from "@tanstack/react-query";
