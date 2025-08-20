@@ -17,16 +17,16 @@ import { ApolloError } from '@apollo/client';
 function extractValidationErrors(error: ApolloError): string {
   if (error.graphQLErrors && error.graphQLErrors.length > 0) {
     const gqlError = error.graphQLErrors[0];
-    
+
     // Check if it's a validation error by looking at the extensions.message
-    if (gqlError.extensions?.message && 
+    if (gqlError.extensions?.message &&
         typeof gqlError.extensions.message === 'string' &&
         gqlError.extensions.message.includes('Validation failed')) {
-      
+
       // Return the validation message from extensions
       return gqlError.extensions.message;
     }
-    
+
     // Fallback to the main error message
     return gqlError.message || 'An error occurred';
   }
@@ -230,7 +230,7 @@ export async function updateAuctionItem(id: number, itemData: Partial<AuctionIte
   }
 }
 
-export async function deleteAuctionItem(id: number): Promise<boolean> {
+export async function deleteAuctionItem(): Promise<boolean> {
   // Note: Delete functionality is not implemented in the backend yet
   // This would need to be added to the GraphQL schema and resolvers
   console.warn('Delete auction item not implemented in backend');

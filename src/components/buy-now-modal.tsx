@@ -1,3 +1,4 @@
+import type { JSX } from 'react';
 import { useToast } from "@/hooks/use-toast";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Loader2, ShoppingCart } from "lucide-react";

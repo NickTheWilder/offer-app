@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { type JSX, useState, useEffect } from "react";
 import Header from "@/components/header";
 import MobileNavigation from "@/components/mobile-navigation";
 import AuctionItemGrid from "@/components/auction-item-card";

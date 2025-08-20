@@ -1,3 +1,4 @@
+import type { JSX } from 'react';
 import Header from "@/components/header";
 import AdminDashboardNew from "@/components/admin-dashboard";
 import { useAuth } from "@/hooks/use-auth";
