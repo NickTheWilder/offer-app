@@ -1,8 +1,5 @@
-import type { JSX } from 'react';
 import { useAuth } from "@/hooks/use-auth";
 import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
 import { Loader2, Church, Database } from "lucide-react";
 import { useLocation } from "wouter";
 import React, { useState, useEffect } from "react";
@@ -10,23 +7,18 @@ import { useToast } from "@/hooks/use-toast";
 import styles from "./auth-page.module.css";
 import { seedDemoData } from "@/services/api";
 
-// Login form schema
-const loginSchema = z.object({
-    email: z.string().email("Please enter a valid email"),
-    password: z.string().min(6, "Password must be at least 6 characters"),
-});
+type LoginFormValues = {
+    email: string;
+    password: string;
+};
 
-// Registration form schema
-const registerSchema = z.object({
-    name: z.string().min(2, "Name must be at least 2 characters"),
-    email: z.string().email("Please enter a valid email"),
-    phone: z.string().min(10, "Please enter a valid phone number"),
-    bidderNumber: z.string().min(2, "Bidder number is required"),
-    password: z.string().min(6, "Password must be at least 6 characters"),
-});
-
-type LoginFormValues = z.infer<typeof loginSchema>;
-type RegisterFormValues = z.infer<typeof registerSchema>;
+type RegisterFormValues = {
+    name: string;
+    email: string;
+    phone: string;
+    bidderNumber: string;
+    password: string;
+};
 
 export default function AuthPage(): JSX.Element {
     const { user, loginMutation, registerMutation } = useAuth();
@@ -37,7 +29,6 @@ export default function AuthPage(): JSX.Element {
 
     // Login form
     const loginForm = useForm<LoginFormValues>({
-        resolver: zodResolver(loginSchema),
         defaultValues: {
             email: "",
             password: "",
@@ -46,7 +37,6 @@ export default function AuthPage(): JSX.Element {
 
     // Registration form
     const registerForm = useForm<RegisterFormValues>({
-        resolver: zodResolver(registerSchema),
         defaultValues: {
             name: "",
             email: "",
@@ -138,7 +128,6 @@ export default function AuthPage(): JSX.Element {
                                             Email
                                         </label>
                                         <input id="email" type="email" placeholder="you@example.com" className={styles.input} {...loginForm.register("email")} />
-                                        {loginForm.formState.errors.email && <div className={styles.errorMessage}>{loginForm.formState.errors.email.message}</div>}
                                     </div>
 
                                     <div className={styles.formGroup}>
@@ -146,7 +135,6 @@ export default function AuthPage(): JSX.Element {
                                             Password
                                         </label>
                                         <input id="password" type="password" placeholder="••••••••" className={styles.input} {...loginForm.register("password")} />
-                                        {loginForm.formState.errors.password && <div className={styles.errorMessage}>{loginForm.formState.errors.password.message}</div>}
                                     </div>
 
                                     <button type="submit" className={styles.button} disabled={loginMutation.isPending}>
@@ -198,7 +186,6 @@ export default function AuthPage(): JSX.Element {
                                             Full Name
                                         </label>
                                         <input id="name" type="text" placeholder="John Smith" className={styles.input} {...registerForm.register("name")} />
-                                        {registerForm.formState.errors.name && <div className={styles.errorMessage}>{registerForm.formState.errors.name.message}</div>}
                                     </div>
 
                                     <div className={styles.formGroup}>
@@ -206,7 +193,6 @@ export default function AuthPage(): JSX.Element {
                                             Email
                                         </label>
                                         <input id="reg-email" type="email" placeholder="you@example.com" className={styles.input} {...registerForm.register("email")} />
-                                        {registerForm.formState.errors.email && <div className={styles.errorMessage}>{registerForm.formState.errors.email.message}</div>}
                                     </div>
 
                                     <div className={styles.formGroup}>
@@ -214,7 +200,6 @@ export default function AuthPage(): JSX.Element {
                                             Phone Number
                                         </label>
                                         <input id="phone" type="tel" placeholder="(555) 123-4567" className={styles.input} {...registerForm.register("phone")} />
-                                        {registerForm.formState.errors.phone && <div className={styles.errorMessage}>{registerForm.formState.errors.phone.message}</div>}
                                     </div>
 
                                     <div className={styles.formGroup}>
@@ -222,7 +207,6 @@ export default function AuthPage(): JSX.Element {
                                             Bidder Number
                                         </label>
                                         <input id="bidderNumber" type="text" placeholder="B123" className={styles.input} {...registerForm.register("bidderNumber")} />
-                                        {registerForm.formState.errors.bidderNumber && <div className={styles.errorMessage}>{registerForm.formState.errors.bidderNumber.message}</div>}
                                     </div>
 
                                     <div className={styles.formGroup}>
@@ -230,7 +214,6 @@ export default function AuthPage(): JSX.Element {
                                             Password
                                         </label>
                                         <input id="reg-password" type="password" placeholder="••••••••" className={styles.input} {...registerForm.register("password")} />
-                                        {registerForm.formState.errors.password && <div className={styles.errorMessage}>{registerForm.formState.errors.password.message}</div>}
                                     </div>
 
                                     <button type="submit" className={styles.button} disabled={registerMutation.isPending}>
