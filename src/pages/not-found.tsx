@@ -1,3 +1,4 @@
+import type { JSX } from 'react';
 import { AlertCircle } from "lucide-react";
 import styles from "./not-found.module.css";
 

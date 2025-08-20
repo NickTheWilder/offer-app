@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import type { JSX } from 'react';
 import { useState, useEffect } from "react";
 import type { AuctionItem } from "../types/schema";
 import { useToast } from "@/hooks/use-toast";

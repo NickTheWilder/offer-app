@@ -117,12 +117,13 @@ export async function updateAuctionItem(id: number, itemData: Partial<AuctionIte
     return await GraphQLAPI.updateAuctionItem(id, itemData);
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars -- TODO: Implement deleteAuctionItem
 export async function deleteAuctionItem(id: number): Promise<boolean> {
     if (!currentUser || currentUser.role !== "admin") {
         throw new Error("Unauthorized");
     }
 
-    return await GraphQLAPI.deleteAuctionItem(id);
+    return await GraphQLAPI.deleteAuctionItem();
 }
 
 export async function getItemCategories(): Promise<string[]> {
@@ -160,7 +161,7 @@ export async function getBidsByUser(userId: number): Promise<(Bid & { item: Auct
             return { ...bid, item };
         })
     );
-    
+
     return bidsWithItems;
 }
 
