@@ -1,19 +1,17 @@
 import type { JSX } from "react";
 import { toast } from "@/hooks/use-toast";
 import { queryClient } from "@/lib/queryClient";
-import { getItemCategories, createAuctionItem } from "@/services/graphql-api";
-import type { AuctionItem } from "@/types/schema";
-import { useQuery, useMutation } from "@tanstack/react-query";
-import { useState } from "react";
+import { useMutation } from "@tanstack/react-query";
 import styles from "./admin-dashboard.module.css"; // TODO: this would be better as a separate file
 import { useForm } from "@tanstack/react-form";
+import type { CreateAuctionItemInput } from "@/lib/graphql-queries";
 
-interface AddNewItemFormProps {
+interface AuctionItemForm {
     selectedItem: AuctionItem | null;
     onSuccess: () => void;
 }
 
-export function AddNewItemForm({ selectedItem, onSuccess }: AddNewItemFormProps): JSX.Element {
+export function AuctionItemForm({ selectedItem, onSuccess }: AuctionItemForm): JSX.Element {
     // TanStack Form
     const form = useForm({
         defaultValues: {
@@ -32,7 +30,7 @@ export function AddNewItemForm({ selectedItem, onSuccess }: AddNewItemFormProps)
             endTime: "",
             status: "draft" as const,
             restrictions: "",
-        } as ItemFormValues,
+        },
         onSubmit: async ({ value }) => {
             // This will be handled by the child component's mutations
             console.log("Form submitted:", value);
@@ -41,18 +39,8 @@ export function AddNewItemForm({ selectedItem, onSuccess }: AddNewItemFormProps)
 
     // Create item mutation
     const createItemMutation = useMutation({
-        mutationFn: async (data: ItemFormValues) => {
-            const formattedData = {
-                ...data,
-                images: data.images || [],
-                tags: data.tags || [],
-                auctionType: "silent" as const,
-                displayOrder: 0,
-                startTime: data.startTime ? new Date(data.startTime) : null,
-                endTime: data.endTime ? new Date(data.endTime) : null,
-            };
-
-            return await createAuctionItem(formattedData);
+        mutationFn: async (data: CreateAuctionItemInput) => {
+            return await createAuctionItem(data);
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["/api/items"] });

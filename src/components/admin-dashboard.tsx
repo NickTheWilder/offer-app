@@ -6,10 +6,9 @@ import { useToast } from "@/hooks/use-toast";
 import { getAuctionItems, deleteAuctionItem } from "@/services/graphql-api";
 import styles from "./admin-dashboard.module.css";
 import type { AuctionItem } from "../types/schema";
-import { AddNewItemForm } from "./add-new-item-form";
-import { BidDashboard } from "./bid-dashboard";
 import { UserDashboard } from "./user-dashboard";
 import { ReportDashboard } from "./report.dashboard";
+import { AuctionItemForm } from "./auction-item-form";
 
 export default function AdminDashboard(): JSX.Element {
     const { toast } = useToast();
@@ -170,7 +169,7 @@ export default function AdminDashboard(): JSX.Element {
                         {/* Main content - Item Form */}
                         <div className={styles.mainContent}>
                             {selectedItem || newItemMode ? (
-                                <AddNewItemForm
+                              <AuctionItemForm
                                     selectedItem={selectedItem}
                                     onSuccess={() => {
                                         setSelectedItem(null);
