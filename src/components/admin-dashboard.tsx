@@ -7,6 +7,9 @@ import { getAuctionItems, deleteAuctionItem } from "@/services/graphql-api";
 import styles from "./admin-dashboard.module.css";
 import type { AuctionItem } from "../types/schema";
 import { AddNewItemForm } from "./add-new-item-form";
+import { BidDashboard } from "./bid-dashboard";
+import { UserDashboard } from "./user-dashboard";
+import { ReportDashboard } from "./report.dashboard";
 
 export default function AdminDashboard(): JSX.Element {
     const { toast } = useToast();
@@ -189,20 +192,11 @@ export default function AdminDashboard(): JSX.Element {
                         </div>
                     </div>
                 ) : activeAdminTab === "bids" ? (
-                    <div className={styles.placeholderTab}>
-                        <h3 className={styles.placeholderTitle}>Bid Management</h3>
-                        <p className={styles.placeholderText}>View and manage all bids across auction items.</p>
-                    </div>
+                    <BidDashboard />
                 ) : activeAdminTab === "users" ? (
-                    <div className={styles.placeholderTab}>
-                        <h3 className={styles.placeholderTitle}>User Management</h3>
-                        <p className={styles.placeholderText}>Manage user accounts and permissions.</p>
-                    </div>
+                    <UserDashboard />
                 ) : (
-                    <div className={styles.placeholderTab}>
-                        <h3 className={styles.placeholderTitle}>Reports</h3>
-                        <p className={styles.placeholderText}>Generate and view auction reports.</p>
-                    </div>
+                    <ReportDashboard />
                 )}
             </div>
         </div>
