@@ -53,6 +53,7 @@ You are assisting with the development of a church bazaar auction software MVP d
 - Include helpful comments where complexity exists
 - Use senior-level React patterns and practices
 - Maintain consistency with existing frontend C# models
+- Avoid using `any` type - use proper TypeScript types and interfaces
 
 ### Database Design
 
@@ -129,30 +130,11 @@ updateAuctionItem(input: UpdateAuctionItemInput!): MutationResult<AuctionItem>!
 
 ### Mutation Response Pattern
 
-All mutations return `MutationResult<T>` with:
-
-- **success**: boolean
-- **data**: The created/updated entity (if successful)
-- **errors**: Array of ValidationError objects with field and message
+Mutations return entities directly. For accurate types and structure, reference `src/types/generated/graphql.ts`.
 
 ## Input Types
 
-### CreateUserInput
-
-- userName, email, phone, address, bidderNumber, password, role (required)
-
-### UpdateUserInput
-
-- id (required), plus optional: userName, email, phone, address, role, isActive
-
-### CreateAuctionItemInput
-
-- name, startingBid, category (required)
-- Optional: description, imageURL, minimumBidIncrement, buyNowPrice, estimatedValue, auctionType, donorName, isDonorPublic, restrictions
-
-### UpdateAuctionItemInput
-
-- id (required), plus any optional AuctionItem fields
+Reference `src/types/generated/graphql.ts` for all input types and their required/optional fields.
 
 ## Validation System
 

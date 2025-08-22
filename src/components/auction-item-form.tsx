@@ -5,7 +5,7 @@ import styles from "./admin-dashboard.module.css"; // TODO: this would be better
 import { useForm } from "@tanstack/react-form";
 import type { CreateAuctionItemInput, UpdateAuctionItemInput } from "@/lib/graphql-queries";
 import { useMutation } from "@apollo/client";
-import { CREATE_AUCTION_ITEM } from "@/lib/graphql-queries";
+import { AuctionStatus, AuctionType, CREATE_AUCTION_ITEM } from "@/lib/graphql-queries";
 import { useEffect } from "react";
 import { setCurrentForm, clearCurrentForm } from "./dev-tools";
 
@@ -20,27 +20,23 @@ export function AuctionItemForm({ selectedItem, onSuccess }: AuctionItemFormProp
         defaultValues: {
             name: "",
             description: "",
-            images: [],
             startingBid: 0,
             minimumBidIncrement: 5,
             buyNowPrice: undefined,
             estimatedValue: undefined,
             category: "",
-            tags: [],
             donorName: "",
-            donorPublic: false,
-            startTime: "",
-            endTime: "",
-            status: "draft" as const,
+            isDonorPublic: false,
+            imageURL: "",
+            auctionType: AuctionType.NotSet,
+            status: AuctionStatus.NotSet,
             restrictions: "",
         },
         onSubmit: async ({ value }) => {
-            console.log(value)
-
             try {
                 await createAuctionItem({
                     variables: {
-                        input: value as CreateAuctionItemInput,
+                        input: value,
                     },
                 });
             } catch (error) {
@@ -59,7 +55,7 @@ export function AuctionItemForm({ selectedItem, onSuccess }: AuctionItemFormProp
     }, [form]);
 
     // Create item mutation
-    const [createAuctionItem, { loading, error }] = useMutation(CREATE_AUCTION_ITEM, {
+    const [createAuctionItem] = useMutation(CREATE_AUCTION_ITEM, {
         onCompleted: () => {
             queryClient.invalidateQueries({ queryKey: ["/api/items"] });
             queryClient.invalidateQueries({ queryKey: ["/api/categories"] });
@@ -70,9 +66,11 @@ export function AuctionItemForm({ selectedItem, onSuccess }: AuctionItemFormProp
             });
         },
         onError: (error) => {
+            console.error("Auction item creation failed:", error);
+
             toast({
-                title: "Error",
-                description: error.message || "Failed to create item",
+                title: "Failed to create item",
+                description: "Please check your input and try again. If the problem persists, contact support.",
                 variant: "destructive",
             });
         },
@@ -109,6 +107,22 @@ export function AuctionItemForm({ selectedItem, onSuccess }: AuctionItemFormProp
                                 )}
                             />
                         </div>
+                        <div className={styles.formGroup}>
+                            <label className={styles.formLabel}>
+                                Description<span className={styles.requiredMark}>*</span>
+                            </label>
+                            <form.Field
+                                name="description"
+                                children={(field) => (
+                                    <textarea
+                                        className={styles.formInput}
+                                        placeholder="Item description"
+                                        value={field.state.value}
+                                        onChange={(e) => field.handleChange(e.target.value)}
+                                    />
+                                )}
+                            />
+                        </div>
 
                         <div className={styles.formGroup}>
                             <label className={styles.formLabel}>
@@ -122,10 +136,9 @@ export function AuctionItemForm({ selectedItem, onSuccess }: AuctionItemFormProp
                                         <input
                                             className={styles.formInput}
                                             type="number"
-                                            step="0.01"
                                             placeholder="0.00"
-                                            value={field.state.value}
-                                            onChange={(e) => field.handleChange(parseFloat(e.target.value) || 0)}
+                                            value={field.state.value || ''}
+                                            onChange={(e) => field.handleChange(e.target.value ? parseFloat(e.target.value) : 0)}
                                         />
                                     )}
                                 />
@@ -142,22 +155,44 @@ export function AuctionItemForm({ selectedItem, onSuccess }: AuctionItemFormProp
                                         <input
                                             className={styles.formInput}
                                             type="number"
-                                            step="0.01"
                                             placeholder="0.00"
                                             value={field.state.value || ''}
-                                            onChange={(e) => field.handleChange(e.target.value ? parseFloat(e.target.value) : undefined)}
+                                            onChange={(e) => field.handleChange(e.target.value ? parseFloat(e.target.value) : 0)}
                                         />
                                     )}
                                 />
                             </div>
                         </div>
+
+                        <div className={styles.formGroup}>
+                            <label className={styles.formLabel}>
+                                Status<span className={styles.requiredMark}>*</span>
+                            </label>
+                            <form.Field
+                                name="status"
+                                children={(field) => (
+                                    <select
+                                        className={styles.formInput}
+                                        value={field.state.value}
+                                        onChange={(e) => field.handleChange(e.target.value as AuctionStatus)}
+                                    >
+                                        <option value={AuctionStatus.Draft}>Draft</option>
+                                        <option value={AuctionStatus.Active}>Active</option>
+                                        <option value={AuctionStatus.Closed}>Closed</option>
+                                        <option value={AuctionStatus.Cancelled}>Cancelled</option>
+                                        <option value={AuctionStatus.Paid}>Paid</option>
+                                        <option value={AuctionStatus.NotSet}>Not Set</option>
+                                    </select>
+                                )}
+                            />
+                        </div>
                     </div>
 
-                    <div className={styles.formActions}>
-                        <button type="submit" className={styles.submitButton}>
-                            {selectedItem ? "Update Item" : "Create Item"}
-                        </button>
-                    </div>
+                </div>
+                <div className={styles.formActions}>
+                    <button type="submit" className={styles.addButton}>
+                        {selectedItem ? "Update Item" : "Create Item"}
+                    </button>
                 </div>
             </form>
         </div>
