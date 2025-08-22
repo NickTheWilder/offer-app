@@ -1,10 +1,6 @@
 {
-  "permissions": {
-    "allow": [
-      "Bash(bun list:*)",
-      "Bash(bun add:*)",
-      "Bash(bun run:*)"
-    ],
-    "deny": []
-  }
+    "permissions": {
+        "allow": ["Bash(bun list:*)", "Bash(bun add:*)", "Bash(bun run:*)"],
+        "deny": []
+    }
 }

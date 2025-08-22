@@ -40,6 +40,7 @@ shared/
 ## Getting Started
 
 ### Prerequisites
+
 This project uses [Bun](https://bun.sh/) as the JavaScript runtime and package manager. Install Bun first if you haven't already.
 
 ### Development
@@ -60,13 +61,16 @@ bun run codegen
 This frontend is designed to work with a GraphQL backend API. The application includes:
 
 ### GraphQL Setup
+
 - **Apollo Client** configured to connect to `/graphql` endpoint
 - **Vite proxy** routes GraphQL requests to `http://localhost:5000`
 - **Code generation** creates TypeScript types from GraphQL schema
 - **Mock services** provide fallback data during development
 
 ### Backend Connection Status
+
 The application currently supports:
+
 - ✅ GraphQL client configuration ready
 - ✅ Type-safe GraphQL queries and mutations
 - ✅ Mock data services for independent development
@@ -74,6 +78,7 @@ The application currently supports:
 - ⚠️ Real-time subscriptions not yet implemented
 
 ### Switching from Mock to Real API
+
 1. Start your GraphQL backend server on `http://localhost:5000/graphql`
 2. Update `src/services/graphql-api.ts` to use real GraphQL operations
 3. Configure authentication in `src/hooks/use-auth.tsx` for your auth system

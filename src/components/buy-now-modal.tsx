@@ -1,9 +1,8 @@
-import type { JSX } from 'react';
+import type { JSX } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Loader2, ShoppingCart } from "lucide-react";
 import styles from "./buy-now-modal.module.css";
-import { createBid } from "@/services/api";
 import { useAuth } from "@/hooks/use-auth";
 import type { AuctionItem } from "../types/schema";
 
@@ -44,7 +43,7 @@ export default function BuyNowModal({ item, onClose }: BuyNowModalProps): JSX.El
                 isBuyNow: true,
             };
 
-            return await createBid(bid);
+            return await bid;
         },
         onSuccess: () => {
             // Invalidate relevant queries

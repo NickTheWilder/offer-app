@@ -11,7 +11,9 @@ import type { AuctionItem } from "../types/schema";
 import { useLocation } from "wouter";
 import { Loader2 } from "lucide-react";
 import styles from "./home-page.module.css";
-import { getAuctionItems, getItemCategories } from "@/services/api";
+import { apolloClient } from "@/lib/apollo-client";
+import { AuctionStatus, GET_AUCTION_ITEMS } from "@/lib/graphql-queries";
+import type { GetAuctionItemsQuery } from "@/types/generated/graphql";
 
 export default function HomePage(): JSX.Element {
     const { user } = useAuth();
@@ -24,23 +26,25 @@ export default function HomePage(): JSX.Element {
     const [bidModalItem, setBidModalItem] = useState<AuctionItem | null>(null);
     const [buyNowModalItem, setBuyNowModalItem] = useState<AuctionItem | null>(null);
 
-    // Fetch auction items using our mock API service
+    // Fetch auction items using GraphQL
     const { data: items, isLoading } = useQuery<AuctionItem[]>({
-        queryKey: ["/api/items", selectedCategory],
+        queryKey: ["auctionItems", selectedCategory],
         queryFn: async () => {
-            const filter = {
-                status: "active",
-                ...(selectedCategory ? { category: selectedCategory } : {}),
-            };
-            return await getAuctionItems(filter);
-        },
-    });
+            const { data } = await apolloClient.query<GetAuctionItemsQuery>({
+                query: GET_AUCTION_ITEMS,
+            });
 
-    // Fetch categories using our mock API service
-    const { data: categories } = useQuery<string[]>({
-        queryKey: ["/api/categories"],
-        queryFn: async () => {
-            return await getItemCategories();
+            let filteredItems = data.auctionItems;
+
+            // Filter by category if selected
+            if (selectedCategory) {
+                filteredItems = filteredItems.filter(item => item.category === selectedCategory);
+            }
+
+            // Filter by active status
+            filteredItems = filteredItems.filter(item => item.status === AuctionStatus.ACTIVE);
+
+            return filteredItems as AuctionItem[];
         },
     });
 
@@ -87,14 +91,6 @@ export default function HomePage(): JSX.Element {
                                         </svg>
                                     </span>
                                 </div>
-                                <select className={styles.categorySelect} value={selectedCategory} onChange={(e) => setSelectedCategory(e.target.value)}>
-                                    <option value="">All Categories</option>
-                                    {categories?.map((category) => (
-                                        <option key={category} value={category}>
-                                            {category}
-                                        </option>
-                                    ))}
-                                </select>
                             </div>
                         </div>
 

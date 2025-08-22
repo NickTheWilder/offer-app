@@ -1,4 +1,4 @@
-import type { JSX } from 'react';
+import type { JSX } from "react";
 import { Search, Gavel } from "lucide-react";
 import styles from "./mobile-navigation.module.css";
 

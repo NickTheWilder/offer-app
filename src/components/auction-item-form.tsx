@@ -1,17 +1,18 @@
 import type { JSX } from "react";
 import { toast } from "@/hooks/use-toast";
 import { queryClient } from "@/lib/queryClient";
-import { useMutation } from "@tanstack/react-query";
 import styles from "./admin-dashboard.module.css"; // TODO: this would be better as a separate file
 import { useForm } from "@tanstack/react-form";
-import type { CreateAuctionItemInput } from "@/lib/graphql-queries";
+import type { CreateAuctionItemInput, UpdateAuctionItemInput } from "@/lib/graphql-queries";
+import { useMutation } from "@apollo/client";
+import { CREATE_AUCTION_ITEM } from "@/lib/graphql-queries";
 
-interface AuctionItemForm {
-    selectedItem: AuctionItem | null;
+interface AuctionItemFormProps {
+    selectedItem: UpdateAuctionItemInput | null;
     onSuccess: () => void;
 }
 
-export function AuctionItemForm({ selectedItem, onSuccess }: AuctionItemForm): JSX.Element {
+export function AuctionItemForm({ selectedItem, onSuccess }: AuctionItemFormProps): JSX.Element {
     // TanStack Form
     const form = useForm({
         defaultValues: {
@@ -32,17 +33,22 @@ export function AuctionItemForm({ selectedItem, onSuccess }: AuctionItemForm): J
             restrictions: "",
         },
         onSubmit: async ({ value }) => {
-            // This will be handled by the child component's mutations
-            console.log("Form submitted:", value);
+            try {
+                await createAuctionItem({
+                    variables: {
+                        input: value as CreateAuctionItemInput,
+                    },
+                });
+            } catch (error) {
+                // Error handling is done in the mutation's onError callback
+                console.error("Form submission error:", error);
+            }
         },
     });
 
     // Create item mutation
-    const createItemMutation = useMutation({
-        mutationFn: async (data: CreateAuctionItemInput) => {
-            return await createAuctionItem(data);
-        },
-        onSuccess: () => {
+    const [createAuctionItem, { loading, error }] = useMutation(CREATE_AUCTION_ITEM, {
+        onCompleted: () => {
             queryClient.invalidateQueries({ queryKey: ["/api/items"] });
             queryClient.invalidateQueries({ queryKey: ["/api/categories"] });
             onSuccess();
@@ -51,7 +57,7 @@ export function AuctionItemForm({ selectedItem, onSuccess }: AuctionItemForm): J
                 description: "Item created successfully",
             });
         },
-        onError: (error: Error) => {
+        onError: (error) => {
             toast({
                 title: "Error",
                 description: error.message || "Failed to create item",

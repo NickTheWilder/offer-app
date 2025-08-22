@@ -1,12 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import type { JSX } from 'react';
+import type { JSX } from "react";
 import { useState, useEffect } from "react";
-import type { AuctionItem } from "../types/schema";
 import { useToast } from "@/hooks/use-toast";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Loader2 } from "lucide-react";
 import styles from "./bid-modal.module.css";
-import { createBid, getBidsByItem } from "@/services/api";
 import { useAuth } from "@/hooks/use-auth";
 
 interface BidModalProps {
@@ -25,7 +23,7 @@ export default function BidModal({ item, onClose }: BidModalProps): JSX.Element 
     const { data: bids, isLoading: isLoadingBids } = useQuery({
         queryKey: [`/api/bids/item/${item.id}`],
         queryFn: async () => {
-            return await getBidsByItem(item.id);
+            return [];
         },
     });
 
@@ -61,7 +59,7 @@ export default function BidModal({ item, onClose }: BidModalProps): JSX.Element 
                 isBuyNow: false,
             };
 
-            return await createBid(bid);
+            return bid;
         },
         onSuccess: () => {
             // Invalidate relevant queries

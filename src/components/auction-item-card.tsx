@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import type { JSX } from 'react';
+import type { JSX } from "react";
 import type { AuctionItem } from "../types/schema";
 import { useAuth } from "@/hooks/use-auth";
 import { useQuery } from "@tanstack/react-query";

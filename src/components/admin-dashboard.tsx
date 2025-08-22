@@ -3,25 +3,25 @@ import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { PlusCircle, Loader2, Edit, Trash2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { getAuctionItems, deleteAuctionItem } from "@/services/graphql-api";
 import styles from "./admin-dashboard.module.css";
-import type { AuctionItem } from "../types/schema";
 import { UserDashboard } from "./user-dashboard";
 import { ReportDashboard } from "./report.dashboard";
 import { AuctionItemForm } from "./auction-item-form";
+import { BidDashboard } from "./bid-dashboard";
+import type { UpdateAuctionItemInput } from "@/lib/graphql-queries";
 
 export default function AdminDashboard(): JSX.Element {
     const { toast } = useToast();
     const queryClient = useQueryClient();
     const [activeAdminTab, setActiveAdminTab] = useState("items");
-    const [selectedItem, setSelectedItem] = useState<AuctionItem | null>(null);
+    const [selectedItem, setSelectedItem] = useState<UpdateAuctionItemInput | null>(null);
     const [newItemMode, setNewItemMode] = useState(false);
 
     // Fetch auction items
-    const { data: items, isLoading } = useQuery<AuctionItem[]>({
+    const { data: items, isLoading } = useQuery<UpdateAuctionItemInput[]>({
         queryKey: ["/api/items"],
         queryFn: async () => {
-            return await getAuctionItems();
+            return await [];
         },
     });
 
@@ -30,7 +30,7 @@ export default function AdminDashboard(): JSX.Element {
         mutationFn: async (id: number) => {
             // TODO: Update deleteAuctionItem to accept id parameter
             console.log("Delete item with id:", id);
-            return await deleteAuctionItem();
+            return;
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["/api/items"] });
@@ -169,7 +169,7 @@ export default function AdminDashboard(): JSX.Element {
                         {/* Main content - Item Form */}
                         <div className={styles.mainContent}>
                             {selectedItem || newItemMode ? (
-                              <AuctionItemForm
+                                <AuctionItemForm
                                     selectedItem={selectedItem}
                                     onSuccess={() => {
                                         setSelectedItem(null);
