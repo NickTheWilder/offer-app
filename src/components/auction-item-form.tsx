@@ -6,6 +6,8 @@ import { useForm } from "@tanstack/react-form";
 import type { CreateAuctionItemInput, UpdateAuctionItemInput } from "@/lib/graphql-queries";
 import { useMutation } from "@apollo/client";
 import { CREATE_AUCTION_ITEM } from "@/lib/graphql-queries";
+import { useEffect } from "react";
+import { setCurrentForm, clearCurrentForm } from "./dev-tools";
 
 interface AuctionItemFormProps {
     selectedItem: UpdateAuctionItemInput | null;
@@ -33,6 +35,8 @@ export function AuctionItemForm({ selectedItem, onSuccess }: AuctionItemFormProp
             restrictions: "",
         },
         onSubmit: async ({ value }) => {
+            console.log(value)
+
             try {
                 await createAuctionItem({
                     variables: {
@@ -45,6 +49,14 @@ export function AuctionItemForm({ selectedItem, onSuccess }: AuctionItemFormProp
             }
         },
     });
+
+    // Register form with dev tools (dev only)
+    useEffect(() => {
+        if (process.env.NODE_ENV === 'development') {
+            setCurrentForm(form);
+            return () => clearCurrentForm();
+        }
+    }, [form]);
 
     // Create item mutation
     const [createAuctionItem, { loading, error }] = useMutation(CREATE_AUCTION_ITEM, {
@@ -85,7 +97,17 @@ export function AuctionItemForm({ selectedItem, onSuccess }: AuctionItemFormProp
                             <label className={styles.formLabel}>
                                 Name<span className={styles.requiredMark}>*</span>
                             </label>
-                            <form.Field name="name" children={() => <input className={styles.formInput} placeholder="Item name" />} />
+                            <form.Field
+                                name="name"
+                                children={(field) => (
+                                    <input
+                                        className={styles.formInput}
+                                        placeholder="Item name"
+                                        value={field.state.value}
+                                        onChange={(e) => field.handleChange(e.target.value)}
+                                    />
+                                )}
+                            />
                         </div>
 
                         <div className={styles.formGroup}>
@@ -94,7 +116,19 @@ export function AuctionItemForm({ selectedItem, onSuccess }: AuctionItemFormProp
                             </label>
                             <div className={styles.currencyInput}>
                                 <span className={styles.currencySymbol}>$</span>
-                                <form.Field name="startingBid" children={() => <input className={styles.formInput} type="number" step="0.01" name="startingBid" placeholder="0.00" />} />
+                                <form.Field
+                                    name="startingBid"
+                                    children={(field) => (
+                                        <input
+                                            className={styles.formInput}
+                                            type="number"
+                                            step="0.01"
+                                            placeholder="0.00"
+                                            value={field.state.value}
+                                            onChange={(e) => field.handleChange(parseFloat(e.target.value) || 0)}
+                                        />
+                                    )}
+                                />
                             </div>
                         </div>
 
@@ -102,7 +136,19 @@ export function AuctionItemForm({ selectedItem, onSuccess }: AuctionItemFormProp
                             <label className={styles.formLabel}>Buy Now Price</label>
                             <div className={styles.currencyInput}>
                                 <span className={styles.currencySymbol}>$</span>
-                                <form.Field name="buyNowPrice" children={() => <input className={styles.formInput} type="number" step="0.01" name="buyNowPrice" placeholder="0.00" />} />
+                                <form.Field
+                                    name="buyNowPrice"
+                                    children={(field) => (
+                                        <input
+                                            className={styles.formInput}
+                                            type="number"
+                                            step="0.01"
+                                            placeholder="0.00"
+                                            value={field.state.value || ''}
+                                            onChange={(e) => field.handleChange(e.target.value ? parseFloat(e.target.value) : undefined)}
+                                        />
+                                    )}
+                                />
                             </div>
                         </div>
                     </div>

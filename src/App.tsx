@@ -7,6 +7,7 @@ import HomePage from "@/pages/home-page";
 import AuthPage from "@/pages/auth-page";
 import AdminPage from "@/pages/admin-page";
 import { ProtectedRoute } from "./lib/protected-route";
+import { DevTools } from "./components/dev-tools";
 
 function Router() {
     return (
@@ -24,6 +25,7 @@ function App(): JSX.Element {
         <TooltipProvider>
             <Toaster />
             <Router />
+            { process.env.NODE_ENV === "development" && <DevTools /> }
         </TooltipProvider>
     );
 }
