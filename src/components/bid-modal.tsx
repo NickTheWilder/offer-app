@@ -8,7 +8,7 @@ import styles from "./bid-modal.module.css";
 import { useAuth } from "@/hooks/use-auth";
 
 interface BidModalProps {
-    item: AuctionItem;
+    item: any;
     onClose: () => void;
 }
 

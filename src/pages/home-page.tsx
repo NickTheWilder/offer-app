@@ -20,7 +20,7 @@ export default function HomePage(): JSX.Element {
     const [, setLocation] = useLocation();
 
     const [activeTab, setActiveTab] = useState("bidderDashboard");
-    const [selectedCategory, setSelectedCategory] = useState("");
+    const [selectedCategory] = useState("");
     const [searchQuery, setSearchQuery] = useState("");
 
     const [bidModalItem, setBidModalItem] = useState<AuctionItem | null>(null);
@@ -42,7 +42,7 @@ export default function HomePage(): JSX.Element {
             }
 
             // Filter by active status
-            filteredItems = filteredItems.filter(item => item.status === AuctionStatus.ACTIVE);
+            filteredItems = filteredItems.filter(item => item.status === AuctionStatus.Active);
 
             return filteredItems as AuctionItem[];
         },

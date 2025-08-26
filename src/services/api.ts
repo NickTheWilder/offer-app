@@ -1,5 +1,5 @@
 import type { User, InsertUser, } from "../types/schema";
-import { mockBids, mockUsers } from "./mockData";
+import { mockUsers } from "./mockData";
 
 /**
  * API SERVICE

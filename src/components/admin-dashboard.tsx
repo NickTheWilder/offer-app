@@ -1,6 +1,6 @@
 import type { JSX } from "react";
 import { useState } from "react";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@apollo/client";
 import { PlusCircle, Loader2, Edit, Trash2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import styles from "./admin-dashboard.module.css";
@@ -8,49 +8,29 @@ import { UserDashboard } from "./user-dashboard";
 import { ReportDashboard } from "./report.dashboard";
 import { AuctionItemForm } from "./auction-item-form";
 import { BidDashboard } from "./bid-dashboard";
-import type { UpdateAuctionItemInput } from "@/lib/graphql-queries";
+import { GET_AUCTION_ITEMS } from "@/lib/graphql-queries";
+import type { UpdateAuctionItemInput, GetAuctionItemsQuery } from "@/lib/graphql-queries";
 
 export default function AdminDashboard(): JSX.Element {
     const { toast } = useToast();
-    const queryClient = useQueryClient();
     const [activeAdminTab, setActiveAdminTab] = useState("items");
     const [selectedItem, setSelectedItem] = useState<UpdateAuctionItemInput | null>(null);
     const [newItemMode, setNewItemMode] = useState(false);
 
-    // Fetch auction items
-    const { data: items, isLoading } = useQuery<UpdateAuctionItemInput[]>({
-        queryKey: ["/api/items"],
-        queryFn: async () => {
-            return await [];
-        },
-    });
-
-    // Delete item mutation
-    const deleteItemMutation = useMutation({
-        mutationFn: async (id: number) => {
-            // TODO: Update deleteAuctionItem to accept id parameter
-            console.log("Delete item with id:", id);
-            return;
-        },
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["/api/items"] });
-            queryClient.invalidateQueries({ queryKey: ["/api/categories"] });
-            if (selectedItem) {
-                setSelectedItem(null);
-            }
-            toast({
-                title: "Success",
-                description: "Item deleted successfully",
-            });
-        },
+    // Fetch auction items using Apollo Client
+    const { data, loading: isLoading } = useQuery<GetAuctionItemsQuery>(GET_AUCTION_ITEMS, {
+        errorPolicy: 'all',
         onError: (error) => {
+            console.error("GraphQL query error:", error);
             toast({
-                title: "Error",
-                description: error.message || "Failed to delete item",
+                title: "Error loading items",
+                description: error.message || "Failed to load auction items",
                 variant: "destructive",
             });
-        },
+        }
     });
+
+    const items = data?.auctionItems || [];
 
     // Format currency
     const formatCurrency = (amount: number | null) => {
@@ -69,15 +49,21 @@ export default function AdminDashboard(): JSX.Element {
     };
 
     // Handle edit item
-    const handleEditItem = (item: AuctionItem) => {
+    const handleEditItem = (item: UpdateAuctionItemInput) => {
         setSelectedItem(item);
         setNewItemMode(false);
     };
 
     // Handle item deletion
-    const handleDeleteItem = (id: number) => {
+    const handleDeleteItem = (id: string) => {
         if (confirm("Are you sure you want to delete this item?")) {
-            deleteItemMutation.mutate(id);
+            // TODO: Implement delete mutation
+            console.log("Delete item with id:", id);
+            toast({
+                title: "Not implemented",
+                description: "Delete functionality will be added later",
+                variant: "destructive",
+            });
         }
     };
 
@@ -133,7 +119,7 @@ export default function AdminDashboard(): JSX.Element {
                                         {items.map((item) => (
                                             <div key={item.id} className={`${styles.itemCard} ${selectedItem?.id === item.id ? styles.selectedCard : ""}`} onClick={() => handleEditItem(item)}>
                                                 <div className={styles.itemCardContent}>
-                                                    <div className={styles.itemImage}>{item.images && item.images.length > 0 ? <img src={item.images[0]} alt={item.name} /> : <div className={styles.noImage}>No Image</div>}</div>
+                                                    <div className={styles.itemImage}>{item.imageURL ? <img src={item.imageURL} alt={item.name} /> : <div className={styles.noImage}>No Image</div>}</div>
                                                     <div className={styles.itemInfo}>
                                                         <h3 className={styles.itemName}>{item.name}</h3>
                                                         <p className={styles.itemPrice}>{formatCurrency(item.startingBid)}</p>

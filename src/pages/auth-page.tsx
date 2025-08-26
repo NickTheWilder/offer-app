@@ -2,7 +2,7 @@ import { useAuth } from "@/hooks/use-auth";
 import { useForm } from "react-hook-form";
 import { Loader2, Church, Database } from "lucide-react";
 import { useLocation } from "wouter";
-import React, { useState, useEffect } from "react";
+import React, { type JSX, useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
 import styles from "./auth-page.module.css";
 import { seedDemoData } from "@/services/api";
