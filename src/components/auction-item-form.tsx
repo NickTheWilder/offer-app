@@ -204,7 +204,6 @@ export function AuctionItemForm({ selectedItem, onSuccess }: AuctionItemFormProp
                     </div>
 
                     <div className={styles.formRightColumn}>
-                        {/* Required Fields Missing from Original Form */}
                         <div className={styles.formGroup}>
                             <label className={styles.formLabel}>
                                 Image URL<span className={styles.requiredMark}>*</span>

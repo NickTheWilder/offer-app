@@ -3,9 +3,7 @@ import { useForm } from "react-hook-form";
 import { Loader2, Church, Database } from "lucide-react";
 import { useLocation } from "wouter";
 import React, { type JSX, useState, useEffect } from "react";
-import { useToast } from "@/hooks/use-toast";
 import styles from "./auth-page.module.css";
-import { seedDemoData } from "@/services/api";
 
 type LoginFormValues = {
     email: string;
@@ -23,8 +21,6 @@ type RegisterFormValues = {
 export default function AuthPage(): JSX.Element {
     const { user, loginMutation, registerMutation } = useAuth();
     const [, setLocation] = useLocation();
-    const { toast } = useToast();
-    const [initializingDemo, setInitializingDemo] = useState(false);
     const [activeTab, setActiveTab] = useState("login");
 
     // Login form
@@ -53,27 +49,6 @@ export default function AuthPage(): JSX.Element {
         }
     }, [user, setLocation]);
 
-    // Initialize demo data
-    const initializeDemoData = async () => {
-        try {
-            setInitializingDemo(true);
-            await seedDemoData();
-            toast({
-                title: "Demo data initialized",
-                description: "Demo bid data has been reset. You can now login with the demo accounts.",
-                duration: 5000,
-            });
-        } catch (error) {
-            toast({
-                title: "Failed to initialize demo data",
-                description: error instanceof Error ? error.message : "An unknown error occurred",
-                variant: "destructive",
-            });
-        } finally {
-            setInitializingDemo(false);
-        }
-    };
-
     // Login form submission
     function onLoginSubmit(values: LoginFormValues) {
         loginMutation.mutate(values);
@@ -94,19 +69,6 @@ export default function AuthPage(): JSX.Element {
                             <Church className={styles.icon} />
                         </div>
                         <h2 className={styles.cardTitle}>Offer Auction</h2>
-                        <button type="button" onClick={initializeDemoData} disabled={initializingDemo} className={`${styles.button} ${styles.buttonOutline} ${styles.buttonSmall}`}>
-                            {initializingDemo ? (
-                                <span className={styles.flexRow}>
-                                    <Loader2 className={`${styles.icon} ${styles.spinIcon}`} size={16} />
-                                    <span>Initializing...</span>
-                                </span>
-                            ) : (
-                                <span className={styles.flexRow}>
-                                    <Database size={16} />
-                                    <span>Initialize Demo Data</span>
-                                </span>
-                            )}
-                        </button>
                     </div>
 
                     <div className={styles.cardContent}>
