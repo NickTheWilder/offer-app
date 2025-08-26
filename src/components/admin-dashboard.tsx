@@ -33,16 +33,6 @@ export default function AdminDashboard(): JSX.Element {
 
     const items = data?.auctionItems || [];
 
-    // Format currency
-    const formatCurrency = (amount: number | null) => {
-        if (amount === null) return "N/A";
-        return new Intl.NumberFormat("en-US", {
-            style: "currency",
-            currency: "USD",
-            minimumFractionDigits: 2,
-        }).format(amount);
-    };
-
     // Handle new item
     const handleAddItem = () => {
         setSelectedItem(null);
@@ -157,6 +147,7 @@ export default function AdminDashboard(): JSX.Element {
                         <div className={styles.mainContent}>
                             {selectedItem || newItemMode ? (
                                 <AuctionItemForm
+                                    key={selectedItem?.id || 'new'}
                                     selectedItem={selectedItem}
                                     onSuccess={() => {
                                         setSelectedItem(null);
@@ -168,10 +159,12 @@ export default function AdminDashboard(): JSX.Element {
                                     <div className={styles.noSelectionContent}>
                                         <h3 className={styles.noSelectionTitle}>No Item Selected</h3>
                                         <p className={styles.noSelectionText}>Select an item from the list or add a new one to get started.</p>
-                                        <button className={styles.addButton} onClick={handleAddItem}>
-                                            <PlusCircle className={styles.plusIcon} />
-                                            Add New Item
-                                        </button>
+                                        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                                            <button className={styles.addButton} onClick={handleAddItem}>
+                                                <PlusCircle className={styles.plusIcon} />
+                                                Add New Item
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             )}
