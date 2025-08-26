@@ -1,11 +1,10 @@
 import type { JSX } from "react";
 import { toast } from "@/hooks/use-toast";
-import { queryClient } from "@/lib/queryClient";
 import styles from "./admin-dashboard.module.css"; // TODO: this would be better as a separate file
 import { useForm } from "@tanstack/react-form";
-import type { CreateAuctionItemInput, UpdateAuctionItemInput } from "@/lib/graphql-queries";
+import type { UpdateAuctionItemInput } from "@/lib/graphql-queries";
 import { useMutation } from "@apollo/client";
-import { AuctionStatus, AuctionType, CREATE_AUCTION_ITEM } from "@/lib/graphql-queries";
+import { AuctionStatus, AuctionType, CREATE_AUCTION_ITEM, GET_AUCTION_ITEMS } from "@/lib/graphql-queries";
 import { useEffect } from "react";
 import { setCurrentForm, clearCurrentForm } from "./dev-tools";
 
@@ -22,8 +21,8 @@ export function AuctionItemForm({ selectedItem, onSuccess }: AuctionItemFormProp
             description: "",
             startingBid: 0,
             minimumBidIncrement: 5,
-            buyNowPrice: undefined,
-            estimatedValue: undefined,
+            buyNowPrice: 0,
+            estimatedValue: 0,
             category: "",
             donorName: "",
             isDonorPublic: false,
@@ -39,8 +38,24 @@ export function AuctionItemForm({ selectedItem, onSuccess }: AuctionItemFormProp
                         input: value,
                     },
                 });
-            } catch (error) {
-                // Error handling is done in the mutation's onError callback
+            } catch (error: any) {
+                // Parse GraphQL validation errors and set them on form fields
+                // TODO: Fix me
+                if (error.graphQLErrors) {
+                    error.graphQLErrors.forEach((gqlError: any) => {
+                        if (gqlError.extensions?.validationErrors) {
+                            gqlError.extensions.validationErrors.forEach((validationError: any) => {
+                                form.setFieldMeta(validationError.field.toLowerCase(), (prev) => ({
+                                    ...prev,
+                                    errors: [validationError.message],
+                                    errorMap: {
+                                        onSubmit: validationError.message,
+                                    },
+                                }));
+                            });
+                        }
+                    });
+                }
                 console.error("Form submission error:", error);
             }
         },
@@ -57,8 +72,6 @@ export function AuctionItemForm({ selectedItem, onSuccess }: AuctionItemFormProp
     // Create item mutation
     const [createAuctionItem] = useMutation(CREATE_AUCTION_ITEM, {
         onCompleted: () => {
-            queryClient.invalidateQueries({ queryKey: ["/api/items"] });
-            queryClient.invalidateQueries({ queryKey: ["/api/categories"] });
             onSuccess();
             toast({
                 title: "Success",
@@ -74,6 +87,8 @@ export function AuctionItemForm({ selectedItem, onSuccess }: AuctionItemFormProp
                 variant: "destructive",
             });
         },
+        refetchQueries: [GET_AUCTION_ITEMS],
+        awaitRefetchQueries: true,
     });
 
     return (
@@ -183,6 +198,133 @@ export function AuctionItemForm({ selectedItem, onSuccess }: AuctionItemFormProp
                                         <option value={AuctionStatus.Paid}>Paid</option>
                                         <option value={AuctionStatus.NotSet}>Not Set</option>
                                     </select>
+                                )}
+                            />
+                        </div>
+                    </div>
+
+                    <div className={styles.formRightColumn}>
+                        {/* Required Fields Missing from Original Form */}
+                        <div className={styles.formGroup}>
+                            <label className={styles.formLabel}>
+                                Image URL<span className={styles.requiredMark}>*</span>
+                            </label>
+                            <form.Field
+                                name="imageURL"
+                                children={(field) => (
+                                    <input
+                                        className={styles.formInput}
+                                        placeholder="https://example.com/image.jpg"
+                                        value={field.state.value}
+                                        onChange={(e) => field.handleChange(e.target.value)}
+                                    />
+                                )}
+                            />
+                        </div>
+
+                        <div className={styles.formGroup}>
+                            <label className={styles.formLabel}>
+                                Donor Name<span className={styles.requiredMark}>*</span>
+                            </label>
+                            <form.Field
+                                name="donorName"
+                                children={(field) => (
+                                    <input
+                                        className={styles.formInput}
+                                        placeholder="John Smith"
+                                        value={field.state.value}
+                                        onChange={(e) => field.handleChange(e.target.value)}
+                                    />
+                                )}
+                            />
+                        </div>
+
+                        <div className={styles.formGroup}>
+                            <label className={styles.formLabel}>
+                                Category<span className={styles.requiredMark}>*</span>
+                            </label>
+                            <form.Field
+                                name="category"
+                                children={(field) => (
+                                    <input
+                                        className={styles.formInput}
+                                        placeholder="Electronics, Art, Gift Cards, etc."
+                                        value={field.state.value}
+                                        onChange={(e) => field.handleChange(e.target.value)}
+                                    />
+                                )}
+                            />
+                        </div>
+
+                        <div className={styles.formGroup}>
+                            <label className={styles.formLabel}>
+                                Donor Public?
+                            </label>
+                            <form.Field
+                                name="isDonorPublic"
+                                children={(field) => (
+                                    <label className={styles.checkboxLabel}>
+                                        <input
+                                            type="checkbox"
+                                            checked={field.state.value}
+                                            onChange={(e) => field.handleChange(e.target.checked)}
+                                        />
+                                        Show donor name publicly
+                                    </label>
+                                )}
+                            />
+                        </div>
+
+                        <div className={styles.formGroup}>
+                            <label className={styles.formLabel}>
+                                Auction Type<span className={styles.requiredMark}>*</span>
+                            </label>
+                            <form.Field
+                                name="auctionType"
+                                children={(field) => (
+                                    <select
+                                        className={styles.formInput}
+                                        value={field.state.value}
+                                        onChange={(e) => field.handleChange(e.target.value as AuctionType)}
+                                    >
+                                        <option value={AuctionType.Silent}>Silent</option>
+                                        <option value={AuctionType.Live}>Live</option>
+                                        <option value={AuctionType.NotSet}>Not Set</option>
+                                    </select>
+                                )}
+                            />
+                        </div>
+
+                        <div className={styles.formGroup}>
+                            <label className={styles.formLabel}>Estimated Value</label>
+                            <div className={styles.currencyInput}>
+                                <span className={styles.currencySymbol}>$</span>
+                                <form.Field
+                                    name="estimatedValue"
+                                    children={(field) => (
+                                        <input
+                                            className={styles.formInput}
+                                            type="number"
+                                            placeholder="0.00"
+                                            value={field.state.value || ''}
+                                            onChange={(e) => field.handleChange(e.target.value ? parseFloat(e.target.value) : 0)}
+                                        />
+                                    )}
+                                />
+                            </div>
+                        </div>
+
+                        <div className={styles.formGroup}>
+                            <label className={styles.formLabel}>Restrictions</label>
+                            <form.Field
+                                name="restrictions"
+                                children={(field) => (
+                                    <textarea
+                                        className={styles.formInput}
+                                        placeholder="Any restrictions or special instructions"
+                                        value={field.state.value}
+                                        onChange={(e) => field.handleChange(e.target.value)}
+                                    />
                                 )}
                             />
                         </div>
