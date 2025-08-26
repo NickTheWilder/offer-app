@@ -9,16 +9,17 @@ import { ReportDashboard } from "./report.dashboard";
 import { AuctionItemForm } from "./auction-item-form";
 import { BidDashboard } from "./bid-dashboard";
 import { GET_AUCTION_ITEMS } from "@/lib/graphql-queries";
-import type { UpdateAuctionItemInput, GetAuctionItemsQuery } from "@/lib/graphql-queries";
+import type { AuctionItemFragment } from "@/types/generated/graphql";
+import { formatCurrency } from "@/utils";
 
 export default function AdminDashboard(): JSX.Element {
     const { toast } = useToast();
     const [activeAdminTab, setActiveAdminTab] = useState("items");
-    const [selectedItem, setSelectedItem] = useState<UpdateAuctionItemInput | null>(null);
+    const [selectedItem, setSelectedItem] = useState<AuctionItemFragment | null>(null);
     const [newItemMode, setNewItemMode] = useState(false);
 
     // Fetch auction items using Apollo Client
-    const { data, loading: isLoading } = useQuery<GetAuctionItemsQuery>(GET_AUCTION_ITEMS, {
+    const { data, loading: isLoading } = useQuery<{auctionItems: AuctionItemFragment[]}>(GET_AUCTION_ITEMS, {
         errorPolicy: 'all',
         onError: (error) => {
             console.error("GraphQL query error:", error);
@@ -49,7 +50,7 @@ export default function AdminDashboard(): JSX.Element {
     };
 
     // Handle edit item
-    const handleEditItem = (item: UpdateAuctionItemInput) => {
+    const handleEditItem = (item: AuctionItemFragment) => {
         setSelectedItem(item);
         setNewItemMode(false);
     };

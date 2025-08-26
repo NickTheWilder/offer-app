@@ -2,14 +2,14 @@ import type { JSX } from "react";
 import { toast } from "@/hooks/use-toast";
 import styles from "./admin-dashboard.module.css"; // TODO: this would be better as a separate file
 import { useForm } from "@tanstack/react-form";
-import type { UpdateAuctionItemInput } from "@/lib/graphql-queries";
 import { useMutation } from "@apollo/client";
 import { AuctionStatus, AuctionType, CREATE_AUCTION_ITEM, GET_AUCTION_ITEMS } from "@/lib/graphql-queries";
 import { useEffect } from "react";
 import { setCurrentForm, clearCurrentForm } from "./dev-tools";
+import type { AuctionItemFragment } from "@/types/generated/graphql";
 
 interface AuctionItemFormProps {
-    selectedItem: UpdateAuctionItemInput | null;
+    selectedItem: AuctionItemFragment | null;
     onSuccess: () => void;
 }
 

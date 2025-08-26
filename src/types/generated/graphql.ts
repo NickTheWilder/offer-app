@@ -248,96 +248,74 @@ export type UuidOperationFilterInput = {
     nlte?: InputMaybe<Scalars["UUID"]["input"]>;
 };
 
+export type AuctionItemFragment = {
+    id: string;
+    name: string;
+    description: string;
+    imageURL: string;
+    startingBid: number;
+    minimumBidIncrement: number;
+    buyNowPrice?: number | null;
+    estimatedValue?: number | null;
+    category?: string | null;
+    auctionType: AuctionType;
+    donorName: string;
+    isDonorPublic: boolean;
+    status: AuctionStatus;
+    restrictions: string;
+} & { " $fragmentName"?: "AuctionItemFragment" };
+
 export type GetAuctionItemsQueryVariables = Exact<{ [key: string]: never }>;
 
-export type GetAuctionItemsQuery = {
-    auctionItems: Array<{
-        id: string;
-        name: string;
-        description: string;
-        imageURL: string;
-        startingBid: number;
-        minimumBidIncrement: number;
-        buyNowPrice?: number | null;
-        estimatedValue?: number | null;
-        category?: string | null;
-        auctionType: AuctionType;
-        donorName: string;
-        isDonorPublic: boolean;
-        status: AuctionStatus;
-        restrictions: string;
-    }>;
-};
+export type GetAuctionItemsQuery = { auctionItems: Array<{ " $fragmentRefs"?: { AuctionItemFragment: AuctionItemFragment } }> };
 
 export type GetAuctionItemQueryVariables = Exact<{
     id: Scalars["UUID"]["input"];
 }>;
 
-export type GetAuctionItemQuery = {
-    auctionItems: Array<{
-        id: string;
-        name: string;
-        description: string;
-        imageURL: string;
-        startingBid: number;
-        minimumBidIncrement: number;
-        buyNowPrice?: number | null;
-        estimatedValue?: number | null;
-        category?: string | null;
-        auctionType: AuctionType;
-        donorName: string;
-        isDonorPublic: boolean;
-        status: AuctionStatus;
-        restrictions: string;
-    }>;
-};
+export type GetAuctionItemQuery = { auctionItems: Array<{ " $fragmentRefs"?: { AuctionItemFragment: AuctionItemFragment } }> };
 
 export type CreateAuctionItemMutationVariables = Exact<{
     input: CreateAuctionItemInput;
 }>;
 
-export type CreateAuctionItemMutation = {
-    createAuctionItem: {
-        id: string;
-        name: string;
-        description: string;
-        imageURL: string;
-        startingBid: number;
-        minimumBidIncrement: number;
-        buyNowPrice?: number | null;
-        estimatedValue?: number | null;
-        category?: string | null;
-        auctionType: AuctionType;
-        donorName: string;
-        isDonorPublic: boolean;
-        status: AuctionStatus;
-        restrictions: string;
-    };
-};
+export type CreateAuctionItemMutation = { createAuctionItem: { " $fragmentRefs"?: { AuctionItemFragment: AuctionItemFragment } } };
 
 export type UpdateAuctionItemMutationVariables = Exact<{
     input: UpdateAuctionItemInput;
 }>;
 
-export type UpdateAuctionItemMutation = {
-    updateAuctionItem: {
-        id: string;
-        name: string;
-        description: string;
-        imageURL: string;
-        startingBid: number;
-        minimumBidIncrement: number;
-        buyNowPrice?: number | null;
-        estimatedValue?: number | null;
-        category?: string | null;
-        auctionType: AuctionType;
-        donorName: string;
-        isDonorPublic: boolean;
-        status: AuctionStatus;
-        restrictions: string;
-    };
-};
+export type UpdateAuctionItemMutation = { updateAuctionItem: { " $fragmentRefs"?: { AuctionItemFragment: AuctionItemFragment } } };
 
+export const AuctionItemFragmentDoc = {
+    kind: "Document",
+    definitions: [
+        {
+            kind: "FragmentDefinition",
+            name: { kind: "Name", value: "AuctionItem" },
+            typeCondition: { kind: "NamedType", name: { kind: "Name", value: "AuctionItem" } },
+            selectionSet: {
+                kind: "SelectionSet",
+                selections: [
+                    { kind: "Field", name: { kind: "Name", value: "id" } },
+                    { kind: "Field", name: { kind: "Name", value: "name" } },
+                    { kind: "Field", name: { kind: "Name", value: "description" } },
+                    { kind: "Field", name: { kind: "Name", value: "imageURL" } },
+                    { kind: "Field", name: { kind: "Name", value: "startingBid" } },
+                    { kind: "Field", name: { kind: "Name", value: "minimumBidIncrement" } },
+                    { kind: "Field", name: { kind: "Name", value: "buyNowPrice" } },
+                    { kind: "Field", name: { kind: "Name", value: "estimatedValue" } },
+                    { kind: "Field", name: { kind: "Name", value: "category" } },
+                    { kind: "Field", name: { kind: "Name", value: "auctionType" } },
+                    { kind: "Field", name: { kind: "Name", value: "donorName" } },
+                    { kind: "Field", name: { kind: "Name", value: "isDonorPublic" } },
+                    { kind: "Field", name: { kind: "Name", value: "status" } },
+                    { kind: "Field", name: { kind: "Name", value: "restrictions" } },
+                ],
+            },
+        },
+    ],
+} as unknown as DocumentNode<AuctionItemFragment, unknown>;
 export const GetAuctionItemsDocument = {
     kind: "Document",
     definitions: [
@@ -347,30 +325,30 @@ export const GetAuctionItemsDocument = {
             name: { kind: "Name", value: "GetAuctionItems" },
             selectionSet: {
                 kind: "SelectionSet",
+                selections: [{ kind: "Field", name: { kind: "Name", value: "auctionItems" }, selectionSet: { kind: "SelectionSet", selections: [{ kind: "FragmentSpread", name: { kind: "Name", value: "AuctionItem" } }] } }],
+            },
+        },
+        {
+            kind: "FragmentDefinition",
+            name: { kind: "Name", value: "AuctionItem" },
+            typeCondition: { kind: "NamedType", name: { kind: "Name", value: "AuctionItem" } },
+            selectionSet: {
+                kind: "SelectionSet",
                 selections: [
-                    {
-                        kind: "Field",
-                        name: { kind: "Name", value: "auctionItems" },
-                        selectionSet: {
-                            kind: "SelectionSet",
-                            selections: [
-                                { kind: "Field", name: { kind: "Name", value: "id" } },
-                                { kind: "Field", name: { kind: "Name", value: "name" } },
-                                { kind: "Field", name: { kind: "Name", value: "description" } },
-                                { kind: "Field", name: { kind: "Name", value: "imageURL" } },
-                                { kind: "Field", name: { kind: "Name", value: "startingBid" } },
-                                { kind: "Field", name: { kind: "Name", value: "minimumBidIncrement" } },
-                                { kind: "Field", name: { kind: "Name", value: "buyNowPrice" } },
-                                { kind: "Field", name: { kind: "Name", value: "estimatedValue" } },
-                                { kind: "Field", name: { kind: "Name", value: "category" } },
-                                { kind: "Field", name: { kind: "Name", value: "auctionType" } },
-                                { kind: "Field", name: { kind: "Name", value: "donorName" } },
-                                { kind: "Field", name: { kind: "Name", value: "isDonorPublic" } },
-                                { kind: "Field", name: { kind: "Name", value: "status" } },
-                                { kind: "Field", name: { kind: "Name", value: "restrictions" } },
-                            ],
-                        },
-                    },
+                    { kind: "Field", name: { kind: "Name", value: "id" } },
+                    { kind: "Field", name: { kind: "Name", value: "name" } },
+                    { kind: "Field", name: { kind: "Name", value: "description" } },
+                    { kind: "Field", name: { kind: "Name", value: "imageURL" } },
+                    { kind: "Field", name: { kind: "Name", value: "startingBid" } },
+                    { kind: "Field", name: { kind: "Name", value: "minimumBidIncrement" } },
+                    { kind: "Field", name: { kind: "Name", value: "buyNowPrice" } },
+                    { kind: "Field", name: { kind: "Name", value: "estimatedValue" } },
+                    { kind: "Field", name: { kind: "Name", value: "category" } },
+                    { kind: "Field", name: { kind: "Name", value: "auctionType" } },
+                    { kind: "Field", name: { kind: "Name", value: "donorName" } },
+                    { kind: "Field", name: { kind: "Name", value: "isDonorPublic" } },
+                    { kind: "Field", name: { kind: "Name", value: "status" } },
+                    { kind: "Field", name: { kind: "Name", value: "restrictions" } },
                 ],
             },
         },
@@ -406,26 +384,32 @@ export const GetAuctionItemDocument = {
                                 },
                             },
                         ],
-                        selectionSet: {
-                            kind: "SelectionSet",
-                            selections: [
-                                { kind: "Field", name: { kind: "Name", value: "id" } },
-                                { kind: "Field", name: { kind: "Name", value: "name" } },
-                                { kind: "Field", name: { kind: "Name", value: "description" } },
-                                { kind: "Field", name: { kind: "Name", value: "imageURL" } },
-                                { kind: "Field", name: { kind: "Name", value: "startingBid" } },
-                                { kind: "Field", name: { kind: "Name", value: "minimumBidIncrement" } },
-                                { kind: "Field", name: { kind: "Name", value: "buyNowPrice" } },
-                                { kind: "Field", name: { kind: "Name", value: "estimatedValue" } },
-                                { kind: "Field", name: { kind: "Name", value: "category" } },
-                                { kind: "Field", name: { kind: "Name", value: "auctionType" } },
-                                { kind: "Field", name: { kind: "Name", value: "donorName" } },
-                                { kind: "Field", name: { kind: "Name", value: "isDonorPublic" } },
-                                { kind: "Field", name: { kind: "Name", value: "status" } },
-                                { kind: "Field", name: { kind: "Name", value: "restrictions" } },
-                            ],
-                        },
+                        selectionSet: { kind: "SelectionSet", selections: [{ kind: "FragmentSpread", name: { kind: "Name", value: "AuctionItem" } }] },
                     },
+                ],
+            },
+        },
+        {
+            kind: "FragmentDefinition",
+            name: { kind: "Name", value: "AuctionItem" },
+            typeCondition: { kind: "NamedType", name: { kind: "Name", value: "AuctionItem" } },
+            selectionSet: {
+                kind: "SelectionSet",
+                selections: [
+                    { kind: "Field", name: { kind: "Name", value: "id" } },
+                    { kind: "Field", name: { kind: "Name", value: "name" } },
+                    { kind: "Field", name: { kind: "Name", value: "description" } },
+                    { kind: "Field", name: { kind: "Name", value: "imageURL" } },
+                    { kind: "Field", name: { kind: "Name", value: "startingBid" } },
+                    { kind: "Field", name: { kind: "Name", value: "minimumBidIncrement" } },
+                    { kind: "Field", name: { kind: "Name", value: "buyNowPrice" } },
+                    { kind: "Field", name: { kind: "Name", value: "estimatedValue" } },
+                    { kind: "Field", name: { kind: "Name", value: "category" } },
+                    { kind: "Field", name: { kind: "Name", value: "auctionType" } },
+                    { kind: "Field", name: { kind: "Name", value: "donorName" } },
+                    { kind: "Field", name: { kind: "Name", value: "isDonorPublic" } },
+                    { kind: "Field", name: { kind: "Name", value: "status" } },
+                    { kind: "Field", name: { kind: "Name", value: "restrictions" } },
                 ],
             },
         },
@@ -448,26 +432,32 @@ export const CreateAuctionItemDocument = {
                         kind: "Field",
                         name: { kind: "Name", value: "createAuctionItem" },
                         arguments: [{ kind: "Argument", name: { kind: "Name", value: "input" }, value: { kind: "Variable", name: { kind: "Name", value: "input" } } }],
-                        selectionSet: {
-                            kind: "SelectionSet",
-                            selections: [
-                                { kind: "Field", name: { kind: "Name", value: "id" } },
-                                { kind: "Field", name: { kind: "Name", value: "name" } },
-                                { kind: "Field", name: { kind: "Name", value: "description" } },
-                                { kind: "Field", name: { kind: "Name", value: "imageURL" } },
-                                { kind: "Field", name: { kind: "Name", value: "startingBid" } },
-                                { kind: "Field", name: { kind: "Name", value: "minimumBidIncrement" } },
-                                { kind: "Field", name: { kind: "Name", value: "buyNowPrice" } },
-                                { kind: "Field", name: { kind: "Name", value: "estimatedValue" } },
-                                { kind: "Field", name: { kind: "Name", value: "category" } },
-                                { kind: "Field", name: { kind: "Name", value: "auctionType" } },
-                                { kind: "Field", name: { kind: "Name", value: "donorName" } },
-                                { kind: "Field", name: { kind: "Name", value: "isDonorPublic" } },
-                                { kind: "Field", name: { kind: "Name", value: "status" } },
-                                { kind: "Field", name: { kind: "Name", value: "restrictions" } },
-                            ],
-                        },
+                        selectionSet: { kind: "SelectionSet", selections: [{ kind: "FragmentSpread", name: { kind: "Name", value: "AuctionItem" } }] },
                     },
+                ],
+            },
+        },
+        {
+            kind: "FragmentDefinition",
+            name: { kind: "Name", value: "AuctionItem" },
+            typeCondition: { kind: "NamedType", name: { kind: "Name", value: "AuctionItem" } },
+            selectionSet: {
+                kind: "SelectionSet",
+                selections: [
+                    { kind: "Field", name: { kind: "Name", value: "id" } },
+                    { kind: "Field", name: { kind: "Name", value: "name" } },
+                    { kind: "Field", name: { kind: "Name", value: "description" } },
+                    { kind: "Field", name: { kind: "Name", value: "imageURL" } },
+                    { kind: "Field", name: { kind: "Name", value: "startingBid" } },
+                    { kind: "Field", name: { kind: "Name", value: "minimumBidIncrement" } },
+                    { kind: "Field", name: { kind: "Name", value: "buyNowPrice" } },
+                    { kind: "Field", name: { kind: "Name", value: "estimatedValue" } },
+                    { kind: "Field", name: { kind: "Name", value: "category" } },
+                    { kind: "Field", name: { kind: "Name", value: "auctionType" } },
+                    { kind: "Field", name: { kind: "Name", value: "donorName" } },
+                    { kind: "Field", name: { kind: "Name", value: "isDonorPublic" } },
+                    { kind: "Field", name: { kind: "Name", value: "status" } },
+                    { kind: "Field", name: { kind: "Name", value: "restrictions" } },
                 ],
             },
         },
@@ -490,26 +480,32 @@ export const UpdateAuctionItemDocument = {
                         kind: "Field",
                         name: { kind: "Name", value: "updateAuctionItem" },
                         arguments: [{ kind: "Argument", name: { kind: "Name", value: "input" }, value: { kind: "Variable", name: { kind: "Name", value: "input" } } }],
-                        selectionSet: {
-                            kind: "SelectionSet",
-                            selections: [
-                                { kind: "Field", name: { kind: "Name", value: "id" } },
-                                { kind: "Field", name: { kind: "Name", value: "name" } },
-                                { kind: "Field", name: { kind: "Name", value: "description" } },
-                                { kind: "Field", name: { kind: "Name", value: "imageURL" } },
-                                { kind: "Field", name: { kind: "Name", value: "startingBid" } },
-                                { kind: "Field", name: { kind: "Name", value: "minimumBidIncrement" } },
-                                { kind: "Field", name: { kind: "Name", value: "buyNowPrice" } },
-                                { kind: "Field", name: { kind: "Name", value: "estimatedValue" } },
-                                { kind: "Field", name: { kind: "Name", value: "category" } },
-                                { kind: "Field", name: { kind: "Name", value: "auctionType" } },
-                                { kind: "Field", name: { kind: "Name", value: "donorName" } },
-                                { kind: "Field", name: { kind: "Name", value: "isDonorPublic" } },
-                                { kind: "Field", name: { kind: "Name", value: "status" } },
-                                { kind: "Field", name: { kind: "Name", value: "restrictions" } },
-                            ],
-                        },
+                        selectionSet: { kind: "SelectionSet", selections: [{ kind: "FragmentSpread", name: { kind: "Name", value: "AuctionItem" } }] },
                     },
+                ],
+            },
+        },
+        {
+            kind: "FragmentDefinition",
+            name: { kind: "Name", value: "AuctionItem" },
+            typeCondition: { kind: "NamedType", name: { kind: "Name", value: "AuctionItem" } },
+            selectionSet: {
+                kind: "SelectionSet",
+                selections: [
+                    { kind: "Field", name: { kind: "Name", value: "id" } },
+                    { kind: "Field", name: { kind: "Name", value: "name" } },
+                    { kind: "Field", name: { kind: "Name", value: "description" } },
+                    { kind: "Field", name: { kind: "Name", value: "imageURL" } },
+                    { kind: "Field", name: { kind: "Name", value: "startingBid" } },
+                    { kind: "Field", name: { kind: "Name", value: "minimumBidIncrement" } },
+                    { kind: "Field", name: { kind: "Name", value: "buyNowPrice" } },
+                    { kind: "Field", name: { kind: "Name", value: "estimatedValue" } },
+                    { kind: "Field", name: { kind: "Name", value: "category" } },
+                    { kind: "Field", name: { kind: "Name", value: "auctionType" } },
+                    { kind: "Field", name: { kind: "Name", value: "donorName" } },
+                    { kind: "Field", name: { kind: "Name", value: "isDonorPublic" } },
+                    { kind: "Field", name: { kind: "Name", value: "status" } },
+                    { kind: "Field", name: { kind: "Name", value: "restrictions" } },
                 ],
             },
         },

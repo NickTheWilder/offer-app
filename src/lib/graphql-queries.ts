@@ -1,86 +1,39 @@
 import { gql } from "@apollo/client";
+import { AuctionItemFragment } from "./graphql-fragments";
 
 export const GET_AUCTION_ITEMS = gql`
     query GetAuctionItems {
         auctionItems {
-            id
-            name
-            description
-            imageURL
-            startingBid
-            minimumBidIncrement
-            buyNowPrice
-            estimatedValue
-            category
-            auctionType
-            donorName
-            isDonorPublic
-            status
-            restrictions
+            ...AuctionItem
         }
     }
+    ${AuctionItemFragment}
 `;
 
 export const GET_AUCTION_ITEM = gql`
     query GetAuctionItem($id: UUID!) {
         auctionItems(where: { id: { eq: $id } }) {
-            id
-            name
-            description
-            imageURL
-            startingBid
-            minimumBidIncrement
-            buyNowPrice
-            estimatedValue
-            category
-            auctionType
-            donorName
-            isDonorPublic
-            status
-            restrictions
+            ...AuctionItem
         }
+        ${AuctionItemFragment}
     }
 `;
 
 export const CREATE_AUCTION_ITEM = gql`
     mutation CreateAuctionItem($input: CreateAuctionItemInput!) {
         createAuctionItem(input: $input) {
-            id
-            name
-            description
-            imageURL
-            startingBid
-            minimumBidIncrement
-            buyNowPrice
-            estimatedValue
-            category
-            auctionType
-            donorName
-            isDonorPublic
-            status
-            restrictions
+            ...AuctionItem
         }
     }
+    ${AuctionItemFragment}
 `;
 
 export const UPDATE_AUCTION_ITEM = gql`
     mutation UpdateAuctionItem($input: UpdateAuctionItemInput!) {
         updateAuctionItem(input: $input) {
-            id
-            name
-            description
-            imageURL
-            startingBid
-            minimumBidIncrement
-            buyNowPrice
-            estimatedValue
-            category
-            auctionType
-            donorName
-            isDonorPublic
-            status
-            restrictions
+            ...AuctionItem
         }
+        ${AuctionItemFragment}
     }
 `;
 
