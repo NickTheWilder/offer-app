@@ -39,24 +39,7 @@ export function AuctionItemForm({ selectedItem, onSuccess }: AuctionItemFormProp
                         input: value,
                     },
                 });
-            } catch (error: any) {
-                // Parse GraphQL validation errors and set them on form fields
-                // TODO: Fix me
-                if (error.graphQLErrors) {
-                    error.graphQLErrors.forEach((gqlError: any) => {
-                        if (gqlError.extensions?.validationErrors) {
-                            gqlError.extensions.validationErrors.forEach((validationError: any) => {
-                                form.setFieldMeta(validationError.field.toLowerCase(), (prev) => ({
-                                    ...prev,
-                                    errors: [validationError.message],
-                                    errorMap: {
-                                        onSubmit: validationError.message,
-                                    },
-                                }));
-                            });
-                        }
-                    });
-                }
+            } catch (error: unknown) {
                 console.error("Form submission error:", error);
             }
         },
@@ -82,6 +65,17 @@ export function AuctionItemForm({ selectedItem, onSuccess }: AuctionItemFormProp
         },
         onError: (error) => {
             console.error("Auction item creation failed:", error);
+
+            const validationErrors = extractValidationErrors(error);
+            validationErrors.forEach(({ fieldName, message }) => {
+                form.setFieldMeta(fieldName as any, (prev) => ({
+                    ...prev,
+                    errors: [message],
+                    errorMap: {
+                        onSubmit: message,
+                    },
+                }));
+            });
 
             toast({
                 title: "Failed to create item",

@@ -47,7 +47,8 @@ You are assisting with the development of a church bazaar auction software MVP d
 - Use senior-level React patterns and practices
 - Maintain consistency with existing frontend C# models
 - Avoid using `any` type - use proper TypeScript types and interfaces
-- After each change, run bun lint & bun check. There should not be any errors or warnings.
+- **Pass only the minimum required parameters to functions** - don't pass entire objects when only specific properties/methods are needed
+- **Always run `bun lint` and `bun check` after making changes** - fix all errors and warnings before considering work complete. This is mandatory, not optional.
 
 ### Database Design
 
