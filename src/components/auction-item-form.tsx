@@ -14,22 +14,23 @@ interface AuctionItemFormProps {
 }
 
 export function AuctionItemForm({ selectedItem, onSuccess }: AuctionItemFormProps): JSX.Element {
+
     // TanStack Form
     const form = useForm({
         defaultValues: {
-            name: "",
-            description: "",
-            startingBid: 0,
-            minimumBidIncrement: 5,
-            buyNowPrice: 0,
-            estimatedValue: 0,
-            category: "",
-            donorName: "",
-            isDonorPublic: false,
-            imageURL: "",
-            auctionType: AuctionType.NotSet,
-            status: AuctionStatus.NotSet,
-            restrictions: "",
+            name: selectedItem?.name || "",
+            description: selectedItem?.description || "",
+            startingBid: selectedItem?.startingBid || 0,
+            minimumBidIncrement: selectedItem?.minimumBidIncrement || 5,
+            buyNowPrice: selectedItem?.buyNowPrice || 0,
+            estimatedValue: selectedItem?.estimatedValue || 0,
+            category: selectedItem?.category || "",
+            donorName: selectedItem?.donorName || "",
+            isDonorPublic: selectedItem?.isDonorPublic || false,
+            imageURL: selectedItem?.imageURL || "",
+            auctionType: selectedItem?.auctionType || AuctionType.NotSet,
+            status: selectedItem?.status || AuctionStatus.NotSet,
+            restrictions: selectedItem?.restrictions || "",
         },
         onSubmit: async ({ value }) => {
             try {
@@ -60,6 +61,7 @@ export function AuctionItemForm({ selectedItem, onSuccess }: AuctionItemFormProp
             }
         },
     });
+
 
     // Register form with dev tools (dev only)
     useEffect(() => {
@@ -171,7 +173,7 @@ export function AuctionItemForm({ selectedItem, onSuccess }: AuctionItemFormProp
                                             className={styles.formInput}
                                             type="number"
                                             placeholder="0.00"
-                                            value={field.state.value || ''}
+                                            value={field.state.value}
                                             onChange={(e) => field.handleChange(e.target.value ? parseFloat(e.target.value) : 0)}
                                         />
                                     )}
@@ -196,7 +198,6 @@ export function AuctionItemForm({ selectedItem, onSuccess }: AuctionItemFormProp
                                         <option value={AuctionStatus.Closed}>Closed</option>
                                         <option value={AuctionStatus.Cancelled}>Cancelled</option>
                                         <option value={AuctionStatus.Paid}>Paid</option>
-                                        <option value={AuctionStatus.NotSet}>Not Set</option>
                                     </select>
                                 )}
                             />
@@ -288,7 +289,6 @@ export function AuctionItemForm({ selectedItem, onSuccess }: AuctionItemFormProp
                                     >
                                         <option value={AuctionType.Silent}>Silent</option>
                                         <option value={AuctionType.Live}>Live</option>
-                                        <option value={AuctionType.NotSet}>Not Set</option>
                                     </select>
                                 )}
                             />
@@ -305,7 +305,7 @@ export function AuctionItemForm({ selectedItem, onSuccess }: AuctionItemFormProp
                                             className={styles.formInput}
                                             type="number"
                                             placeholder="0.00"
-                                            value={field.state.value || ''}
+                                            value={field.state.value}
                                             onChange={(e) => field.handleChange(e.target.value ? parseFloat(e.target.value) : 0)}
                                         />
                                     )}
