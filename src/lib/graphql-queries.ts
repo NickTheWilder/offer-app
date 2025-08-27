@@ -15,8 +15,8 @@ export const GET_AUCTION_ITEM = gql`
         auctionItems(where: { id: { eq: $id } }) {
             ...AuctionItem
         }
-        ${AuctionItemFragment}
     }
+    ${AuctionItemFragment}
 `;
 
 export const CREATE_AUCTION_ITEM = gql`
@@ -33,8 +33,8 @@ export const UPDATE_AUCTION_ITEM = gql`
         updateAuctionItem(input: $input) {
             ...AuctionItem
         }
-        ${AuctionItemFragment}
     }
+    ${AuctionItemFragment}
 `;
 
 // Export generated types for use in other files

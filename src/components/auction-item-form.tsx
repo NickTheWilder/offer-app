@@ -1,14 +1,12 @@
 import type { JSX } from "react";
-import { toast } from "@/hooks/use-toast";
 import styles from "./admin-dashboard.module.css"; // TODO: this would be better as a separate file
 import { useForm } from "@tanstack/react-form";
-import { useMutation } from "@apollo/client";
-import { AuctionStatus, AuctionType, CREATE_AUCTION_ITEM, GET_AUCTION_ITEMS } from "@/lib/graphql-queries";
+import { AuctionStatus, AuctionType } from "@/lib/graphql-queries";
 import { useEffect } from "react";
 import { setCurrentForm, clearCurrentForm } from "./dev-tools";
 import type { AuctionItemFragment } from "@/types/generated/graphql";
-import { extractValidationErrors } from "@/lib/error-handling";
 import { FormInput, FormTextarea, FormCurrencyInput, FormSelect } from "./fields";
+import { useCreateAuctionItem, useUpdateAuctionItem } from "@/hooks/use-auction-item-mutations";
 
 interface AuctionItemFormProps {
     selectedItem: AuctionItemFragment | null;
@@ -16,8 +14,19 @@ interface AuctionItemFormProps {
 }
 
 export function AuctionItemForm({ selectedItem, onSuccess }: AuctionItemFormProps): JSX.Element {
+    const setFieldError = (fieldName: string, message: string) => {
+        form.setFieldMeta(fieldName as keyof typeof form.fieldInfo, (prev) => ({
+            ...prev,
+            errors: [message],
+            errorMap: {
+                onSubmit: message,
+            },
+        }));
+    };
 
-    // TanStack Form
+    const [createAuctionItem] = useCreateAuctionItem({ onSuccess, setFieldError });
+    const [updateAuctionItem] = useUpdateAuctionItem({ onSuccess, setFieldError });
+
     const form = useForm({
         defaultValues: {
             name: selectedItem?.name || "",
@@ -36,11 +45,22 @@ export function AuctionItemForm({ selectedItem, onSuccess }: AuctionItemFormProp
         },
         onSubmit: async ({ value }) => {
             try {
-                await createAuctionItem({
-                    variables: {
-                        input: value,
-                    },
-                });
+                if (!selectedItem) {
+                    await createAuctionItem({
+                        variables: {
+                            input: value,
+                        },
+                    });
+                } else {
+                    await updateAuctionItem({
+                        variables: {
+                            input: {
+                                id: selectedItem.id,
+                                ...value,
+                            },
+                        },
+                    });
+                }
             } catch (error: unknown) {
                 console.error("Form submission error:", error);
             }
@@ -54,39 +74,6 @@ export function AuctionItemForm({ selectedItem, onSuccess }: AuctionItemFormProp
             return () => clearCurrentForm();
         }
     }, [form]);
-
-    // Create item mutation
-    const [createAuctionItem] = useMutation(CREATE_AUCTION_ITEM, {
-        onCompleted: () => {
-            onSuccess();
-            toast({
-                title: "Success",
-                description: "Item created successfully",
-            });
-        },
-        onError: (error) => {
-            console.error("Auction item creation failed:", error);
-
-            const validationErrors = extractValidationErrors(error);
-            validationErrors.forEach(({ fieldName, message }) => {
-                form.setFieldMeta(fieldName as any, (prev) => ({
-                    ...prev,
-                    errors: [message],
-                    errorMap: {
-                        onSubmit: message,
-                    },
-                }));
-            });
-
-            toast({
-                title: "Failed to create item",
-                description: "Please check your input and try again. If the problem persists, contact support.",
-                variant: "destructive",
-            });
-        },
-        refetchQueries: [GET_AUCTION_ITEMS],
-        awaitRefetchQueries: true,
-    });
 
     return (
         <div className={styles.itemForm}>

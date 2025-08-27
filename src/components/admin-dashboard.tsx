@@ -150,7 +150,6 @@ export default function AdminDashboard(): JSX.Element {
                                     key={selectedItem?.id || 'new'}
                                     selectedItem={selectedItem}
                                     onSuccess={() => {
-                                        setSelectedItem(null);
                                         setNewItemMode(false);
                                     }}
                                 />
