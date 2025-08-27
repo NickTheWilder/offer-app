@@ -1,4 +1,4 @@
- 
+
 import type { TypedDocumentNode as DocumentNode } from "@graphql-typed-document-node/core";
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
@@ -287,6 +287,12 @@ export type UpdateAuctionItemMutationVariables = Exact<{
 
 export type UpdateAuctionItemMutation = { updateAuctionItem: { " $fragmentRefs"?: { AuctionItemFragment: AuctionItemFragment } } };
 
+export type DeleteAuctionItemMutationVariables = Exact<{
+    id: Scalars["UUID"]["input"];
+}>;
+
+export type DeleteAuctionItemMutation = { deleteAuctionItem: { " $fragmentRefs"?: { AuctionItemFragment: AuctionItemFragment } } };
+
 export const AuctionItemFragmentDoc = {
     kind: "Document",
     definitions: [
@@ -511,3 +517,49 @@ export const UpdateAuctionItemDocument = {
         },
     ],
 } as unknown as DocumentNode<UpdateAuctionItemMutation, UpdateAuctionItemMutationVariables>;
+export const DeleteAuctionItemDocument = {
+    kind: "Document",
+    definitions: [
+        {
+            kind: "OperationDefinition",
+            operation: "mutation",
+            name: { kind: "Name", value: "DeleteAuctionItem" },
+            variableDefinitions: [{ kind: "VariableDefinition", variable: { kind: "Variable", name: { kind: "Name", value: "id" } }, type: { kind: "NonNullType", type: { kind: "NamedType", name: { kind: "Name", value: "UUID" } } } }],
+            selectionSet: {
+                kind: "SelectionSet",
+                selections: [
+                    {
+                        kind: "Field",
+                        name: { kind: "Name", value: "deleteAuctionItem" },
+                        arguments: [{ kind: "Argument", name: { kind: "Name", value: "id" }, value: { kind: "Variable", name: { kind: "Name", value: "id" } } }],
+                        selectionSet: { kind: "SelectionSet", selections: [{ kind: "FragmentSpread", name: { kind: "Name", value: "AuctionItem" } }] },
+                    },
+                ],
+            },
+        },
+        {
+            kind: "FragmentDefinition",
+            name: { kind: "Name", value: "AuctionItem" },
+            typeCondition: { kind: "NamedType", name: { kind: "Name", value: "AuctionItem" } },
+            selectionSet: {
+                kind: "SelectionSet",
+                selections: [
+                    { kind: "Field", name: { kind: "Name", value: "id" } },
+                    { kind: "Field", name: { kind: "Name", value: "name" } },
+                    { kind: "Field", name: { kind: "Name", value: "description" } },
+                    { kind: "Field", name: { kind: "Name", value: "imageURL" } },
+                    { kind: "Field", name: { kind: "Name", value: "startingBid" } },
+                    { kind: "Field", name: { kind: "Name", value: "minimumBidIncrement" } },
+                    { kind: "Field", name: { kind: "Name", value: "buyNowPrice" } },
+                    { kind: "Field", name: { kind: "Name", value: "estimatedValue" } },
+                    { kind: "Field", name: { kind: "Name", value: "category" } },
+                    { kind: "Field", name: { kind: "Name", value: "auctionType" } },
+                    { kind: "Field", name: { kind: "Name", value: "donorName" } },
+                    { kind: "Field", name: { kind: "Name", value: "isDonorPublic" } },
+                    { kind: "Field", name: { kind: "Name", value: "status" } },
+                    { kind: "Field", name: { kind: "Name", value: "restrictions" } },
+                ],
+            },
+        },
+    ],
+} as unknown as DocumentNode<DeleteAuctionItemMutation, DeleteAuctionItemMutationVariables>;

@@ -16,17 +16,19 @@ import type { TypedDocumentNode as DocumentNode } from "@graphql-typed-document-
 type Documents = {
     "\n    fragment AuctionItem on AuctionItem {\n        id\n        name\n        description\n        imageURL\n        startingBid\n        minimumBidIncrement\n        buyNowPrice\n        estimatedValue\n        category\n        auctionType\n        donorName\n        isDonorPublic\n        status\n        restrictions\n    }\n": typeof types.AuctionItemFragmentDoc;
     "\n    query GetAuctionItems {\n        auctionItems {\n            ...AuctionItem\n        }\n    }\n    \n": typeof types.GetAuctionItemsDocument;
-    "\n    query GetAuctionItem($id: UUID!) {\n        auctionItems(where: { id: { eq: $id } }) {\n            ...AuctionItem\n        }\n        \n    }\n": typeof types.GetAuctionItemDocument;
+    "\n    query GetAuctionItem($id: UUID!) {\n        auctionItems(where: { id: { eq: $id } }) {\n            ...AuctionItem\n        }\n    }\n    \n": typeof types.GetAuctionItemDocument;
     "\n    mutation CreateAuctionItem($input: CreateAuctionItemInput!) {\n        createAuctionItem(input: $input) {\n            ...AuctionItem\n        }\n    }\n    \n": typeof types.CreateAuctionItemDocument;
-    "\n    mutation UpdateAuctionItem($input: UpdateAuctionItemInput!) {\n        updateAuctionItem(input: $input) {\n            ...AuctionItem\n        }\n        \n    }\n": typeof types.UpdateAuctionItemDocument;
+    "\n    mutation UpdateAuctionItem($input: UpdateAuctionItemInput!) {\n        updateAuctionItem(input: $input) {\n            ...AuctionItem\n        }\n    }\n    \n": typeof types.UpdateAuctionItemDocument;
+    "\n    mutation DeleteAuctionItem($id: UUID!) {\n        deleteAuctionItem(id: $id) {\n        ...AuctionItem\n        }\n    }\n    \n": typeof types.DeleteAuctionItemDocument;
 };
 const documents: Documents = {
     "\n    fragment AuctionItem on AuctionItem {\n        id\n        name\n        description\n        imageURL\n        startingBid\n        minimumBidIncrement\n        buyNowPrice\n        estimatedValue\n        category\n        auctionType\n        donorName\n        isDonorPublic\n        status\n        restrictions\n    }\n":
         types.AuctionItemFragmentDoc,
     "\n    query GetAuctionItems {\n        auctionItems {\n            ...AuctionItem\n        }\n    }\n    \n": types.GetAuctionItemsDocument,
-    "\n    query GetAuctionItem($id: UUID!) {\n        auctionItems(where: { id: { eq: $id } }) {\n            ...AuctionItem\n        }\n        \n    }\n": types.GetAuctionItemDocument,
+    "\n    query GetAuctionItem($id: UUID!) {\n        auctionItems(where: { id: { eq: $id } }) {\n            ...AuctionItem\n        }\n    }\n    \n": types.GetAuctionItemDocument,
     "\n    mutation CreateAuctionItem($input: CreateAuctionItemInput!) {\n        createAuctionItem(input: $input) {\n            ...AuctionItem\n        }\n    }\n    \n": types.CreateAuctionItemDocument,
-    "\n    mutation UpdateAuctionItem($input: UpdateAuctionItemInput!) {\n        updateAuctionItem(input: $input) {\n            ...AuctionItem\n        }\n        \n    }\n": types.UpdateAuctionItemDocument,
+    "\n    mutation UpdateAuctionItem($input: UpdateAuctionItemInput!) {\n        updateAuctionItem(input: $input) {\n            ...AuctionItem\n        }\n    }\n    \n": types.UpdateAuctionItemDocument,
+    "\n    mutation DeleteAuctionItem($id: UUID!) {\n        deleteAuctionItem(id: $id) {\n        ...AuctionItem\n        }\n    }\n    \n": types.DeleteAuctionItemDocument,
 };
 
 /**
@@ -59,8 +61,8 @@ export function gql(
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function gql(
-    source: "\n    query GetAuctionItem($id: UUID!) {\n        auctionItems(where: { id: { eq: $id } }) {\n            ...AuctionItem\n        }\n        \n    }\n"
-): (typeof documents)["\n    query GetAuctionItem($id: UUID!) {\n        auctionItems(where: { id: { eq: $id } }) {\n            ...AuctionItem\n        }\n        \n    }\n"];
+    source: "\n    query GetAuctionItem($id: UUID!) {\n        auctionItems(where: { id: { eq: $id } }) {\n            ...AuctionItem\n        }\n    }\n    \n"
+): (typeof documents)["\n    query GetAuctionItem($id: UUID!) {\n        auctionItems(where: { id: { eq: $id } }) {\n            ...AuctionItem\n        }\n    }\n    \n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
@@ -71,8 +73,14 @@ export function gql(
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function gql(
-    source: "\n    mutation UpdateAuctionItem($input: UpdateAuctionItemInput!) {\n        updateAuctionItem(input: $input) {\n            ...AuctionItem\n        }\n        \n    }\n"
-): (typeof documents)["\n    mutation UpdateAuctionItem($input: UpdateAuctionItemInput!) {\n        updateAuctionItem(input: $input) {\n            ...AuctionItem\n        }\n        \n    }\n"];
+    source: "\n    mutation UpdateAuctionItem($input: UpdateAuctionItemInput!) {\n        updateAuctionItem(input: $input) {\n            ...AuctionItem\n        }\n    }\n    \n"
+): (typeof documents)["\n    mutation UpdateAuctionItem($input: UpdateAuctionItemInput!) {\n        updateAuctionItem(input: $input) {\n            ...AuctionItem\n        }\n    }\n    \n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(
+    source: "\n    mutation DeleteAuctionItem($id: UUID!) {\n        deleteAuctionItem(id: $id) {\n        ...AuctionItem\n        }\n    }\n    \n"
+): (typeof documents)["\n    mutation DeleteAuctionItem($id: UUID!) {\n        deleteAuctionItem(id: $id) {\n        ...AuctionItem\n        }\n    }\n    \n"];
 
 export function gql(source: string) {
     return (documents as any)[source] ?? {};
