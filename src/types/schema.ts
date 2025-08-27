@@ -10,7 +10,7 @@ import { z } from "zod";
 
 // User types
 export interface User {
-    id: number;
+    id: string;
     name: string;
     email: string;
     phone: string;

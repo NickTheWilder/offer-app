@@ -7,13 +7,12 @@ import BidModal from "@/components/bid-modal";
 import BuyNowModal from "@/components/buy-now-modal";
 import { useAuth } from "@/hooks/use-auth";
 import { useQuery } from "@tanstack/react-query";
-import type { AuctionItem } from "../types/schema";
 import { useLocation } from "wouter";
 import { Loader2 } from "lucide-react";
 import styles from "./home-page.module.css";
 import { apolloClient } from "@/lib/apollo-client";
 import { AuctionStatus, GET_AUCTION_ITEMS } from "@/lib/graphql-queries";
-import type { GetAuctionItemsQuery } from "@/types/generated/graphql";
+import type { AuctionItemFragment, GetAuctionItemsQuery } from "@/types/generated/graphql";
 
 export default function HomePage(): JSX.Element {
     const { user } = useAuth();
@@ -23,11 +22,11 @@ export default function HomePage(): JSX.Element {
     const [selectedCategory] = useState("");
     const [searchQuery, setSearchQuery] = useState("");
 
-    const [bidModalItem, setBidModalItem] = useState<AuctionItem | null>(null);
-    const [buyNowModalItem, setBuyNowModalItem] = useState<AuctionItem | null>(null);
+    const [bidModalItem, setBidModalItem] = useState<AuctionItemFragment | null>(null);
+    const [buyNowModalItem, setBuyNowModalItem] = useState<AuctionItemFragment | null>(null);
 
     // Fetch auction items using GraphQL
-    const { data: items, isLoading } = useQuery<AuctionItem[]>({
+    const { data: items, isLoading } = useQuery<AuctionItemFragment[]>({
         queryKey: ["auctionItems", selectedCategory],
         queryFn: async () => {
             const { data } = await apolloClient.query<GetAuctionItemsQuery>({
@@ -44,7 +43,7 @@ export default function HomePage(): JSX.Element {
             // Filter by active status
             filteredItems = filteredItems.filter(item => item.status === AuctionStatus.Active);
 
-            return filteredItems as AuctionItem[];
+            return filteredItems as AuctionItemFragment[];
         },
     });
 
@@ -63,12 +62,12 @@ export default function HomePage(): JSX.Element {
     }, [user, setLocation]);
 
     // Handle bid button click
-    const handleBidClick = (item: AuctionItem) => {
+    const handleBidClick = (item: AuctionItemFragment) => {
         setBidModalItem(item);
     };
 
     // Handle buy now button click
-    const handleBuyNowClick = (item: AuctionItem) => {
+    const handleBuyNowClick = (item: AuctionItemFragment) => {
         setBuyNowModalItem(item);
     };
 

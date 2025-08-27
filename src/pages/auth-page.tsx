@@ -1,6 +1,6 @@
 import { useAuth } from "@/hooks/use-auth";
 import { useForm } from "react-hook-form";
-import { Loader2, Church, Database } from "lucide-react";
+import { Loader2, Church } from "lucide-react";
 import { useLocation } from "wouter";
 import React, { type JSX, useState, useEffect } from "react";
 import styles from "./auth-page.module.css";

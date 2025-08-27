@@ -1,15 +1,14 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import type { JSX } from "react";
-import type { AuctionItem } from "../types/schema";
 import { useAuth } from "@/hooks/use-auth";
 import { useQuery } from "@tanstack/react-query";
 import { formatDistanceToNow } from "date-fns";
 import styles from "./auction-item-card.module.css";
+import type { AuctionItemFragment } from "@/types/generated/graphql";
 
 interface AuctionItemProps {
-    items: AuctionItem[];
-    onBidClick: (item: AuctionItem) => void;
-    onBuyNowClick: (item: AuctionItem) => void;
+    items: AuctionItemFragment[];
+    onBidClick: (item: AuctionItemFragment) => void;
+    onBuyNowClick: (item: AuctionItemFragment) => void;
 }
 
 export default function AuctionItemGrid({ items, onBidClick, onBuyNowClick }: AuctionItemProps): JSX.Element {
