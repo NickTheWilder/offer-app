@@ -45,7 +45,7 @@ export default function Header(): JSX.Element {
                                         Admin Dashboard
                                     </Link>
                                 )}
-                                <button onClick={handleLogout} className={styles.dropdownItem}>
+                                <button onClick={handleLogout} className={`${styles.dropdownItem} ${styles.logoutButton}`}>
                                     <LogOut size={16} className={styles.menuIcon} />
                                     <span>Logout</span>
                                 </button>
@@ -74,7 +74,7 @@ export default function Header(): JSX.Element {
                                     Admin Dashboard
                                 </Link>
                             )}
-                            <button onClick={handleLogout} className={styles.menuButton}>
+                            <button onClick={handleLogout} className={`${styles.menuButton} ${styles.logoutButton}`}>
                                 <LogOut size={16} className={styles.menuIcon} />
                                 Logout
                             </button>

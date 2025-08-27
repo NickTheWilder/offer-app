@@ -127,18 +127,33 @@
     text-align: left;
     color: #6b7280;
     font-weight: 500;
-    padding: 0.5rem 0;
+    padding: 0.75rem 1rem;
     display: flex;
     align-items: center;
+    gap: 0.5rem;
+    border-radius: 0.375rem;
+    transition: all 0.2s ease;
+    margin: 0.25rem 0;
+    font-size: 0.875rem;
 }
 
 .menuButton:hover {
     background-color: rgba(0, 0, 0, 0.05);
-    border-radius: var(--radius);
+}
+
+.menuButton.logoutButton {
+    color: #dc2626;
+    border: 1px solid rgba(220, 38, 38, 0.2);
+    background-color: rgba(220, 38, 38, 0.05);
+}
+
+.menuButton.logoutButton:hover {
+    background-color: rgba(220, 38, 38, 0.1);
+    border-color: rgba(220, 38, 38, 0.3);
+    color: #b91c1c;
 }
 
 .menuIcon {
-    margin-right: 0.5rem;
     height: 1rem;
     width: 1rem;
 }
@@ -185,16 +200,38 @@
 }
 
 .dropdownItem {
-    display: block;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
     padding: 0.5rem 1rem;
     color: #6b7280;
     text-decoration: none;
     cursor: pointer;
+    border: none;
+    background: none;
+    width: 100%;
+    text-align: left;
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    border-radius: 0.25rem;
+    margin: 0.125rem;
 }
 
 .dropdownItem:hover {
     background-color: rgba(0, 0, 0, 0.05);
     text-decoration: none;
+}
+
+.dropdownItem.logoutButton {
+    color: #dc2626;
+    border: 1px solid transparent;
+}
+
+.dropdownItem.logoutButton:hover {
+    background-color: rgba(220, 38, 38, 0.05);
+    border-color: rgba(220, 38, 38, 0.1);
+    color: #b91c1c;
 }
 
 /* Media query for desktop */
