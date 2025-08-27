@@ -1,7 +1,7 @@
+import type { ApolloError} from "@apollo/client";
 import { useMutation } from "@apollo/client";
 import { toast } from "@/hooks/use-toast";
-import { CREATE_AUCTION_ITEM, UPDATE_AUCTION_ITEM, GET_AUCTION_ITEMS } from "@/lib/graphql-queries";
-import type { CreateAuctionItemInput, UpdateAuctionItemInput } from "@/types/generated/graphql";
+import { CREATE_AUCTION_ITEM, UPDATE_AUCTION_ITEM, GET_AUCTION_ITEMS, DELETE_AUCTION_ITEM } from "@/lib/graphql-queries";
 import { extractValidationErrors } from "@/lib/error-handling";
 
 interface MutationHandlers {
@@ -55,11 +55,32 @@ export function useUpdateAuctionItem({ onSuccess, setFieldError }: MutationHandl
     });
 }
 
-function handleMutationError(error: unknown, setFieldError: (fieldName: string, message: string) => void): void {
+export const useDeleteAuctionItem = ({ onSuccess, setFieldError }: MutationHandlers): ReturnType<typeof useMutation> => {
+    return useMutation(DELETE_AUCTION_ITEM, {
+        onCompleted: () => {
+            onSuccess();
+            toast({
+                title: "Success",
+                description: "Item deleted successfully",
+            });
+        },
+        onError: (error) => {
+            console.error("Auction item deletion failed:", error);
+            handleMutationError(error, setFieldError);
+            toast({
+                title: "Failed to delete item",
+                description: "Please check your input and try again. If the problem persists, contact support.",
+                variant: "destructive",
+            });
+        },
+        refetchQueries: [GET_AUCTION_ITEMS],
+        awaitRefetchQueries: true,
+    });
+};
+
+function handleMutationError(error: ApolloError, setFieldError: (fieldName: string, message: string) => void): void {
     const validationErrors = extractValidationErrors(error);
     validationErrors.forEach(({ fieldName, message }) => {
         setFieldError(fieldName, message);
     });
 }
-
-export type { CreateAuctionItemInput, UpdateAuctionItemInput };

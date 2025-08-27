@@ -37,6 +37,15 @@ export const UPDATE_AUCTION_ITEM = gql`
     ${AuctionItemFragment}
 `;
 
+export const DELETE_AUCTION_ITEM = gql`
+    mutation DeleteAuctionItem($id: UUID!) {
+        deleteAuctionItem(id: $id) {
+            ...AuctionItem
+        }
+    }
+    ${AuctionItemFragment}
+`;
+
 // Export generated types for use in other files
 export type { GetAuctionItemsQuery, GetAuctionItemQuery, CreateAuctionItemMutation, UpdateAuctionItemMutation, CreateAuctionItemInput, UpdateAuctionItemInput } from "../types/generated/graphql";
 
