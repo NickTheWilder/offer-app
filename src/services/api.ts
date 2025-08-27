@@ -60,7 +60,7 @@ export async function registerUser(userData: InsertUser): Promise<User> {
 
     // Create new user with an ID
     const newUser: User = {
-        id: mockUsers.length + 1,
+        id: (mockUsers.length + 1).toString(),
         ...userData,
         role: userData.role || "bidder", // Ensure role is set
         isActive: true,

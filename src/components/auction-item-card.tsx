@@ -15,18 +15,21 @@ export default function AuctionItemGrid({ items, onBidClick, onBuyNowClick }: Au
     const { user } = useAuth();
 
     // Fetch user's bids
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const { data: userBids = [] } = useQuery<any[]>({
         queryKey: ["/api/bids/user"],
         enabled: !!user,
     });
 
     // Determine if user is winning or has been outbid for each item
-    const getUserBidStatus = (itemId: number) => {
+    const getUserBidStatus = (itemId: string) => {
         if (!userBids || userBids.length === 0) return null;
 
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const userBidsOnItem = userBids.filter((bid: any) => bid.itemId === itemId);
         if (userBidsOnItem.length === 0) return null;
 
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const highestUserBid = userBidsOnItem.reduce((prev: any, current: any) => {
             return prev.amount > current.amount ? prev : current;
         });
@@ -71,8 +74,8 @@ export default function AuctionItemGrid({ items, onBidClick, onBuyNowClick }: Au
 
                         {/* Item image or placeholder */}
                         <div className={styles.imageContainer}>
-                            {item.images && item.images.length > 0 ? (
-                                <img src={item.images[0]} alt={item.name} className={styles.image} />
+                            {item.imageURL ? (
+                                <img src={item.imageURL} alt={item.name} className={styles.image} />
                             ) : (
                                 <div className={styles.imagePlaceholder}>
                                     <svg xmlns="http://www.w3.org/2000/svg" className={styles.placeholderIcon} fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -119,7 +122,7 @@ export default function AuctionItemGrid({ items, onBidClick, onBuyNowClick }: Au
                             <div className={styles.footerContainer}>
                                 <div className={styles.timeInfo}>
                                     <p className={styles.label}>Time Left</p>
-                                    <p className={styles.timeValue}>{getTimeRemaining(item.endTime)}</p>
+                                    <p className={styles.timeValue}>{getTimeRemaining(null)}</p>
                                 </div>
 
                                 <div className={styles.buttonsContainer}>

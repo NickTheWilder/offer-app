@@ -18,7 +18,6 @@ export default function AdminDashboard(): JSX.Element {
     const [selectedItem, setSelectedItem] = useState<AuctionItemFragment | null>(null);
     const [newItemMode, setNewItemMode] = useState(false);
 
-    // Fetch auction items using Apollo Client
     const { data, loading: isLoading } = useQuery<{auctionItems: AuctionItemFragment[]}>(GET_AUCTION_ITEMS, {
         errorPolicy: 'all',
         onError: (error) => {

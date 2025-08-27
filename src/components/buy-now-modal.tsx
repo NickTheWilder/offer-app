@@ -4,10 +4,10 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Loader2, ShoppingCart } from "lucide-react";
 import styles from "./buy-now-modal.module.css";
 import { useAuth } from "@/hooks/use-auth";
-import type { AuctionItem } from "../types/schema";
+import type { AuctionItemFragment } from "@/types/generated/graphql";
 
 interface BuyNowModalProps {
-    item: AuctionItem;
+    item: AuctionItemFragment;
     onClose: () => void;
 }
 
@@ -16,8 +16,8 @@ export default function BuyNowModal({ item, onClose }: BuyNowModalProps): JSX.El
     const queryClient = useQueryClient();
 
     // Format currency
-    const formatCurrency = (amount: number | null) => {
-        if (amount === null) return "N/A";
+    const formatCurrency = (amount: number | null | undefined) => {
+        if (amount === null || amount === undefined) return "N/A";
         return new Intl.NumberFormat("en-US", {
             style: "currency",
             currency: "USD",

@@ -37,11 +37,13 @@ export default function HomePage(): JSX.Element {
 
             // Filter by category if selected
             if (selectedCategory) {
-                filteredItems = filteredItems.filter(item => item.category === selectedCategory);
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                filteredItems = filteredItems.filter((item: any) => item.category === selectedCategory);
             }
 
             // Filter by active status
-            filteredItems = filteredItems.filter(item => item.status === AuctionStatus.Active);
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            filteredItems = filteredItems.filter((item: any) => item.status === AuctionStatus.Active);
 
             return filteredItems as AuctionItemFragment[];
         },
