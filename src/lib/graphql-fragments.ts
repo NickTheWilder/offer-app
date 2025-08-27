@@ -5,7 +5,16 @@ export const AuctionItemFragment = gql`
         id
         name
         description
-        imageURL
+        files {
+            id
+            fileName
+            originalFileName
+            contentType
+            fileSize
+            uploadedAt
+            isPrimary
+            dataUrl
+        }
         startingBid
         minimumBidIncrement
         buyNowPrice

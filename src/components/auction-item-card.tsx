@@ -74,8 +74,12 @@ export default function AuctionItemGrid({ items, onBidClick, onBuyNowClick }: Au
 
                         {/* Item image or placeholder */}
                         <div className={styles.imageContainer}>
-                            {item.imageURL ? (
-                                <img src={item.imageURL} alt={item.name} className={styles.image} />
+                            {item.files && item.files.length > 0 ? (
+                                <img 
+                                    src={item.files.find(f => f?.isPrimary)?.dataUrl || item.files[0]?.dataUrl || ''} 
+                                    alt={item.name} 
+                                    className={styles.image} 
+                                />
                             ) : (
                                 <div className={styles.imagePlaceholder}>
                                     <svg xmlns="http://www.w3.org/2000/svg" className={styles.placeholderIcon} fill="none" viewBox="0 0 24 24" stroke="currentColor">

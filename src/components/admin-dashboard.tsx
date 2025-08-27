@@ -141,7 +141,7 @@ export default function AdminDashboard(): JSX.Element {
                                         {items.map((item) => (
                                             <div key={item.id} className={`${styles.itemCard} ${selectedItem?.id === item.id ? styles.selectedCard : ""}`} onClick={() => handleEditItem(item)}>
                                                 <div className={styles.itemCardContent}>
-                                                    <div className={styles.itemImage}>{item.imageURL ? <img src={item.imageURL} alt={item.name} /> : <div className={styles.noImage}>No Image</div>}</div>
+                                                    <div className={styles.itemImage}>{item.files && item.files.length > 0 ? <img src={item.files.find(f => f?.isPrimary)?.dataUrl || item.files[0]?.dataUrl || ''} alt={item.name} /> : <div className={styles.noImage}>No Image</div>}</div>
                                                     <div className={styles.itemInfo}>
                                                         <h3 className={styles.itemName}>{item.name}</h3>
                                                         <p className={styles.itemPrice}>{formatCurrency(item.startingBid)}</p>

@@ -67,7 +67,15 @@ export function DevTools(): JSX.Element | null {
                         ) : (
                             <div className={styles.formStateContainer}>
                                 <pre className={styles.formStateJson}>
-                                    {JSON.stringify(currentForm.state, null, 2)}
+                                    {JSON.stringify(currentForm.state, (key, value) => {
+                                        if (value instanceof File) {
+                                            return `[File: ${value.name} (${value.size} bytes)]`;
+                                        }
+                                        if (value instanceof FileList) {
+                                            return `[FileList: ${value.length} files]`;
+                                        }
+                                        return value;
+                                    }, 2)}
                                 </pre>
                             </div>
                         )}

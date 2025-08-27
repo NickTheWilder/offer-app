@@ -1,4 +1,4 @@
-
+/* eslint-disable */
 import type { TypedDocumentNode as DocumentNode } from "@graphql-typed-document-node/core";
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
@@ -14,9 +14,32 @@ export type Scalars = {
     Boolean: { input: boolean; output: boolean };
     Int: { input: number; output: number };
     Float: { input: number; output: number };
+    /** The `Byte` scalar type represents non-fractional whole numeric values. Byte can represent values between 0 and 255. */
+    Byte: { input: any; output: any };
+    /** The `DateTime` scalar represents an ISO-8601 compliant date time type. */
+    DateTime: { input: string; output: string };
     /** The `Decimal` scalar type represents a decimal floating-point number. */
     Decimal: { input: number; output: number };
+    /** The `Long` scalar type represents non-fractional signed whole 64-bit numeric values. Long can represent values between -(2^63) and 2^63 - 1. */
+    Long: { input: number; output: number };
     UUID: { input: string; output: string };
+    /** The `Upload` scalar type represents a file upload. */
+    Upload: { input: any; output: any };
+};
+
+export type AuctionItemFileFilterInput = {
+    and?: InputMaybe<Array<AuctionItemFileFilterInput>>;
+    auctionItem?: InputMaybe<AuctionItemFilterInput>;
+    auctionItemId?: InputMaybe<UuidOperationFilterInput>;
+    contentType?: InputMaybe<StringOperationFilterInput>;
+    fileData?: InputMaybe<ListByteOperationFilterInput>;
+    fileName?: InputMaybe<StringOperationFilterInput>;
+    fileSize?: InputMaybe<LongOperationFilterInput>;
+    id?: InputMaybe<UuidOperationFilterInput>;
+    isPrimary?: InputMaybe<BooleanOperationFilterInput>;
+    or?: InputMaybe<Array<AuctionItemFileFilterInput>>;
+    originalFileName?: InputMaybe<StringOperationFilterInput>;
+    uploadedAt?: InputMaybe<DateTimeOperationFilterInput>;
 };
 
 export type AuctionItemFilterInput = {
@@ -28,8 +51,8 @@ export type AuctionItemFilterInput = {
     displayOrder?: InputMaybe<IntOperationFilterInput>;
     donorName?: InputMaybe<StringOperationFilterInput>;
     estimatedValue?: InputMaybe<DecimalOperationFilterInput>;
+    files?: InputMaybe<ListFilterInputTypeOfAuctionItemFileFilterInput>;
     id?: InputMaybe<UuidOperationFilterInput>;
-    imageURL?: InputMaybe<StringOperationFilterInput>;
     isDonorPublic?: InputMaybe<BooleanOperationFilterInput>;
     minimumBidIncrement?: InputMaybe<DecimalOperationFilterInput>;
     name?: InputMaybe<StringOperationFilterInput>;
@@ -48,7 +71,6 @@ export type AuctionItemSortInput = {
     donorName?: InputMaybe<SortEnumType>;
     estimatedValue?: InputMaybe<SortEnumType>;
     id?: InputMaybe<SortEnumType>;
-    imageURL?: InputMaybe<SortEnumType>;
     isDonorPublic?: InputMaybe<SortEnumType>;
     minimumBidIncrement?: InputMaybe<SortEnumType>;
     name?: InputMaybe<SortEnumType>;
@@ -91,6 +113,21 @@ export type BooleanOperationFilterInput = {
     neq?: InputMaybe<Scalars["Boolean"]["input"]>;
 };
 
+export type ByteOperationFilterInput = {
+    eq?: InputMaybe<Scalars["Byte"]["input"]>;
+    gt?: InputMaybe<Scalars["Byte"]["input"]>;
+    gte?: InputMaybe<Scalars["Byte"]["input"]>;
+    in?: InputMaybe<Array<InputMaybe<Scalars["Byte"]["input"]>>>;
+    lt?: InputMaybe<Scalars["Byte"]["input"]>;
+    lte?: InputMaybe<Scalars["Byte"]["input"]>;
+    neq?: InputMaybe<Scalars["Byte"]["input"]>;
+    ngt?: InputMaybe<Scalars["Byte"]["input"]>;
+    ngte?: InputMaybe<Scalars["Byte"]["input"]>;
+    nin?: InputMaybe<Array<InputMaybe<Scalars["Byte"]["input"]>>>;
+    nlt?: InputMaybe<Scalars["Byte"]["input"]>;
+    nlte?: InputMaybe<Scalars["Byte"]["input"]>;
+};
+
 export type CreateAuctionItemInput = {
     auctionType: AuctionType;
     buyNowPrice?: InputMaybe<Scalars["Decimal"]["input"]>;
@@ -98,7 +135,7 @@ export type CreateAuctionItemInput = {
     description: Scalars["String"]["input"];
     donorName: Scalars["String"]["input"];
     estimatedValue?: InputMaybe<Scalars["Decimal"]["input"]>;
-    imageURL: Scalars["String"]["input"];
+    files?: InputMaybe<Array<Scalars["Upload"]["input"]>>;
     isDonorPublic: Scalars["Boolean"]["input"];
     minimumBidIncrement: Scalars["Decimal"]["input"];
     name: Scalars["String"]["input"];
@@ -115,6 +152,21 @@ export type CreateUserInput = {
     phone: Scalars["String"]["input"];
     role: UserRole;
     userName: Scalars["String"]["input"];
+};
+
+export type DateTimeOperationFilterInput = {
+    eq?: InputMaybe<Scalars["DateTime"]["input"]>;
+    gt?: InputMaybe<Scalars["DateTime"]["input"]>;
+    gte?: InputMaybe<Scalars["DateTime"]["input"]>;
+    in?: InputMaybe<Array<InputMaybe<Scalars["DateTime"]["input"]>>>;
+    lt?: InputMaybe<Scalars["DateTime"]["input"]>;
+    lte?: InputMaybe<Scalars["DateTime"]["input"]>;
+    neq?: InputMaybe<Scalars["DateTime"]["input"]>;
+    ngt?: InputMaybe<Scalars["DateTime"]["input"]>;
+    ngte?: InputMaybe<Scalars["DateTime"]["input"]>;
+    nin?: InputMaybe<Array<InputMaybe<Scalars["DateTime"]["input"]>>>;
+    nlt?: InputMaybe<Scalars["DateTime"]["input"]>;
+    nlte?: InputMaybe<Scalars["DateTime"]["input"]>;
 };
 
 export type DecimalOperationFilterInput = {
@@ -147,6 +199,35 @@ export type IntOperationFilterInput = {
     nlte?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
+export type ListByteOperationFilterInput = {
+    all?: InputMaybe<ByteOperationFilterInput>;
+    any?: InputMaybe<Scalars["Boolean"]["input"]>;
+    none?: InputMaybe<ByteOperationFilterInput>;
+    some?: InputMaybe<ByteOperationFilterInput>;
+};
+
+export type ListFilterInputTypeOfAuctionItemFileFilterInput = {
+    all?: InputMaybe<AuctionItemFileFilterInput>;
+    any?: InputMaybe<Scalars["Boolean"]["input"]>;
+    none?: InputMaybe<AuctionItemFileFilterInput>;
+    some?: InputMaybe<AuctionItemFileFilterInput>;
+};
+
+export type LongOperationFilterInput = {
+    eq?: InputMaybe<Scalars["Long"]["input"]>;
+    gt?: InputMaybe<Scalars["Long"]["input"]>;
+    gte?: InputMaybe<Scalars["Long"]["input"]>;
+    in?: InputMaybe<Array<InputMaybe<Scalars["Long"]["input"]>>>;
+    lt?: InputMaybe<Scalars["Long"]["input"]>;
+    lte?: InputMaybe<Scalars["Long"]["input"]>;
+    neq?: InputMaybe<Scalars["Long"]["input"]>;
+    ngt?: InputMaybe<Scalars["Long"]["input"]>;
+    ngte?: InputMaybe<Scalars["Long"]["input"]>;
+    nin?: InputMaybe<Array<InputMaybe<Scalars["Long"]["input"]>>>;
+    nlt?: InputMaybe<Scalars["Long"]["input"]>;
+    nlte?: InputMaybe<Scalars["Long"]["input"]>;
+};
+
 export enum SortEnumType {
     Asc = "ASC",
     Desc = "DESC",
@@ -174,8 +255,8 @@ export type UpdateAuctionItemInput = {
     description?: InputMaybe<Scalars["String"]["input"]>;
     donorName?: InputMaybe<Scalars["String"]["input"]>;
     estimatedValue?: InputMaybe<Scalars["Decimal"]["input"]>;
+    files?: InputMaybe<Array<Scalars["Upload"]["input"]>>;
     id: Scalars["UUID"]["input"];
-    imageURL?: InputMaybe<Scalars["String"]["input"]>;
     isDonorPublic?: InputMaybe<Scalars["Boolean"]["input"]>;
     minimumBidIncrement?: InputMaybe<Scalars["Decimal"]["input"]>;
     name?: InputMaybe<Scalars["String"]["input"]>;
@@ -251,8 +332,7 @@ export type UuidOperationFilterInput = {
 export type AuctionItemFragment = {
     id: string;
     name: string;
-    description: string;
-    imageURL: string;
+    description?: string | null;
     startingBid: number;
     minimumBidIncrement: number;
     buyNowPrice?: number | null;
@@ -262,7 +342,8 @@ export type AuctionItemFragment = {
     donorName: string;
     isDonorPublic: boolean;
     status: AuctionStatus;
-    restrictions: string;
+    restrictions?: string | null;
+    files?: Array<{ id: string; fileName: string; originalFileName: string; contentType: string; fileSize: number; uploadedAt: string; isPrimary: boolean; dataUrl?: string | null } | null> | null;
 } & { " $fragmentName"?: "AuctionItemFragment" };
 
 export type GetAuctionItemsQueryVariables = Exact<{ [key: string]: never }>;
@@ -306,7 +387,23 @@ export const AuctionItemFragmentDoc = {
                     { kind: "Field", name: { kind: "Name", value: "id" } },
                     { kind: "Field", name: { kind: "Name", value: "name" } },
                     { kind: "Field", name: { kind: "Name", value: "description" } },
-                    { kind: "Field", name: { kind: "Name", value: "imageURL" } },
+                    {
+                        kind: "Field",
+                        name: { kind: "Name", value: "files" },
+                        selectionSet: {
+                            kind: "SelectionSet",
+                            selections: [
+                                { kind: "Field", name: { kind: "Name", value: "id" } },
+                                { kind: "Field", name: { kind: "Name", value: "fileName" } },
+                                { kind: "Field", name: { kind: "Name", value: "originalFileName" } },
+                                { kind: "Field", name: { kind: "Name", value: "contentType" } },
+                                { kind: "Field", name: { kind: "Name", value: "fileSize" } },
+                                { kind: "Field", name: { kind: "Name", value: "uploadedAt" } },
+                                { kind: "Field", name: { kind: "Name", value: "isPrimary" } },
+                                { kind: "Field", name: { kind: "Name", value: "dataUrl" } },
+                            ],
+                        },
+                    },
                     { kind: "Field", name: { kind: "Name", value: "startingBid" } },
                     { kind: "Field", name: { kind: "Name", value: "minimumBidIncrement" } },
                     { kind: "Field", name: { kind: "Name", value: "buyNowPrice" } },
@@ -344,7 +441,23 @@ export const GetAuctionItemsDocument = {
                     { kind: "Field", name: { kind: "Name", value: "id" } },
                     { kind: "Field", name: { kind: "Name", value: "name" } },
                     { kind: "Field", name: { kind: "Name", value: "description" } },
-                    { kind: "Field", name: { kind: "Name", value: "imageURL" } },
+                    {
+                        kind: "Field",
+                        name: { kind: "Name", value: "files" },
+                        selectionSet: {
+                            kind: "SelectionSet",
+                            selections: [
+                                { kind: "Field", name: { kind: "Name", value: "id" } },
+                                { kind: "Field", name: { kind: "Name", value: "fileName" } },
+                                { kind: "Field", name: { kind: "Name", value: "originalFileName" } },
+                                { kind: "Field", name: { kind: "Name", value: "contentType" } },
+                                { kind: "Field", name: { kind: "Name", value: "fileSize" } },
+                                { kind: "Field", name: { kind: "Name", value: "uploadedAt" } },
+                                { kind: "Field", name: { kind: "Name", value: "isPrimary" } },
+                                { kind: "Field", name: { kind: "Name", value: "dataUrl" } },
+                            ],
+                        },
+                    },
                     { kind: "Field", name: { kind: "Name", value: "startingBid" } },
                     { kind: "Field", name: { kind: "Name", value: "minimumBidIncrement" } },
                     { kind: "Field", name: { kind: "Name", value: "buyNowPrice" } },
@@ -405,7 +518,23 @@ export const GetAuctionItemDocument = {
                     { kind: "Field", name: { kind: "Name", value: "id" } },
                     { kind: "Field", name: { kind: "Name", value: "name" } },
                     { kind: "Field", name: { kind: "Name", value: "description" } },
-                    { kind: "Field", name: { kind: "Name", value: "imageURL" } },
+                    {
+                        kind: "Field",
+                        name: { kind: "Name", value: "files" },
+                        selectionSet: {
+                            kind: "SelectionSet",
+                            selections: [
+                                { kind: "Field", name: { kind: "Name", value: "id" } },
+                                { kind: "Field", name: { kind: "Name", value: "fileName" } },
+                                { kind: "Field", name: { kind: "Name", value: "originalFileName" } },
+                                { kind: "Field", name: { kind: "Name", value: "contentType" } },
+                                { kind: "Field", name: { kind: "Name", value: "fileSize" } },
+                                { kind: "Field", name: { kind: "Name", value: "uploadedAt" } },
+                                { kind: "Field", name: { kind: "Name", value: "isPrimary" } },
+                                { kind: "Field", name: { kind: "Name", value: "dataUrl" } },
+                            ],
+                        },
+                    },
                     { kind: "Field", name: { kind: "Name", value: "startingBid" } },
                     { kind: "Field", name: { kind: "Name", value: "minimumBidIncrement" } },
                     { kind: "Field", name: { kind: "Name", value: "buyNowPrice" } },
@@ -453,7 +582,23 @@ export const CreateAuctionItemDocument = {
                     { kind: "Field", name: { kind: "Name", value: "id" } },
                     { kind: "Field", name: { kind: "Name", value: "name" } },
                     { kind: "Field", name: { kind: "Name", value: "description" } },
-                    { kind: "Field", name: { kind: "Name", value: "imageURL" } },
+                    {
+                        kind: "Field",
+                        name: { kind: "Name", value: "files" },
+                        selectionSet: {
+                            kind: "SelectionSet",
+                            selections: [
+                                { kind: "Field", name: { kind: "Name", value: "id" } },
+                                { kind: "Field", name: { kind: "Name", value: "fileName" } },
+                                { kind: "Field", name: { kind: "Name", value: "originalFileName" } },
+                                { kind: "Field", name: { kind: "Name", value: "contentType" } },
+                                { kind: "Field", name: { kind: "Name", value: "fileSize" } },
+                                { kind: "Field", name: { kind: "Name", value: "uploadedAt" } },
+                                { kind: "Field", name: { kind: "Name", value: "isPrimary" } },
+                                { kind: "Field", name: { kind: "Name", value: "dataUrl" } },
+                            ],
+                        },
+                    },
                     { kind: "Field", name: { kind: "Name", value: "startingBid" } },
                     { kind: "Field", name: { kind: "Name", value: "minimumBidIncrement" } },
                     { kind: "Field", name: { kind: "Name", value: "buyNowPrice" } },
@@ -501,7 +646,23 @@ export const UpdateAuctionItemDocument = {
                     { kind: "Field", name: { kind: "Name", value: "id" } },
                     { kind: "Field", name: { kind: "Name", value: "name" } },
                     { kind: "Field", name: { kind: "Name", value: "description" } },
-                    { kind: "Field", name: { kind: "Name", value: "imageURL" } },
+                    {
+                        kind: "Field",
+                        name: { kind: "Name", value: "files" },
+                        selectionSet: {
+                            kind: "SelectionSet",
+                            selections: [
+                                { kind: "Field", name: { kind: "Name", value: "id" } },
+                                { kind: "Field", name: { kind: "Name", value: "fileName" } },
+                                { kind: "Field", name: { kind: "Name", value: "originalFileName" } },
+                                { kind: "Field", name: { kind: "Name", value: "contentType" } },
+                                { kind: "Field", name: { kind: "Name", value: "fileSize" } },
+                                { kind: "Field", name: { kind: "Name", value: "uploadedAt" } },
+                                { kind: "Field", name: { kind: "Name", value: "isPrimary" } },
+                                { kind: "Field", name: { kind: "Name", value: "dataUrl" } },
+                            ],
+                        },
+                    },
                     { kind: "Field", name: { kind: "Name", value: "startingBid" } },
                     { kind: "Field", name: { kind: "Name", value: "minimumBidIncrement" } },
                     { kind: "Field", name: { kind: "Name", value: "buyNowPrice" } },
@@ -547,7 +708,23 @@ export const DeleteAuctionItemDocument = {
                     { kind: "Field", name: { kind: "Name", value: "id" } },
                     { kind: "Field", name: { kind: "Name", value: "name" } },
                     { kind: "Field", name: { kind: "Name", value: "description" } },
-                    { kind: "Field", name: { kind: "Name", value: "imageURL" } },
+                    {
+                        kind: "Field",
+                        name: { kind: "Name", value: "files" },
+                        selectionSet: {
+                            kind: "SelectionSet",
+                            selections: [
+                                { kind: "Field", name: { kind: "Name", value: "id" } },
+                                { kind: "Field", name: { kind: "Name", value: "fileName" } },
+                                { kind: "Field", name: { kind: "Name", value: "originalFileName" } },
+                                { kind: "Field", name: { kind: "Name", value: "contentType" } },
+                                { kind: "Field", name: { kind: "Name", value: "fileSize" } },
+                                { kind: "Field", name: { kind: "Name", value: "uploadedAt" } },
+                                { kind: "Field", name: { kind: "Name", value: "isPrimary" } },
+                                { kind: "Field", name: { kind: "Name", value: "dataUrl" } },
+                            ],
+                        },
+                    },
                     { kind: "Field", name: { kind: "Name", value: "startingBid" } },
                     { kind: "Field", name: { kind: "Name", value: "minimumBidIncrement" } },
                     { kind: "Field", name: { kind: "Name", value: "buyNowPrice" } },

@@ -5,7 +5,7 @@ import { AuctionStatus, AuctionType } from "@/lib/graphql-queries";
 import { useEffect } from "react";
 import { setCurrentForm, clearCurrentForm } from "./dev-tools";
 import type { AuctionItemFragment } from "@/types/generated/graphql";
-import { FormInput, FormTextarea, FormCurrencyInput, FormSelect } from "./fields";
+import { FormInput, FormTextarea, FormCurrencyInput, FormSelect, FormFileUpload } from "./fields";
 import { useCreateAuctionItem, useUpdateAuctionItem } from "@/hooks/use-auction-item-mutations";
 
 interface AuctionItemFormProps {
@@ -38,17 +38,25 @@ export function AuctionItemForm({ selectedItem, onSuccess }: AuctionItemFormProp
             category: selectedItem?.category || "",
             donorName: selectedItem?.donorName || "",
             isDonorPublic: selectedItem?.isDonorPublic || false,
-            imageURL: selectedItem?.imageURL || "",
+            newFiles: null as File[] | null,
             auctionType: selectedItem?.auctionType || AuctionType.NotSet,
             status: selectedItem?.status || AuctionStatus.NotSet,
             restrictions: selectedItem?.restrictions || "",
         },
         onSubmit: async ({ value }) => {
             try {
+                // Prepare input - send new files
+                const input = {
+                    ...value,
+                    files: value.newFiles && value.newFiles.length > 0 ? value.newFiles : undefined,
+                };
+                // Remove the newFiles field as it's not part of the GraphQL schema
+                delete (input as any).newFiles;
+
                 if (!selectedItem) {
                     await createAuctionItem({
                         variables: {
-                            input: value,
+                            input,
                         },
                     });
                 } else {
@@ -56,7 +64,7 @@ export function AuctionItemForm({ selectedItem, onSuccess }: AuctionItemFormProp
                         variables: {
                             input: {
                                 id: selectedItem.id,
-                                ...value,
+                                ...input,
                             },
                         },
                     });
@@ -180,17 +188,19 @@ export function AuctionItemForm({ selectedItem, onSuccess }: AuctionItemFormProp
 
                     <div className={styles.formRightColumn}>
                         <div className={styles.formGroup}>
-                            <label className={styles.formLabel}>
-                                Image URL<span className={styles.requiredMark}>*</span>
-                            </label>
                             <form.Field
-                                name="imageURL"
+                                name="newFiles"
                                 children={(field) => (
-                                    <FormInput
+                                    <FormFileUpload
+                                        label="Item Images"
                                         value={field.state.value}
-                                        onChange={field.handleChange}
-                                        placeholder="https://example.com/image.jpg"
-                                        errors={field.state.meta.errors}
+                                        existingFiles={selectedItem?.files || null}
+                                        onChange={(files) => {
+                                            field.handleChange(files);
+                                        }}
+                                        error={field.state.meta.errors?.[0]}
+                                        multiple={true}
+                                        required
                                     />
                                 )}
                             />
