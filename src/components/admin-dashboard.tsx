@@ -8,15 +8,23 @@ import { UserDashboard } from "./user-dashboard";
 import { ReportDashboard } from "./report.dashboard";
 import { AuctionItemForm } from "./auction-item-form";
 import { BidDashboard } from "./bid-dashboard";
+import DeleteConfirmationModal from "./delete-confirmation-modal";
 import { GET_AUCTION_ITEMS } from "@/lib/graphql-queries";
 import type { AuctionItemFragment } from "@/types/generated/graphql";
 import { formatCurrency } from "@/utils";
+import { useDeleteAuctionItem } from "@/hooks/use-auction-item-mutations";
 
 export default function AdminDashboard(): JSX.Element {
     const { toast } = useToast();
     const [activeAdminTab, setActiveAdminTab] = useState("items");
     const [selectedItem, setSelectedItem] = useState<AuctionItemFragment | null>(null);
     const [newItemMode, setNewItemMode] = useState(false);
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [itemToDelete, setItemToDelete] = useState<AuctionItemFragment | null>(null);
+    const [isDeleting, setIsDeleting] = useState(false);
+    const [deleteAuctionItem] = useDeleteAuctionItem(() => {
+        setSelectedItem(null);
+    });
 
     const { data, loading: isLoading } = useQuery<{auctionItems: AuctionItemFragment[]}>(GET_AUCTION_ITEMS, {
         errorPolicy: 'all',
@@ -44,17 +52,41 @@ export default function AdminDashboard(): JSX.Element {
         setNewItemMode(false);
     };
 
-    // Handle item deletion
-    const handleDeleteItem = (id: string) => {
-        if (confirm("Are you sure you want to delete this item?")) {
-            // TODO: Implement delete mutation
-            console.log("Delete item with id:", id);
+    // Handle delete button click
+    const handleDeleteClick = (item: AuctionItemFragment) => {
+        setItemToDelete(item);
+        setShowDeleteModal(true);
+    };
+
+    // Handle confirmed deletion
+    const handleDeleteConfirm = async () => {
+        if (!itemToDelete) return;
+        
+        setIsDeleting(true);
+        try {
+            await deleteAuctionItem({ variables: { id: itemToDelete.id } });
             toast({
-                title: "Not implemented",
-                description: "Delete functionality will be added later",
+                title: "Item deleted",
+                description: `"${itemToDelete.name}" has been deleted successfully.`,
+            });
+        } catch (error: unknown) {
+            console.error("Failed to delete auction item", error);
+            toast({
+                title: "Error",
+                description: "Failed to delete auction item",
                 variant: "destructive",
             });
+        } finally {
+            setIsDeleting(false);
+            setShowDeleteModal(false);
+            setItemToDelete(null);
         }
+    };
+
+    // Handle delete modal close
+    const handleDeleteCancel = () => {
+        setShowDeleteModal(false);
+        setItemToDelete(null);
     };
 
     return (
@@ -129,7 +161,7 @@ export default function AdminDashboard(): JSX.Element {
                                                         className={styles.deleteButton}
                                                         onClick={(e) => {
                                                             e.stopPropagation();
-                                                            handleDeleteItem(item.id);
+                                                            handleDeleteClick(item);
                                                         }}
                                                     >
                                                         <Trash2 className={styles.actionIcon} />
@@ -176,6 +208,17 @@ export default function AdminDashboard(): JSX.Element {
                     <ReportDashboard />
                 )}
             </div>
+
+            {/* Delete Confirmation Modal */}
+            <DeleteConfirmationModal
+                isOpen={showDeleteModal}
+                onClose={handleDeleteCancel}
+                onConfirm={handleDeleteConfirm}
+                title="Delete Auction Item"
+                message="Are you sure you want to delete this auction item? This action cannot be undone and will remove all associated bids."
+                itemName={itemToDelete?.name}
+                isLoading={isDeleting}
+            />
         </div>
     );
 }

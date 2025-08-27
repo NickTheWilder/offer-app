@@ -55,7 +55,7 @@ export function useUpdateAuctionItem({ onSuccess, setFieldError }: MutationHandl
     });
 }
 
-export const useDeleteAuctionItem = ({ onSuccess, setFieldError }: MutationHandlers): ReturnType<typeof useMutation> => {
+export const useDeleteAuctionItem = (onSuccess: () => void): ReturnType<typeof useMutation> => {
     return useMutation(DELETE_AUCTION_ITEM, {
         onCompleted: () => {
             onSuccess();
@@ -66,7 +66,6 @@ export const useDeleteAuctionItem = ({ onSuccess, setFieldError }: MutationHandl
         },
         onError: (error) => {
             console.error("Auction item deletion failed:", error);
-            handleMutationError(error, setFieldError);
             toast({
                 title: "Failed to delete item",
                 description: "Please check your input and try again. If the problem persists, contact support.",
