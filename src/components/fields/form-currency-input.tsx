@@ -2,7 +2,7 @@ import type { JSX } from "react";
 import styles from "../admin-dashboard.module.css";
 
 interface FormCurrencyInputProps {
-    value: number;
+    value: number | undefined;
     onChange: (value: number) => void;
     placeholder?: string;
     errors: string[] | undefined[];

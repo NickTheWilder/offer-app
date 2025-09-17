@@ -26,8 +26,8 @@ export default function AdminDashboard(): JSX.Element {
         setSelectedItem(null);
     });
 
-    const { data, loading: isLoading } = useQuery<{auctionItems: AuctionItemFragment[]}>(GET_AUCTION_ITEMS, {
-        errorPolicy: 'all',
+    const { data, loading: isLoading } = useQuery<{ auctionItems: AuctionItemFragment[] }>(GET_AUCTION_ITEMS, {
+        errorPolicy: "all",
         onError: (error) => {
             console.error("GraphQL query error:", error);
             toast({
@@ -35,7 +35,7 @@ export default function AdminDashboard(): JSX.Element {
                 description: error.message || "Failed to load auction items",
                 variant: "destructive",
             });
-        }
+        },
     });
 
     const items = data?.auctionItems || [];
@@ -61,7 +61,7 @@ export default function AdminDashboard(): JSX.Element {
     // Handle confirmed deletion
     const handleDeleteConfirm = async () => {
         if (!itemToDelete) return;
-        
+
         setIsDeleting(true);
         try {
             await deleteAuctionItem({ variables: { id: itemToDelete.id } });
@@ -141,7 +141,13 @@ export default function AdminDashboard(): JSX.Element {
                                         {items.map((item) => (
                                             <div key={item.id} className={`${styles.itemCard} ${selectedItem?.id === item.id ? styles.selectedCard : ""}`} onClick={() => handleEditItem(item)}>
                                                 <div className={styles.itemCardContent}>
-                                                    <div className={styles.itemImage}>{item.files && item.files.length > 0 ? <img src={item.files.find(f => f?.isPrimary)?.dataUrl || item.files[0]?.dataUrl || ''} alt={item.name} /> : <div className={styles.noImage}>No Image</div>}</div>
+                                                    <div className={styles.itemImage}>
+                                                        {item.files && item.files.length > 0 ? (
+                                                            <img src={item.files.find((f) => f?.isPrimary)?.dataUrl || item.files[0]?.dataUrl || ""} alt={item.name} />
+                                                        ) : (
+                                                            <div className={styles.noImage}>No Image</div>
+                                                        )}
+                                                    </div>
                                                     <div className={styles.itemInfo}>
                                                         <h3 className={styles.itemName}>{item.name}</h3>
                                                         <p className={styles.itemPrice}>{formatCurrency(item.startingBid)}</p>
@@ -178,7 +184,7 @@ export default function AdminDashboard(): JSX.Element {
                         <div className={styles.mainContent}>
                             {selectedItem || newItemMode ? (
                                 <AuctionItemForm
-                                    key={selectedItem?.id || 'new'}
+                                    key={selectedItem?.id || "new"}
                                     selectedItem={selectedItem}
                                     onSuccess={() => {
                                         setNewItemMode(false);
@@ -189,7 +195,7 @@ export default function AdminDashboard(): JSX.Element {
                                     <div className={styles.noSelectionContent}>
                                         <h3 className={styles.noSelectionTitle}>No Item Selected</h3>
                                         <p className={styles.noSelectionText}>Select an item from the list or add a new one to get started.</p>
-                                        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                                        <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
                                             <button className={styles.addButton} onClick={handleAddItem}>
                                                 <PlusCircle className={styles.plusIcon} />
                                                 Add New Item

@@ -32,16 +32,15 @@ export function AuctionItemForm({ selectedItem, onSuccess }: AuctionItemFormProp
             name: selectedItem?.name || "",
             description: selectedItem?.description || "",
             startingBid: selectedItem?.startingBid || 0,
-            minimumBidIncrement: selectedItem?.minimumBidIncrement || 5,
-            buyNowPrice: selectedItem?.buyNowPrice || 0,
-            estimatedValue: selectedItem?.estimatedValue || 0,
+            buyNowPrice: selectedItem?.buyNowPrice,
+            estimatedValue: selectedItem?.estimatedValue,
             category: selectedItem?.category || "",
             donorName: selectedItem?.donorName || "",
             isDonorPublic: selectedItem?.isDonorPublic || false,
             newFiles: null as File[] | null,
             auctionType: selectedItem?.auctionType || AuctionType.NotSet,
             status: selectedItem?.status || AuctionStatus.NotSet,
-            restrictions: selectedItem?.restrictions || "",
+            restrictions: selectedItem?.restrictions,
         },
         onSubmit: async ({ value }) => {
             try {
@@ -77,7 +76,7 @@ export function AuctionItemForm({ selectedItem, onSuccess }: AuctionItemFormProp
 
     // Register form with dev tools (dev only)
     useEffect(() => {
-        if (process.env.NODE_ENV === 'development') {
+        if (process.env.NODE_ENV === "development") {
             setCurrentForm(form);
             return () => clearCurrentForm();
         }
@@ -102,65 +101,25 @@ export function AuctionItemForm({ selectedItem, onSuccess }: AuctionItemFormProp
                             <label className={styles.formLabel}>
                                 Name<span className={styles.requiredMark}>*</span>
                             </label>
-                            <form.Field
-                                name="name"
-                                children={(field) => (
-                                    <FormInput
-                                        value={field.state.value}
-                                        onChange={field.handleChange}
-                                        placeholder="Item name"
-                                        errors={field.state.meta.errors}
-                                    />
-                                )}
-                            />
+                            <form.Field name="name" children={(field) => <FormInput value={field.state.value} onChange={field.handleChange} placeholder="Item name" errors={field.state.meta.errors} />} />
                         </div>
                         <div className={styles.formGroup}>
                             <label className={styles.formLabel}>
                                 Description<span className={styles.requiredMark}>*</span>
                             </label>
-                            <form.Field
-                                name="description"
-                                children={(field) => (
-                                    <FormTextarea
-                                        value={field.state.value}
-                                        onChange={field.handleChange}
-                                        placeholder="Item description"
-                                        errors={field.state.meta.errors}
-                                    />
-                                )}
-                            />
+                            <form.Field name="description" children={(field) => <FormTextarea value={field.state.value} onChange={field.handleChange} placeholder="Item description" errors={field.state.meta.errors} />} />
                         </div>
 
                         <div className={styles.formGroup}>
                             <label className={styles.formLabel}>
                                 Starting Bid<span className={styles.requiredMark}>*</span>
                             </label>
-                            <form.Field
-                                name="startingBid"
-                                children={(field) => (
-                                    <FormCurrencyInput
-                                        value={field.state.value}
-                                        onChange={field.handleChange}
-                                        placeholder="0.00"
-                                        errors={field.state.meta.errors}
-                                    />
-                                )}
-                            />
+                            <form.Field name="startingBid" children={(field) => <FormCurrencyInput value={field.state.value} onChange={field.handleChange} placeholder="0.00" errors={field.state.meta.errors} />} />
                         </div>
 
                         <div className={styles.formGroup}>
                             <label className={styles.formLabel}>Buy Now Price</label>
-                            <form.Field
-                                name="buyNowPrice"
-                                children={(field) => (
-                                    <FormCurrencyInput
-                                        value={field.state.value}
-                                        onChange={field.handleChange}
-                                        placeholder="0.00"
-                                        errors={field.state.meta.errors}
-                                    />
-                                )}
-                            />
+                            <form.Field name="buyNowPrice" children={(field) => <FormCurrencyInput value={field.state.value} onChange={field.handleChange} placeholder="0.00" errors={field.state.meta.errors} />} />
                         </div>
 
                         <div className={styles.formGroup}>
@@ -170,11 +129,7 @@ export function AuctionItemForm({ selectedItem, onSuccess }: AuctionItemFormProp
                             <form.Field
                                 name="status"
                                 children={(field) => (
-                                    <FormSelect<AuctionStatus>
-                                        value={field.state.value}
-                                        onChange={field.handleChange}
-                                        errors={field.state.meta.errors}
-                                    >
+                                    <FormSelect<AuctionStatus> value={field.state.value} onChange={field.handleChange} errors={field.state.meta.errors}>
                                         <option value={AuctionStatus.Draft}>Draft</option>
                                         <option value={AuctionStatus.Active}>Active</option>
                                         <option value={AuctionStatus.Closed}>Closed</option>
@@ -182,6 +137,18 @@ export function AuctionItemForm({ selectedItem, onSuccess }: AuctionItemFormProp
                                         <option value={AuctionStatus.Paid}>Paid</option>
                                     </FormSelect>
                                 )}
+                            />
+                        </div>
+                        <div className={styles.formGroup}>
+                            <label className={styles.formLabel}>Estimated Value</label>
+                            <form.Field name="estimatedValue" children={(field) => <FormCurrencyInput value={field.state.value} onChange={field.handleChange} placeholder="0.00" errors={field.state.meta.errors} />} />
+                        </div>
+
+                        <div className={styles.formGroup}>
+                            <label className={styles.formLabel}>Restrictions</label>
+                            <form.Field
+                                name="restrictions"
+                                children={(field) => <textarea className={styles.formInput} placeholder="Any restrictions or special instructions" value={field.state.value} onChange={(e) => field.handleChange(e.target.value)} />}
                             />
                         </div>
                     </div>
@@ -210,49 +177,23 @@ export function AuctionItemForm({ selectedItem, onSuccess }: AuctionItemFormProp
                             <label className={styles.formLabel}>
                                 Donor Name<span className={styles.requiredMark}>*</span>
                             </label>
-                            <form.Field
-                                name="donorName"
-                                children={(field) => (
-                                    <FormInput
-                                        value={field.state.value}
-                                        onChange={field.handleChange}
-                                        placeholder="John Smith"
-                                        errors={field.state.meta.errors}
-                                    />
-                                )}
-                            />
+                            <form.Field name="donorName" children={(field) => <FormInput value={field.state.value} onChange={field.handleChange} placeholder="John Smith" errors={field.state.meta.errors} />} />
                         </div>
 
                         <div className={styles.formGroup}>
                             <label className={styles.formLabel}>
                                 Category<span className={styles.requiredMark}>*</span>
                             </label>
-                            <form.Field
-                                name="category"
-                                children={(field) => (
-                                    <FormInput
-                                        value={field.state.value}
-                                        onChange={field.handleChange}
-                                        placeholder="Electronics, Art, Gift Cards, etc."
-                                        errors={field.state.meta.errors}
-                                    />
-                                )}
-                            />
+                            <form.Field name="category" children={(field) => <FormInput value={field.state.value} onChange={field.handleChange} placeholder="Electronics, Art, Gift Cards, etc." errors={field.state.meta.errors} />} />
                         </div>
 
                         <div className={styles.formGroup}>
-                            <label className={styles.formLabel}>
-                                Donor Public?
-                            </label>
+                            <label className={styles.formLabel}>Donor Public?</label>
                             <form.Field
                                 name="isDonorPublic"
                                 children={(field) => (
                                     <label className={styles.checkboxLabel}>
-                                        <input
-                                            type="checkbox"
-                                            checked={field.state.value}
-                                            onChange={(e) => field.handleChange(e.target.checked)}
-                                        />
+                                        <input type="checkbox" checked={field.state.value} onChange={(e) => field.handleChange(e.target.checked)} />
                                         Show donor name publicly
                                     </label>
                                 )}
@@ -266,49 +207,14 @@ export function AuctionItemForm({ selectedItem, onSuccess }: AuctionItemFormProp
                             <form.Field
                                 name="auctionType"
                                 children={(field) => (
-                                    <select
-                                        className={styles.formInput}
-                                        value={field.state.value}
-                                        onChange={(e) => field.handleChange(e.target.value as AuctionType)}
-                                    >
+                                    <select className={styles.formInput} value={field.state.value} onChange={(e) => field.handleChange(e.target.value as AuctionType)}>
                                         <option value={AuctionType.Silent}>Silent</option>
                                         <option value={AuctionType.Live}>Live</option>
                                     </select>
                                 )}
                             />
                         </div>
-
-                        <div className={styles.formGroup}>
-                            <label className={styles.formLabel}>Estimated Value</label>
-                            <form.Field
-                                name="estimatedValue"
-                                children={(field) => (
-                                    <FormCurrencyInput
-                                        value={field.state.value}
-                                        onChange={field.handleChange}
-                                        placeholder="0.00"
-                                        errors={field.state.meta.errors}
-                                    />
-                                )}
-                            />
-                        </div>
-
-                        <div className={styles.formGroup}>
-                            <label className={styles.formLabel}>Restrictions</label>
-                            <form.Field
-                                name="restrictions"
-                                children={(field) => (
-                                    <textarea
-                                        className={styles.formInput}
-                                        placeholder="Any restrictions or special instructions"
-                                        value={field.state.value}
-                                        onChange={(e) => field.handleChange(e.target.value)}
-                                    />
-                                )}
-                            />
-                        </div>
                     </div>
-
                 </div>
                 <div className={styles.formActions}>
                     <button type="submit" className={styles.addButton}>
