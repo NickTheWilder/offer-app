@@ -16,7 +16,7 @@ A modern, user-friendly auction platform designed for church bazaars and fundrai
 
 - **PHP 8.2+** [https://www.php.net/manual/en/install.php](https://www.php.net/manual/en/install.php)
 - **Composer** - [getcomposer.org](https://getcomposer.org/)
-- **Bun** [https://bun.sh/docs/installation](https://bun.sh/docs/installation)
+- **Bun** - [https://bun.sh/docs/installation](https://bun.sh/docs/installation)
 
 
 ### Installation
@@ -29,7 +29,6 @@ composer install
 
 2. **Set up environment**
 ```bash
-cp .env.example .env
 php artisan key:generate
 ```
 
