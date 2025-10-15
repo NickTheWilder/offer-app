@@ -7,7 +7,7 @@ import MyBids from "@/components/my-bids";
 import BidModal from "@/components/BidModal";
 import BuyNowModal from "@/components/buy-now-modal";
 import { AuctionItem, Bid, PageProps } from "@/types";
-import styles from "./home-page.module.css";
+import styles from "./HomePage.module.css";
 
 interface BidWithItem extends Bid {
     auction_item: AuctionItem;
@@ -35,11 +35,7 @@ export default function Home({ auth, auctionItems, userBids }: HomeProps): JSX.E
     const filteredItems = auctionItems?.filter((item) => {
         if (!searchQuery) return true;
         const query = searchQuery.toLowerCase();
-        return (
-            item.name.toLowerCase().includes(query) ||
-            (item.description || "").toLowerCase().includes(query) ||
-            (item.category || "").toLowerCase().includes(query)
-        );
+        return item.name.toLowerCase().includes(query) || (item.description || "").toLowerCase().includes(query) || (item.category || "").toLowerCase().includes(query);
     });
 
     // Handle bid button click
@@ -66,13 +62,7 @@ export default function Home({ auth, auctionItems, userBids }: HomeProps): JSX.E
                                 <h2 className={styles.sectionTitle}>Browse Auction Items</h2>
                                 <div className={styles.filtersContainer}>
                                     <div className={styles.searchContainer}>
-                                        <input
-                                            type="text"
-                                            placeholder="Search items..."
-                                            className={styles.searchInput}
-                                            value={searchQuery}
-                                            onChange={(e) => setSearchQuery(e.target.value)}
-                                        />
+                                        <input type="text" placeholder="Search items..." className={styles.searchInput} value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
                                         <span className={styles.searchIcon}>
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -99,9 +89,7 @@ export default function Home({ auth, auctionItems, userBids }: HomeProps): JSX.E
                             )}
 
                             {/* Auction items grid */}
-                            {filteredItems && filteredItems.length > 0 && (
-                                <AuctionItemCard items={filteredItems} user={auth.user} onBidClick={handleBidClick} onBuyNowClick={handleBuyNowClick} />
-                            )}
+                            {filteredItems && filteredItems.length > 0 && <AuctionItemCard items={filteredItems} user={auth.user} onBidClick={handleBidClick} onBuyNowClick={handleBuyNowClick} />}
                         </div>
                     )}
 

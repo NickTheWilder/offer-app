@@ -1,8 +1,8 @@
-import React, { type JSX, useState, FormEvent } from 'react';
-import { Head, useForm, router } from '@inertiajs/react';
+import React, { type JSX, useState, FormEvent } from "react";
+import { Head, useForm, router } from "@inertiajs/react";
 import { Loader2, Church } from "lucide-react";
-import styles from "./auth-page.module.css";
-import type { PageProps } from '@/types';
+import styles from "./AuthPage.module.css";
+import type { PageProps } from "@/types";
 
 export default function AuthPage({ auth }: PageProps): JSX.Element {
     const [activeTab, setActiveTab] = useState("login");
@@ -24,242 +24,193 @@ export default function AuthPage({ auth }: PageProps): JSX.Element {
 
     // Redirect if already logged in
     if (auth.user) {
-        router.visit('/');
+        router.visit("/");
         return <></>;
     }
 
     // Login form submission
     const onLoginSubmit = (e: FormEvent) => {
         e.preventDefault();
-        loginForm.post('/login');
+        loginForm.post("/login");
     };
 
     // Registration form submission
     const onRegisterSubmit = (e: FormEvent) => {
         e.preventDefault();
-        registerForm.post('/register');
+        registerForm.post("/register");
     };
 
     return (
         <>
             <Head title="Login / Register" />
             <div className={styles.container}>
-            {/* Left side - Forms */}
-            <div className={styles.formContainer}>
-                <div className={styles.card}>
-                    <div className={styles.cardHeader}>
-                        <div className={styles.iconContainer}>
-                            <Church className={styles.icon} />
+                {/* Left side - Forms */}
+                <div className={styles.formContainer}>
+                    <div className={styles.card}>
+                        <div className={styles.cardHeader}>
+                            <div className={styles.iconContainer}>
+                                <Church className={styles.icon} />
+                            </div>
+                            <h2 className={styles.cardTitle}>Offer Auction</h2>
                         </div>
-                        <h2 className={styles.cardTitle}>Offer Auction</h2>
-                    </div>
 
-                    <div className={styles.cardContent}>
-                        <div className={styles.tabContainer}>
-                            <div className={styles.tabList}>
-                                <button type="button" className={`${styles.tabTrigger} ${activeTab === "login" ? styles.active : ""}`} onClick={() => setActiveTab("login")}>
-                                    Login
-                                </button>
-                                <button type="button" className={`${styles.tabTrigger} ${activeTab === "register" ? styles.active : ""}`} onClick={() => setActiveTab("register")}>
-                                    Register
-                                </button>
-                            </div>
-
-                            {/* Login Form */}
-                            <div className={`${styles.tabContent} ${activeTab === "login" ? styles.active : ""}`}>
-                                <form onSubmit={onLoginSubmit}>
-                                    <div className={styles.formGroup}>
-                                        <label htmlFor="email" className={styles.label}>
-                                            Email
-                                        </label>
-                                        <input
-                                            id="email"
-                                            type="email"
-                                            placeholder="you@example.com"
-                                            className={styles.input}
-                                            value={loginForm.data.email}
-                                            onChange={e => loginForm.setData('email', e.target.value)}
-                                        />
-                                        {loginForm.errors.email && <span className={styles.error}>{loginForm.errors.email}</span>}
-                                    </div>
-
-                                    <div className={styles.formGroup}>
-                                        <label htmlFor="password" className={styles.label}>
-                                            Password
-                                        </label>
-                                        <input
-                                            id="password"
-                                            type="password"
-                                            placeholder="••••••••"
-                                            className={styles.input}
-                                            value={loginForm.data.password}
-                                            onChange={e => loginForm.setData('password', e.target.value)}
-                                        />
-                                        {loginForm.errors.password && <span className={styles.error}>{loginForm.errors.password}</span>}
-                                    </div>
-
-                                    <button type="submit" className={styles.button} disabled={loginForm.processing}>
-                                        {loginForm.processing ? (
-                                            <span className={styles.flexRow}>
-                                                <Loader2 className={styles.spinIcon} size={16} />
-                                                <span>Logging in...</span>
-                                            </span>
-                                        ) : (
-                                            "Login"
-                                        )}
+                        <div className={styles.cardContent}>
+                            <div className={styles.tabContainer}>
+                                <div className={styles.tabList}>
+                                    <button type="button" className={`${styles.tabTrigger} ${activeTab === "login" ? styles.active : ""}`} onClick={() => setActiveTab("login")}>
+                                        Login
                                     </button>
+                                    <button type="button" className={`${styles.tabTrigger} ${activeTab === "register" ? styles.active : ""}`} onClick={() => setActiveTab("register")}>
+                                        Register
+                                    </button>
+                                </div>
 
-                                    <div className={styles.demoAccountsContainer}>
-                                        <p className={styles.demoAccountsTitle}>Demo Accounts</p>
-                                        <div className={styles.demoButtonsGrid}>
-                                            <button
-                                                type="button"
-                                                className={`${styles.button} ${styles.buttonOutline}`}
-                                                onClick={() => {
-                                                    router.post('/login', {
-                                                        email: "admin@example.com",
-                                                        password: "password"
-                                                    });
-                                                }}
-                                            >
-                                                Admin Demo
-                                            </button>
-                                            <button
-                                                type="button"
-                                                className={`${styles.button} ${styles.buttonOutline}`}
-                                                onClick={() => {
-                                                    router.post('/login', {
-                                                        email: "john@example.com",
-                                                        password: "password"
-                                                    });
-                                                }}
-                                            >
-                                                Bidder Demo
-                                            </button>
+                                {/* Login Form */}
+                                <div className={`${styles.tabContent} ${activeTab === "login" ? styles.active : ""}`}>
+                                    <form onSubmit={onLoginSubmit}>
+                                        <div className={styles.formGroup}>
+                                            <label htmlFor="email" className={styles.label}>
+                                                Email
+                                            </label>
+                                            <input id="email" type="email" placeholder="you@example.com" className={styles.input} value={loginForm.data.email} onChange={(e) => loginForm.setData("email", e.target.value)} />
+                                            {loginForm.errors.email && <span className={styles.error}>{loginForm.errors.email}</span>}
                                         </div>
-                                    </div>
-                                </form>
-                            </div>
 
-                            {/* Registration Form */}
-                            <div className={`${styles.tabContent} ${activeTab === "register" ? styles.active : ""}`}>
-                                <form onSubmit={onRegisterSubmit}>
-                                    <div className={styles.formGroup}>
-                                        <label htmlFor="name" className={styles.label}>
-                                            Full Name
-                                        </label>
-                                        <input
-                                            id="name"
-                                            type="text"
-                                            placeholder="John Smith"
-                                            className={styles.input}
-                                            value={registerForm.data.name}
-                                            onChange={e => registerForm.setData('name', e.target.value)}
-                                        />
-                                        {registerForm.errors.name && <span className={styles.error}>{registerForm.errors.name}</span>}
-                                    </div>
+                                        <div className={styles.formGroup}>
+                                            <label htmlFor="password" className={styles.label}>
+                                                Password
+                                            </label>
+                                            <input id="password" type="password" placeholder="••••••••" className={styles.input} value={loginForm.data.password} onChange={(e) => loginForm.setData("password", e.target.value)} />
+                                            {loginForm.errors.password && <span className={styles.error}>{loginForm.errors.password}</span>}
+                                        </div>
 
-                                    <div className={styles.formGroup}>
-                                        <label htmlFor="reg-email" className={styles.label}>
-                                            Email
-                                        </label>
-                                        <input
-                                            id="reg-email"
-                                            type="email"
-                                            placeholder="you@example.com"
-                                            className={styles.input}
-                                            value={registerForm.data.email}
-                                            onChange={e => registerForm.setData('email', e.target.value)}
-                                        />
-                                        {registerForm.errors.email && <span className={styles.error}>{registerForm.errors.email}</span>}
-                                    </div>
+                                        <button type="submit" className={styles.button} disabled={loginForm.processing}>
+                                            {loginForm.processing ? (
+                                                <span className={styles.flexRow}>
+                                                    <Loader2 className={styles.spinIcon} size={16} />
+                                                    <span>Logging in...</span>
+                                                </span>
+                                            ) : (
+                                                "Login"
+                                            )}
+                                        </button>
 
-                                    <div className={styles.formGroup}>
-                                        <label htmlFor="phone" className={styles.label}>
-                                            Phone Number
-                                        </label>
-                                        <input
-                                            id="phone"
-                                            type="tel"
-                                            placeholder="(555) 123-4567"
-                                            className={styles.input}
-                                            value={registerForm.data.phone}
-                                            onChange={e => registerForm.setData('phone', e.target.value)}
-                                        />
-                                        {registerForm.errors.phone && <span className={styles.error}>{registerForm.errors.phone}</span>}
-                                    </div>
+                                        <div className={styles.demoAccountsContainer}>
+                                            <p className={styles.demoAccountsTitle}>Demo Accounts</p>
+                                            <div className={styles.demoButtonsGrid}>
+                                                <button
+                                                    type="button"
+                                                    className={`${styles.button} ${styles.buttonOutline}`}
+                                                    onClick={() => {
+                                                        router.post("/login", {
+                                                            email: "admin@example.com",
+                                                            password: "password",
+                                                        });
+                                                    }}
+                                                >
+                                                    Admin Demo
+                                                </button>
+                                                <button
+                                                    type="button"
+                                                    className={`${styles.button} ${styles.buttonOutline}`}
+                                                    onClick={() => {
+                                                        router.post("/login", {
+                                                            email: "john@example.com",
+                                                            password: "password",
+                                                        });
+                                                    }}
+                                                >
+                                                    Bidder Demo
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
 
-                                    <div className={styles.formGroup}>
-                                        <label htmlFor="address" className={styles.label}>
-                                            Address (Optional)
-                                        </label>
-                                        <input
-                                            id="address"
-                                            type="text"
-                                            placeholder="123 Main St"
-                                            className={styles.input}
-                                            value={registerForm.data.address}
-                                            onChange={e => registerForm.setData('address', e.target.value)}
-                                        />
-                                        {registerForm.errors.address && <span className={styles.error}>{registerForm.errors.address}</span>}
-                                    </div>
+                                {/* Registration Form */}
+                                <div className={`${styles.tabContent} ${activeTab === "register" ? styles.active : ""}`}>
+                                    <form onSubmit={onRegisterSubmit}>
+                                        <div className={styles.formGroup}>
+                                            <label htmlFor="name" className={styles.label}>
+                                                Full Name
+                                            </label>
+                                            <input id="name" type="text" placeholder="John Smith" className={styles.input} value={registerForm.data.name} onChange={(e) => registerForm.setData("name", e.target.value)} />
+                                            {registerForm.errors.name && <span className={styles.error}>{registerForm.errors.name}</span>}
+                                        </div>
 
-                                    <div className={styles.formGroup}>
-                                        <label htmlFor="reg-password" className={styles.label}>
-                                            Password
-                                        </label>
-                                        <input
-                                            id="reg-password"
-                                            type="password"
-                                            placeholder="••••••••"
-                                            className={styles.input}
-                                            value={registerForm.data.password}
-                                            onChange={e => registerForm.setData('password', e.target.value)}
-                                        />
-                                        {registerForm.errors.password && <span className={styles.error}>{registerForm.errors.password}</span>}
-                                    </div>
+                                        <div className={styles.formGroup}>
+                                            <label htmlFor="reg-email" className={styles.label}>
+                                                Email
+                                            </label>
+                                            <input id="reg-email" type="email" placeholder="you@example.com" className={styles.input} value={registerForm.data.email} onChange={(e) => registerForm.setData("email", e.target.value)} />
+                                            {registerForm.errors.email && <span className={styles.error}>{registerForm.errors.email}</span>}
+                                        </div>
 
-                                    <button type="submit" className={styles.button} disabled={registerForm.processing}>
-                                        {registerForm.processing ? (
-                                            <span className={styles.flexRow}>
-                                                <Loader2 className={styles.spinIcon} size={16} />
-                                                <span>Registering...</span>
-                                            </span>
-                                        ) : (
-                                            "Register"
-                                        )}
-                                    </button>
-                                </form>
+                                        <div className={styles.formGroup}>
+                                            <label htmlFor="phone" className={styles.label}>
+                                                Phone Number
+                                            </label>
+                                            <input id="phone" type="tel" placeholder="(555) 123-4567" className={styles.input} value={registerForm.data.phone} onChange={(e) => registerForm.setData("phone", e.target.value)} />
+                                            {registerForm.errors.phone && <span className={styles.error}>{registerForm.errors.phone}</span>}
+                                        </div>
+
+                                        <div className={styles.formGroup}>
+                                            <label htmlFor="address" className={styles.label}>
+                                                Address (Optional)
+                                            </label>
+                                            <input id="address" type="text" placeholder="123 Main St" className={styles.input} value={registerForm.data.address} onChange={(e) => registerForm.setData("address", e.target.value)} />
+                                            {registerForm.errors.address && <span className={styles.error}>{registerForm.errors.address}</span>}
+                                        </div>
+
+                                        <div className={styles.formGroup}>
+                                            <label htmlFor="reg-password" className={styles.label}>
+                                                Password
+                                            </label>
+                                            <input id="reg-password" type="password" placeholder="••••••••" className={styles.input} value={registerForm.data.password} onChange={(e) => registerForm.setData("password", e.target.value)} />
+                                            {registerForm.errors.password && <span className={styles.error}>{registerForm.errors.password}</span>}
+                                        </div>
+
+                                        <button type="submit" className={styles.button} disabled={registerForm.processing}>
+                                            {registerForm.processing ? (
+                                                <span className={styles.flexRow}>
+                                                    <Loader2 className={styles.spinIcon} size={16} />
+                                                    <span>Registering...</span>
+                                                </span>
+                                            ) : (
+                                                "Register"
+                                            )}
+                                        </button>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            {/* Right side - Hero */}
-            <div className={styles.heroContainer}>
-                <h1 className={styles.heroTitle}>Welcome to Offer Auction</h1>
-                <p className={styles.heroDesc}>Participate in our silent auction to support our community projects. Browse items, place bids, and track your auction activity all in one place.</p>
-                <ul className={styles.stepsList}>
-                    <li className={styles.stepItem}>
-                        <div className={styles.stepNumber}>1</div>
-                        <span>Create an account or login</span>
-                    </li>
-                    <li className={styles.stepItem}>
-                        <div className={styles.stepNumber}>2</div>
-                        <span>Browse available auction items</span>
-                    </li>
-                    <li className={styles.stepItem}>
-                        <div className={styles.stepNumber}>3</div>
-                        <span>Place bids on your favorite items</span>
-                    </li>
-                    <li className={styles.stepItem}>
-                        <div className={styles.stepNumber}>4</div>
-                        <span>Track your bids and winning items</span>
-                    </li>
-                </ul>
+                {/* Right side - Hero */}
+                <div className={styles.heroContainer}>
+                    <h1 className={styles.heroTitle}>Welcome to Offer Auction</h1>
+                    <p className={styles.heroDesc}>Participate in our silent auction to support our community projects. Browse items, place bids, and track your auction activity all in one place.</p>
+                    <ul className={styles.stepsList}>
+                        <li className={styles.stepItem}>
+                            <div className={styles.stepNumber}>1</div>
+                            <span>Create an account or login</span>
+                        </li>
+                        <li className={styles.stepItem}>
+                            <div className={styles.stepNumber}>2</div>
+                            <span>Browse available auction items</span>
+                        </li>
+                        <li className={styles.stepItem}>
+                            <div className={styles.stepNumber}>3</div>
+                            <span>Place bids on your favorite items</span>
+                        </li>
+                        <li className={styles.stepItem}>
+                            <div className={styles.stepNumber}>4</div>
+                            <span>Track your bids and winning items</span>
+                        </li>
+                    </ul>
+                </div>
             </div>
-        </div>
         </>
     );
 }
