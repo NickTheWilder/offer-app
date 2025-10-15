@@ -1,93 +1,71 @@
-# Church Bazaar Auction Software - Frontend
+# Offer Auction
 
-This is the frontend implementation of a church bazaar auction software MVP designed to compete with platforms like Give Smart and Greater Giving. The application provides a cleaner, more intuitive interface with simplified workflows and better mobile experience.
-
-## Features
-
-- Authentication system with login/register capabilities
-- Admin dashboard for managing auction items
-- Silent auction bidding system with real-time updates
-- Responsive design optimized for mobile devices
-- Item filtering by category and status
-- GraphQL integration ready for backend connection
+A modern, user-friendly auction platform designed for church bazaars and fundraising events. Built with Laravel, Inertia.js, React, and TypeScript.
 
 ## Tech Stack
 
-- React 18 with TypeScript
-- React Hook Form for form handling
-- Apollo Client for GraphQL data fetching
-- React Query for additional state management
-- CSS Modules for component styling
-- Wouter for routing
-- GraphQL Code Generator for type-safe API calls
-
-## Project Structure
-
-```
-src/
-├── components/         # Reusable UI components
-├── hooks/             # Custom React hooks
-├── lib/               # Utility functions and client setup
-├── pages/             # Page components
-├── services/          # API services and mock data
-├── types/             # TypeScript type definitions
-│   └── generated/     # Auto-generated GraphQL types
-└── App.tsx            # Main application component
-shared/
-└── schema.ts          # Shared data models
-```
+- **Backend**: Laravel 12, PHP 8.3
+- **Frontend**: React 19, TypeScript 5.7, Inertia.js 2.0
+- **Database**: SQLite
+- **Package Manager**: Bun
+- **Additional**: Laravel Wayfinder for type-safe routes
 
 ## Getting Started
 
 ### Prerequisites
 
-This project uses [Bun](https://bun.sh/) as the JavaScript runtime and package manager. Install Bun first if you haven't already.
+- **PHP 8.2+** [https://www.php.net/manual/en/install.php](https://www.php.net/manual/en/install.php)
+- **Composer** - [getcomposer.org](https://getcomposer.org/)
+- **Bun** [https://bun.sh/docs/installation](https://bun.sh/docs/installation)
 
-### Development
 
+### Installation
+
+1. **Install dependencies**
 ```bash
-# Install dependencies
 bun install
-
-# Start development server (includes GraphQL proxy)
-bun run dev
-
-# Generate GraphQL types (when schema changes)
-bun run codegen
+composer install
 ```
 
-## Backend Integration
+2. **Set up environment**
+```bash
+cp .env.example .env
+php artisan key:generate
+```
 
-This frontend is designed to work with a GraphQL backend API. The application includes:
+4. **Run migrations and seed the database**
+```bash
+php artisan migrate
+php artisan db:seed  # Optional: adds sample data
+```
 
-### GraphQL Setup
+### Running the Application
 
-- **Apollo Client** configured to connect to `/graphql` endpoint
-- **Vite proxy** routes GraphQL requests to `http://localhost:5000`
-- **Code generation** creates TypeScript types from GraphQL schema
-- **Mock services** provide fallback data during development
+Start both the Laravel server and Vite dev server with a single command:
 
-### Backend Connection Status
+```bash
+composer run dev
+```
 
-The application currently supports:
+Then visit: **http://localhost:8000**
 
-- ✅ GraphQL client configuration ready
-- ✅ Type-safe GraphQL queries and mutations
-- ✅ Mock data services for independent development
-- ⚠️ Authentication integration pending
-- ⚠️ Real-time subscriptions not yet implemented
+## Test Credentials
 
-### Switching from Mock to Real API
+The database is seeded with the following accounts for testing:
 
-1. Start your GraphQL backend server on `http://localhost:5000/graphql`
-2. Update `src/services/graphql-api.ts` to use real GraphQL operations
-3. Configure authentication in `src/hooks/use-auth.tsx` for your auth system
-4. Remove or replace mock data in `src/services/api.ts`
+### Admin Account
+- **Email**: `admin@example.com`
+- **Password**: `password`
+- **Role**: Admin
 
-## Authentication
+### Bidder Accounts
 
-The application uses a context-based authentication system. In the mock implementation, user sessions are stored in localStorage. When connecting to a real backend, update the authentication logic to use tokens, cookies, or other session management approaches as needed.
+All bidder accounts use the password: `password`
 
-## Data Models
-
-The data models are defined in the shared schema file. These models define the structure of the application's data and are used throughout the frontend. When connecting to a real backend, ensure that these models align with your backend's data structure.
+| Email | Bidder Number | Name |
+|-------|---------------|------|
+| `john@example.com` | B0001 | John Doe |
+| `jane@example.com` | B0002 | Jane Smith |
+| `bob@example.com` | B0003 | Bob Johnson |
+| `alice@example.com` | B0004 | Alice Williams |
+| `charlie@example.com` | B0005 | Charlie Brown |

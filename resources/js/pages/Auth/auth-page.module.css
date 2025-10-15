@@ -1,0 +1,267 @@
+.container {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background-color: #f9fafb;
+}
+
+.formContainer {
+    width: 100%;
+    padding: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.card {
+    width: 100%;
+    max-width: 28rem;
+    background-color: white;
+    border-radius: 0.5rem;
+    box-shadow:
+        0 1px 3px 0 rgba(0, 0, 0, 0.1),
+        0 1px 2px 0 rgba(0, 0, 0, 0.06);
+}
+
+.cardHeader {
+    padding: 1.5rem 1.5rem 0.5rem 1.5rem;
+    text-align: center;
+}
+
+.iconContainer {
+    display: flex;
+    justify-content: center;
+}
+
+.icon {
+    height: 2.5rem;
+    width: 2.5rem;
+    color: var(--primary-color);
+}
+
+.cardTitle {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+}
+
+.cardContent {
+    padding: 1.5rem;
+}
+
+.formGroup {
+    margin-bottom: 1rem;
+}
+
+.label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+.input {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #d1d5db;
+    border-radius: 0.375rem;
+    font-size: 0.875rem;
+}
+
+.input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 1px var(--primary-color);
+}
+
+.tabContainer {
+    margin-bottom: 1.5rem;
+    position: relative;
+}
+
+.tabList {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    width: 100%;
+    margin-bottom: 1.5rem;
+    border-radius: 0.375rem;
+    background-color: #f3f4f6;
+}
+
+.tabTrigger {
+    padding: 0.5rem;
+    font-size: 0.875rem;
+    text-align: center;
+    border: none;
+    background: none;
+    cursor: pointer;
+}
+
+.tabTrigger.active {
+    background-color: white;
+    color: var(--primary-color);
+    border-radius: 0.375rem;
+    box-shadow: 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.tabContent {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    opacity: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: opacity 0.3s ease, max-height 0.3s ease;
+}
+
+.tabContent.active {
+    position: relative;
+    opacity: 1;
+    max-height: none;
+}
+
+.button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 0.5rem 1rem;
+    color: white;
+    background-color: var(--primary-color);
+    border: none;
+    border-radius: 0.375rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.button:hover {
+    background-color: var(--primary-color-dark);
+}
+
+.button:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+.buttonOutline {
+    background-color: transparent;
+    color: var(--text-color);
+    border: 1px solid #d1d5db;
+}
+
+.buttonOutline:hover {
+    background-color: #f3f4f6;
+}
+
+.buttonSmall {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+}
+
+.demoAccountsContainer {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid #e5e7eb;
+}
+
+.demoAccountsTitle {
+    font-size: 0.875rem;
+    color: #6b7280;
+    margin-bottom: 0.5rem;
+    text-align: center;
+}
+
+.demoButtonsGrid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.5rem;
+}
+
+.flexRow {
+    display: flex;
+    align-items: center;
+}
+
+.flexRow > *:not(:last-child) {
+    margin-right: 0.5rem;
+}
+
+.heroContainer {
+    display: none;
+    padding: 3rem;
+    background-color: var(--primary-color);
+    color: white;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.heroTitle {
+    font-size: 2.25rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+}
+
+.heroDesc {
+    font-size: 1.125rem;
+    margin-bottom: 1.5rem;
+}
+
+.stepsList {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.stepItem {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.75rem;
+}
+
+.stepNumber {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 0.75rem;
+}
+
+.errorMessage {
+    color: #ef4444;
+    font-size: 0.75rem;
+    margin-top: 0.25rem;
+}
+
+.spinIcon {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Media Queries */
+@media (min-width: 768px) {
+    .container {
+        flex-direction: row;
+    }
+
+    .formContainer {
+        width: 50%;
+    }
+
+    .heroContainer {
+        display: flex;
+        width: 50%;
+    }
+}
