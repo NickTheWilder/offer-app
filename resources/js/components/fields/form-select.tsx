@@ -1,5 +1,5 @@
-import React, { type JSX, ReactNode } from 'react';
-import styles from "../admin-dashboard.module.css";
+import React, { type JSX, ReactNode } from "react";
+import styles from "../AdminDashboard.module.css";
 
 interface FormSelectProps<T> {
     value: string;
@@ -11,18 +11,10 @@ interface FormSelectProps<T> {
 export function FormSelect<T>({ value, onChange, children, errors }: FormSelectProps<T>): JSX.Element {
     return (
         <>
-            <select
-                className={styles.formInput}
-                value={value}
-                onChange={(e) => onChange(e.target.value as T)}
-            >
+            <select className={styles.formInput} value={value} onChange={(e) => onChange(e.target.value as T)}>
                 {children}
             </select>
-            {errors.length > 0 && (
-                <div className={styles.formError}>
-                    {errors[0]}
-                </div>
-            )}
+            {errors.length > 0 && <div className={styles.formError}>{errors[0]}</div>}
         </>
     );
 }

@@ -3,11 +3,11 @@ import { Head, router } from "@inertiajs/react";
 import Header from "@/components/Header";
 import MobileNavigation from "@/components/MobileNavigation";
 import AuctionItemCard from "@/components/AuctionItemCard";
-import MyBids from "@/components/my-bids";
 import BidModal from "@/components/BidModal";
-import BuyNowModal from "@/components/buy-now-modal";
+import BuyNowModal from "@/components/BuyNowModal";
 import { AuctionItem, Bid, PageProps } from "@/types";
 import styles from "./HomePage.module.css";
+import MyBids from "@/components/MyBids";
 
 interface BidWithItem extends Bid {
     auction_item: AuctionItem;

@@ -4,7 +4,7 @@ import { Loader2 } from "lucide-react";
 import Header from "@/components/Header";
 import AdminDashboard from "@/components/AdminDashboard";
 import type { PageProps, AuctionItem } from "@/types";
-import styles from "./admin-page.module.css";
+import styles from "./AdminPage.module.css";
 
 type AdminPageProps = PageProps<{
     auctionItems: AuctionItem[];

@@ -1,6 +1,6 @@
 import React, { type JSX, FormEvent } from "react";
 import { useForm } from "@inertiajs/react";
-import styles from "./admin-dashboard.module.css";
+import styles from "./AdminDashboard.module.css";
 import type { AuctionItem } from "@/types";
 import { FormInput } from "./fields/form-input";
 import { FormTextarea } from "./fields/form-textarea";
@@ -72,25 +72,25 @@ export function AuctionItemForm({ selectedItem, onSuccess }: AuctionItemFormProp
         fetch(url, {
             method: "POST",
             headers: {
-                "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '',
+                "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]')?.getAttribute("content") || "",
             },
             body: formData,
         })
-            .then(response => {
+            .then((response) => {
                 if (response.ok) {
                     onSuccess();
                 } else {
-                    response.json().then(data => {
+                    response.json().then((data) => {
                         // Handle validation errors
                         if (data.errors) {
-                            Object.keys(data.errors).forEach(key => {
+                            Object.keys(data.errors).forEach((key) => {
                                 form.setError(key as keyof typeof form.data, data.errors[key][0]);
                             });
                         }
                     });
                 }
             })
-            .catch(error => {
+            .catch((error) => {
                 console.error("Failed to submit form", error);
             });
     };
@@ -109,36 +109,21 @@ export function AuctionItemForm({ selectedItem, onSuccess }: AuctionItemFormProp
                             <label className={styles.formLabel}>
                                 Name<span className={styles.requiredMark}>*</span>
                             </label>
-                            <FormInput
-                                value={form.data.name}
-                                onChange={(value) => form.setData("name", value)}
-                                placeholder="Item name"
-                                errors={form.errors.name ? [form.errors.name] : []}
-                            />
+                            <FormInput value={form.data.name} onChange={(value) => form.setData("name", value)} placeholder="Item name" errors={form.errors.name ? [form.errors.name] : []} />
                         </div>
 
                         <div className={styles.formGroup}>
                             <label className={styles.formLabel}>
                                 Description<span className={styles.requiredMark}>*</span>
                             </label>
-                            <FormTextarea
-                                value={form.data.description}
-                                onChange={(value) => form.setData("description", value)}
-                                placeholder="Item description"
-                                errors={form.errors.description ? [form.errors.description] : []}
-                            />
+                            <FormTextarea value={form.data.description} onChange={(value) => form.setData("description", value)} placeholder="Item description" errors={form.errors.description ? [form.errors.description] : []} />
                         </div>
 
                         <div className={styles.formGroup}>
                             <label className={styles.formLabel}>
                                 Starting Bid<span className={styles.requiredMark}>*</span>
                             </label>
-                            <FormCurrencyInput
-                                value={form.data.starting_bid}
-                                onChange={(value) => form.setData("starting_bid", value)}
-                                placeholder="0.00"
-                                errors={form.errors.starting_bid ? [form.errors.starting_bid] : []}
-                            />
+                            <FormCurrencyInput value={form.data.starting_bid} onChange={(value) => form.setData("starting_bid", value)} placeholder="0.00" errors={form.errors.starting_bid ? [form.errors.starting_bid] : []} />
                         </div>
 
                         <div className={styles.formGroup}>
@@ -155,23 +140,14 @@ export function AuctionItemForm({ selectedItem, onSuccess }: AuctionItemFormProp
 
                         <div className={styles.formGroup}>
                             <label className={styles.formLabel}>Buy Now Price</label>
-                            <FormCurrencyInput
-                                value={form.data.buy_now_price}
-                                onChange={(value) => form.setData("buy_now_price", value)}
-                                placeholder="0.00"
-                                errors={form.errors.buy_now_price ? [form.errors.buy_now_price] : []}
-                            />
+                            <FormCurrencyInput value={form.data.buy_now_price} onChange={(value) => form.setData("buy_now_price", value)} placeholder="0.00" errors={form.errors.buy_now_price ? [form.errors.buy_now_price] : []} />
                         </div>
 
                         <div className={styles.formGroup}>
                             <label className={styles.formLabel}>
                                 Status<span className={styles.requiredMark}>*</span>
                             </label>
-                            <FormSelect
-                                value={form.data.status}
-                                onChange={(value) => form.setData("status", value as "draft" | "active" | "sold" | "unsold")}
-                                errors={form.errors.status ? [form.errors.status] : []}
-                            >
+                            <FormSelect value={form.data.status} onChange={(value) => form.setData("status", value as "draft" | "active" | "sold" | "unsold")} errors={form.errors.status ? [form.errors.status] : []}>
                                 <option value="draft">Draft</option>
                                 <option value="active">Active</option>
                                 <option value="sold">Sold</option>
@@ -181,25 +157,13 @@ export function AuctionItemForm({ selectedItem, onSuccess }: AuctionItemFormProp
 
                         <div className={styles.formGroup}>
                             <label className={styles.formLabel}>Estimated Value</label>
-                            <FormCurrencyInput
-                                value={form.data.estimated_value}
-                                onChange={(value) => form.setData("estimated_value", value)}
-                                placeholder="0.00"
-                                errors={form.errors.estimated_value ? [form.errors.estimated_value] : []}
-                            />
+                            <FormCurrencyInput value={form.data.estimated_value} onChange={(value) => form.setData("estimated_value", value)} placeholder="0.00" errors={form.errors.estimated_value ? [form.errors.estimated_value] : []} />
                         </div>
 
                         <div className={styles.formGroup}>
                             <label className={styles.formLabel}>Restrictions</label>
-                            <textarea
-                                className={styles.formInput}
-                                placeholder="Any restrictions or special instructions"
-                                value={form.data.restrictions}
-                                onChange={(e) => form.setData("restrictions", e.target.value)}
-                            />
-                            {form.errors.restrictions && (
-                                <div className={styles.formError}>{form.errors.restrictions}</div>
-                            )}
+                            <textarea className={styles.formInput} placeholder="Any restrictions or special instructions" value={form.data.restrictions} onChange={(e) => form.setData("restrictions", e.target.value)} />
+                            {form.errors.restrictions && <div className={styles.formError}>{form.errors.restrictions}</div>}
                         </div>
                     </div>
 
@@ -208,16 +172,18 @@ export function AuctionItemForm({ selectedItem, onSuccess }: AuctionItemFormProp
                             <FormFileUpload
                                 label="Item Images"
                                 value={form.data.files}
-                                existingFiles={selectedItem?.files?.map(f => ({
-                                    id: f.id.toString(),
-                                    fileName: f.file_name,
-                                    originalFileName: f.original_file_name,
-                                    contentType: f.content_type,
-                                    fileSize: f.file_size,
-                                    uploadedAt: f.created_at,
-                                    isPrimary: f.is_primary,
-                                    dataUrl: f.url,
-                                })) || null}
+                                existingFiles={
+                                    selectedItem?.files?.map((f) => ({
+                                        id: f.id.toString(),
+                                        fileName: f.file_name,
+                                        originalFileName: f.original_file_name,
+                                        contentType: f.content_type,
+                                        fileSize: f.file_size,
+                                        uploadedAt: f.created_at,
+                                        isPrimary: f.is_primary,
+                                        dataUrl: f.url,
+                                    })) || null
+                                }
                                 onChange={(files) => form.setData("files", files)}
                                 error={form.errors.files as string}
                                 multiple={true}
@@ -229,34 +195,20 @@ export function AuctionItemForm({ selectedItem, onSuccess }: AuctionItemFormProp
                             <label className={styles.formLabel}>
                                 Donor Name<span className={styles.requiredMark}>*</span>
                             </label>
-                            <FormInput
-                                value={form.data.donor_name}
-                                onChange={(value) => form.setData("donor_name", value)}
-                                placeholder="John Smith"
-                                errors={form.errors.donor_name ? [form.errors.donor_name] : []}
-                            />
+                            <FormInput value={form.data.donor_name} onChange={(value) => form.setData("donor_name", value)} placeholder="John Smith" errors={form.errors.donor_name ? [form.errors.donor_name] : []} />
                         </div>
 
                         <div className={styles.formGroup}>
                             <label className={styles.formLabel}>
                                 Category<span className={styles.requiredMark}>*</span>
                             </label>
-                            <FormInput
-                                value={form.data.category}
-                                onChange={(value) => form.setData("category", value)}
-                                placeholder="Electronics, Art, Gift Cards, etc."
-                                errors={form.errors.category ? [form.errors.category] : []}
-                            />
+                            <FormInput value={form.data.category} onChange={(value) => form.setData("category", value)} placeholder="Electronics, Art, Gift Cards, etc." errors={form.errors.category ? [form.errors.category] : []} />
                         </div>
 
                         <div className={styles.formGroup}>
                             <label className={styles.formLabel}>Donor Public?</label>
                             <label className={styles.checkboxLabel}>
-                                <input
-                                    type="checkbox"
-                                    checked={form.data.is_donor_public}
-                                    onChange={(e) => form.setData("is_donor_public", e.target.checked)}
-                                />
+                                <input type="checkbox" checked={form.data.is_donor_public} onChange={(e) => form.setData("is_donor_public", e.target.checked)} />
                                 Show donor name publicly
                             </label>
                         </div>
@@ -265,17 +217,11 @@ export function AuctionItemForm({ selectedItem, onSuccess }: AuctionItemFormProp
                             <label className={styles.formLabel}>
                                 Auction Type<span className={styles.requiredMark}>*</span>
                             </label>
-                            <select
-                                className={styles.formInput}
-                                value={form.data.auction_type}
-                                onChange={(e) => form.setData("auction_type", e.target.value as "silent" | "live")}
-                            >
+                            <select className={styles.formInput} value={form.data.auction_type} onChange={(e) => form.setData("auction_type", e.target.value as "silent" | "live")}>
                                 <option value="silent">Silent</option>
                                 <option value="live">Live</option>
                             </select>
-                            {form.errors.auction_type && (
-                                <div className={styles.formError}>{form.errors.auction_type}</div>
-                            )}
+                            {form.errors.auction_type && <div className={styles.formError}>{form.errors.auction_type}</div>}
                         </div>
                     </div>
                 </div>

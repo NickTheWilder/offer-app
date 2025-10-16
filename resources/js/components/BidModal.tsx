@@ -4,7 +4,7 @@ import { useToast } from "@/hooks/use-toast";
 import { Loader2 } from "lucide-react";
 import { AuctionItem } from "@/types";
 import { formatCurrency } from "@/lib/utils";
-import styles from "./bid-modal.module.css";
+import styles from "./BidModal.module.css";
 
 interface BidModalProps {
     item: AuctionItem;
@@ -59,7 +59,7 @@ export default function BidModal({ item, onClose }: BidModalProps): JSX.Element 
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
-                    "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '',
+                    "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]')?.getAttribute("content") || "",
                 },
                 body: JSON.stringify({ amount }),
             });
@@ -143,15 +143,7 @@ export default function BidModal({ item, onClose }: BidModalProps): JSX.Element 
                                 <div className={styles.currencyPrefix}>
                                     <span>$</span>
                                 </div>
-                                <input
-                                    type="number"
-                                    id="bidAmount"
-                                    className={styles.bidInput}
-                                    value={bidAmount}
-                                    onChange={(e) => setBidAmount(e.target.value)}
-                                    min={minBid}
-                                    step="0.01"
-                                />
+                                <input type="number" id="bidAmount" className={styles.bidInput} value={bidAmount} onChange={(e) => setBidAmount(e.target.value)} min={minBid} step="0.01" />
                                 <div className={styles.currencySuffix}>
                                     <span>USD</span>
                                 </div>

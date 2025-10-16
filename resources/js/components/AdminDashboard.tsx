@@ -1,15 +1,15 @@
-import { useToast } from '@/hooks/use-toast';
-import { formatCurrency } from '@/lib/utils';
-import type { AuctionItem } from '@/types';
-import { router } from '@inertiajs/react';
-import { Edit, PlusCircle, Trash2 } from 'lucide-react';
-import { type JSX, useState } from 'react';
-import styles from './admin-dashboard.module.css';
-import { AuctionItemForm } from './AuctionItemForm';
-import { BidDashboard } from './BidDashboard';
-import DeleteConfirmationModal from './delete-confirmation-modal';
-import { ReportDashboard } from './ReportDashboard';
-import { UserDashboard } from './UserDashboard';
+import { useToast } from "@/hooks/use-toast";
+import { formatCurrency } from "@/lib/utils";
+import type { AuctionItem } from "@/types";
+import { router } from "@inertiajs/react";
+import { Edit, PlusCircle, Trash2 } from "lucide-react";
+import { type JSX, useState } from "react";
+import styles from "./AdminDashboard.module.css";
+import { AuctionItemForm } from "./AuctionItemForm";
+import { BidDashboard } from "./BidDashboard";
+import { ReportDashboard } from "./ReportDashboard";
+import { UserDashboard } from "./UserDashboard";
+import DeleteConfirmationModal from "./DeleteConfirmationModal";
 
 interface AdminDashboardProps {
     items: AuctionItem[];
@@ -17,7 +17,7 @@ interface AdminDashboardProps {
 
 export default function AdminDashboard({ items }: AdminDashboardProps): JSX.Element {
     const { toast } = useToast();
-    const [activeAdminTab, setActiveAdminTab] = useState('items');
+    const [activeAdminTab, setActiveAdminTab] = useState("items");
     const [selectedItem, setSelectedItem] = useState<AuctionItem | null>(null);
     const [newItemMode, setNewItemMode] = useState(false);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -49,28 +49,25 @@ export default function AdminDashboard({ items }: AdminDashboardProps): JSX.Elem
         setIsDeleting(true);
         try {
             await fetch(`/auction-items/${itemToDelete.id}`, {
-                method: 'DELETE',
+                method: "DELETE",
                 headers: {
-                    'X-CSRF-TOKEN':
-                        document
-                            .querySelector('meta[name="csrf-token"]')
-                            ?.getAttribute('content') || '',
+                    "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]')?.getAttribute("content") || "",
                 },
             });
 
             toast({
-                title: 'Item deleted',
+                title: "Item deleted",
                 description: `"${itemToDelete.name}" has been deleted successfully.`,
             });
 
             // Refresh the page data
             router.reload();
         } catch (error: unknown) {
-            console.error('Failed to delete auction item', error);
+            console.error("Failed to delete auction item", error);
             toast({
-                title: 'Error',
-                description: 'Failed to delete auction item',
-                variant: 'destructive',
+                title: "Error",
+                description: "Failed to delete auction item",
+                variant: "destructive",
             });
         } finally {
             setIsDeleting(false);
@@ -96,35 +93,23 @@ export default function AdminDashboard({ items }: AdminDashboardProps): JSX.Elem
         <div className={styles.adminLayout}>
             {/* Admin Tabs */}
             <div className={styles.tabsList}>
-                <button
-                    onClick={() => setActiveAdminTab('items')}
-                    className={`${styles.tabTrigger} ${activeAdminTab === 'items' ? styles.active : ''}`}
-                >
+                <button onClick={() => setActiveAdminTab("items")} className={`${styles.tabTrigger} ${activeAdminTab === "items" ? styles.active : ""}`}>
                     Items
                 </button>
-                <button
-                    onClick={() => setActiveAdminTab('bids')}
-                    className={`${styles.tabTrigger} ${activeAdminTab === 'bids' ? styles.active : ''}`}
-                >
+                <button onClick={() => setActiveAdminTab("bids")} className={`${styles.tabTrigger} ${activeAdminTab === "bids" ? styles.active : ""}`}>
                     Bids
                 </button>
-                <button
-                    onClick={() => setActiveAdminTab('users')}
-                    className={`${styles.tabTrigger} ${activeAdminTab === 'users' ? styles.active : ''}`}
-                >
+                <button onClick={() => setActiveAdminTab("users")} className={`${styles.tabTrigger} ${activeAdminTab === "users" ? styles.active : ""}`}>
                     Users
                 </button>
-                <button
-                    onClick={() => setActiveAdminTab('reports')}
-                    className={`${styles.tabTrigger} ${activeAdminTab === 'reports' ? styles.active : ''}`}
-                >
+                <button onClick={() => setActiveAdminTab("reports")} className={`${styles.tabTrigger} ${activeAdminTab === "reports" ? styles.active : ""}`}>
                     Reports
                 </button>
             </div>
 
             {/* Main content area */}
             <div className={styles.adminContent}>
-                {activeAdminTab === 'items' ? (
+                {activeAdminTab === "items" ? (
                     <div className={styles.splitLayout}>
                         {/* Sidebar - Item List */}
                         <div className={styles.sidebar}>
@@ -143,41 +128,19 @@ export default function AdminDashboard({ items }: AdminDashboardProps): JSX.Elem
                                             <PlusCircle className={styles.emptyIcon} />
                                         </div>
                                         <p className={styles.emptyText}>No auction items yet</p>
-                                        <button
-                                            className={styles.addButton}
-                                            onClick={handleAddItem}
-                                        >
+                                        <button className={styles.addButton} onClick={handleAddItem}>
                                             Add New Item
                                         </button>
                                     </div>
                                 ) : (
                                     <>
                                         {items.map((item) => (
-                                            <div
-                                                key={item.id}
-                                                className={`${styles.itemCard} ${selectedItem?.id === item.id ? styles.selectedCard : ''}`}
-                                                onClick={() => handleEditItem(item)}
-                                            >
+                                            <div key={item.id} className={`${styles.itemCard} ${selectedItem?.id === item.id ? styles.selectedCard : ""}`} onClick={() => handleEditItem(item)}>
                                                 <div className={styles.itemCardContent}>
-                                                    <div className={styles.itemImage}>
-                                                        {item.files && item.files.length > 0 ? (
-                                                            <img
-                                                                src={item.files[0]?.url || ''}
-                                                                alt={item.name}
-                                                            />
-                                                        ) : (
-                                                            <div className={styles.noImage}>
-                                                                No Image
-                                                            </div>
-                                                        )}
-                                                    </div>
+                                                    <div className={styles.itemImage}>{item.files && item.files.length > 0 ? <img src={item.files[0]?.url || ""} alt={item.name} /> : <div className={styles.noImage}>No Image</div>}</div>
                                                     <div className={styles.itemInfo}>
-                                                        <h3 className={styles.itemName}>
-                                                            {item.name}
-                                                        </h3>
-                                                        <p className={styles.itemPrice}>
-                                                            {formatCurrency(item.starting_bid)}
-                                                        </p>
+                                                        <h3 className={styles.itemName}>{item.name}</h3>
+                                                        <p className={styles.itemPrice}>{formatCurrency(item.starting_bid)}</p>
                                                     </div>
                                                 </div>
                                                 <div className={styles.itemActions}>
@@ -210,32 +173,20 @@ export default function AdminDashboard({ items }: AdminDashboardProps): JSX.Elem
                         {/* Main content - Item Form */}
                         <div className={styles.mainContent}>
                             {selectedItem || newItemMode ? (
-                                <AuctionItemForm
-                                    key={selectedItem?.id || 'new'}
-                                    selectedItem={selectedItem}
-                                    onSuccess={handleFormSuccess}
-                                />
+                                <AuctionItemForm key={selectedItem?.id || "new"} selectedItem={selectedItem} onSuccess={handleFormSuccess} />
                             ) : (
                                 <div className={styles.noSelection}>
                                     <div className={styles.noSelectionContent}>
-                                        <h3 className={styles.noSelectionTitle}>
-                                            No Item Selected
-                                        </h3>
-                                        <p className={styles.noSelectionText}>
-                                            Select an item from the list or add a new one to get
-                                            started.
-                                        </p>
+                                        <h3 className={styles.noSelectionTitle}>No Item Selected</h3>
+                                        <p className={styles.noSelectionText}>Select an item from the list or add a new one to get started.</p>
                                         <div
                                             style={{
-                                                display: 'flex',
-                                                justifyContent: 'center',
-                                                alignItems: 'center',
+                                                display: "flex",
+                                                justifyContent: "center",
+                                                alignItems: "center",
                                             }}
                                         >
-                                            <button
-                                                className={styles.addButton}
-                                                onClick={handleAddItem}
-                                            >
+                                            <button className={styles.addButton} onClick={handleAddItem}>
                                                 <PlusCircle className={styles.plusIcon} />
                                                 Add New Item
                                             </button>
@@ -245,9 +196,9 @@ export default function AdminDashboard({ items }: AdminDashboardProps): JSX.Elem
                             )}
                         </div>
                     </div>
-                ) : activeAdminTab === 'bids' ? (
+                ) : activeAdminTab === "bids" ? (
                     <BidDashboard />
-                ) : activeAdminTab === 'users' ? (
+                ) : activeAdminTab === "users" ? (
                     <UserDashboard />
                 ) : (
                     <ReportDashboard />

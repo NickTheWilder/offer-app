@@ -1,0 +1,47 @@
+.navigationBar {
+    display: flex;
+    justify-content: space-around;
+    padding: 0.5rem 0;
+}
+
+.navigationContainer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: white;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+    z-index: 50;
+}
+
+.tabButton {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0.5rem 1rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #6b7280;
+}
+
+.tabButton.active {
+    color: var(--primary-color);
+}
+
+.tabIcon {
+    height: 1.25rem;
+    width: 1.25rem;
+}
+
+.tabLabel {
+    font-size: 0.75rem;
+    margin-top: 0.25rem;
+}
+
+/* Desktop styles */
+@media (min-width: 768px) {
+    .navigationContainer {
+        display: none;
+    }
+}

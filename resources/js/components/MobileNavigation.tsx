@@ -1,6 +1,6 @@
 import React, { type JSX } from "react";
 import { Search, Gavel } from "lucide-react";
-import styles from "./mobile-navigation.module.css";
+import styles from "./MobileNavigation.module.css";
 
 interface MobileNavigationProps {
     activeTab: string;

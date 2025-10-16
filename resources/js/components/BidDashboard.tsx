@@ -1,5 +1,5 @@
 import React, { type JSX } from "react";
-import styles from "./admin-dashboard.module.css";
+import styles from "./AdminDashboard.module.css";
 
 export function BidDashboard(): JSX.Element {
     return (
