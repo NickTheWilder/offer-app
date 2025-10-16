@@ -6,7 +6,7 @@ import { Edit, PlusCircle, Trash2 } from "lucide-react";
 import { type JSX, useState } from "react";
 import styles from "./AdminDashboard.module.css";
 import { AuctionItemForm } from "./AuctionItemForm";
-import { BidDashboard } from "./BidDashboard";
+import { DonorDashboard } from "./DonorDashboard";
 import { ReportDashboard } from "./ReportDashboard";
 import { UserDashboard } from "./UserDashboard";
 import DeleteConfirmationModal from "./DeleteConfirmationModal";
@@ -96,8 +96,8 @@ export default function AdminDashboard({ items }: AdminDashboardProps): JSX.Elem
                 <button onClick={() => setActiveAdminTab("items")} className={`${styles.tabTrigger} ${activeAdminTab === "items" ? styles.active : ""}`}>
                     Items
                 </button>
-                <button onClick={() => setActiveAdminTab("bids")} className={`${styles.tabTrigger} ${activeAdminTab === "bids" ? styles.active : ""}`}>
-                    Bids
+                <button onClick={() => setActiveAdminTab("donors")} className={`${styles.tabTrigger} ${activeAdminTab === "donors" ? styles.active : ""}`}>
+                    Donors
                 </button>
                 <button onClick={() => setActiveAdminTab("users")} className={`${styles.tabTrigger} ${activeAdminTab === "users" ? styles.active : ""}`}>
                     Users
@@ -196,8 +196,8 @@ export default function AdminDashboard({ items }: AdminDashboardProps): JSX.Elem
                             )}
                         </div>
                     </div>
-                ) : activeAdminTab === "bids" ? (
-                    <BidDashboard />
+                ) : activeAdminTab === "donors" ? (
+                    <DonorDashboard />
                 ) : activeAdminTab === "users" ? (
                     <UserDashboard />
                 ) : (
