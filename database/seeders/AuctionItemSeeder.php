@@ -3,9 +3,12 @@
 namespace Database\Seeders;
 
 use App\Models\AuctionItem;
+use App\Models\AuctionItemFile;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class AuctionItemSeeder extends Seeder
 {
@@ -103,8 +106,8 @@ class AuctionItemSeeder extends Seeder
         foreach ($items as $index => $item) {
             // Assign a random donor from the users, or leave as null for some items
             $donor = $users->isNotEmpty() && ($index % 3 !== 0) ? $users->random() : null;
-            
-            AuctionItem::create([
+
+            $auctionItem = AuctionItem::create([
                 'name' => $item['name'],
                 'description' => $item['description'],
                 'starting_bid' => $item['starting_bid'],
@@ -117,6 +120,60 @@ class AuctionItemSeeder extends Seeder
                 'is_donor_public' => $donor ? true : false,
                 'status' => 'active',
                 'display_order' => $index + 1,
+            ]);
+
+            // Add images for this auction item from seed images
+            $this->seedImagesForItem($auctionItem, $item['name']);
+        }
+    }
+
+    /**
+     * Seed images for an auction item from the seeders/images directory
+     */
+    private function seedImagesForItem(AuctionItem $auctionItem, string $itemName): void
+    {
+        // Convert item name to slug format (e.g., "Handmade Quilt" -> "handmade-quilt")
+        $slug = Str::slug($itemName);
+
+        // Path to seed images directory
+        $seedImagesPath = database_path('seeders/images');
+
+        // Find all files matching this item's slug
+        $pattern = $seedImagesPath . '/' . $slug . '-*.*';
+        $imageFiles = glob($pattern);
+
+        if (empty($imageFiles)) {
+            return; // No images found for this item
+        }
+
+        // Sort files to ensure consistent ordering
+        sort($imageFiles);
+
+        foreach ($imageFiles as $index => $sourceFile) {
+            if (!file_exists($sourceFile)) {
+                continue;
+            }
+
+            // Get file info
+            $originalFileName = basename($sourceFile);
+            $extension = pathinfo($sourceFile, PATHINFO_EXTENSION);
+            $fileName = Str::uuid() . '.' . strtolower($extension);
+
+            // Copy file to storage/app/public/auction-items
+            $destinationPath = 'auction-items/' . $fileName;
+            Storage::disk('public')->put(
+                $destinationPath,
+                file_get_contents($sourceFile)
+            );
+
+            // Create database record
+            AuctionItemFile::create([
+                'auction_item_id' => $auctionItem->id,
+                'file_name' => $fileName,
+                'original_file_name' => $originalFileName,
+                'content_type' => mime_content_type($sourceFile),
+                'file_size' => filesize($sourceFile),
+                'is_primary' => $index === 0, // First image is primary
             ]);
         }
     }

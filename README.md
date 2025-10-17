@@ -50,6 +50,23 @@ composer run dev
 
 Then visit: **http://localhost:8000**
 
+## Resetting Demo Data
+
+To completely reset your database and demo data (useful during development):
+
+```bash
+# Wipe and rebuild everything with fresh seed data
+php artisan migrate:fresh --seed
+```
+
+This will:
+- Drop all database tables
+- Run all migrations
+- Seed users (admin + bidders)
+- Seed auction items with images from `database/seeders/images/`
+
+**Note**: Images are copied from `database/seeders/images/` to `storage/app/public/auction-items/` during seeding, so you can reset as many times as needed without losing your seed images.
+
 ## Test Credentials
 
 The database is seeded with the following accounts for testing:
