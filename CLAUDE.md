@@ -33,6 +33,7 @@ You are assisting with the development of a church bazaar auction software MVP d
 - Use senior-level Laravel & React patterns and practices
 
 ## Code Quality Preferences
+
 - **Pass only the minimum required parameters to functions** - don't pass entire objects when only specific properties/methods are needed
 - **Always run `bun lint` and `bun types` after making changes** - fix all errors and warnings before considering work complete. This is mandatory, not optional.
 - **Use meaningful variable names** - avoid single-letter variables and descriptive names for functions and classes

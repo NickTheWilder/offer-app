@@ -59,15 +59,15 @@ export default function ItemDashboard({ items, users, onItemsUpdate }: ItemDashb
             });
 
             // Update local items state
-            const newItems = localItems.filter(item => item.id !== itemToDelete.id);
+            const newItems = localItems.filter((item) => item.id !== itemToDelete.id);
             setLocalItems(newItems);
-            
+
             // Clear selection if deleted item was selected
             if (selectedItem?.id === itemToDelete.id) {
                 setSelectedItem(null);
                 setNewItemMode(false);
             }
-            
+
             onItemsUpdate?.(newItems);
 
             toast({
@@ -105,14 +105,12 @@ export default function ItemDashboard({ items, users, onItemsUpdate }: ItemDashb
             onItemsUpdate?.(newItems);
         } else {
             // Updating existing item
-            const newItems = localItems.map(item => 
-                item.id === updatedItem.id ? updatedItem : item
-            );
+            const newItems = localItems.map((item) => (item.id === updatedItem.id ? updatedItem : item));
             setLocalItems(newItems);
             setSelectedItem(updatedItem);
             onItemsUpdate?.(newItems);
         }
-        
+
         toast({
             title: newItemMode ? "Item created" : "Item updated",
             description: `"${updatedItem.name}" has been ${newItemMode ? "created" : "updated"} successfully.`,

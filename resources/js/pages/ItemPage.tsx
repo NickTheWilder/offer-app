@@ -13,7 +13,7 @@ type ItemPageProps = PageProps<{
 
 export default function ItemPage({ auth, auctionItems, users }: ItemPageProps): JSX.Element {
     const [localAuctionItems, setLocalAuctionItems] = useState<AuctionItem[]>(auctionItems);
-    
+
     // Update local items when props change
     useEffect(() => {
         setLocalAuctionItems(auctionItems);
@@ -41,11 +41,7 @@ export default function ItemPage({ auth, auctionItems, users }: ItemPageProps): 
                 <Header user={auth.user} />
 
                 <main className={styles.mainContent}>
-                    <ItemDashboard 
-                        items={localAuctionItems} 
-                        users={users} 
-                        onItemsUpdate={setLocalAuctionItems}
-                    />
+                    <ItemDashboard items={localAuctionItems} users={users} onItemsUpdate={setLocalAuctionItems} />
                 </main>
             </div>
         </>

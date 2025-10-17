@@ -52,7 +52,7 @@ export default function AdminDashboard(): JSX.Element {
             setData: (items) => setData((prev) => ({ ...prev, items })),
             setError: (error) => setErrors((prev) => ({ ...prev, items: error })),
         });
-        
+
         // Also fetch users when fetching items for the donor dropdown
         if (!data.users && !loading.users) {
             await fetchAdminData({
@@ -181,11 +181,7 @@ export default function AdminDashboard(): JSX.Element {
                                 </button>
                             </div>
                         ) : (
-                            <ItemDashboard 
-                                items={data.items || []} 
-                                users={data.users || []} 
-                                onItemsUpdate={(updatedItems) => setData(prev => ({ ...prev, items: updatedItems }))}
-                            />
+                            <ItemDashboard items={data.items || []} users={data.users || []} onItemsUpdate={(updatedItems) => setData((prev) => ({ ...prev, items: updatedItems }))} />
                         )}
                     </>
                 ) : activeAdminTab === "donors" ? (

@@ -83,7 +83,7 @@ export function AuctionItemForm({ selectedItem, users, onSuccess }: AuctionItemF
         })
             .then(async (response) => {
                 const data = await response.json();
-                
+
                 if (response.ok && data.success) {
                     // Update form data with the returned item
                     if (data.item) {
@@ -219,14 +219,14 @@ export function AuctionItemForm({ selectedItem, users, onSuccess }: AuctionItemF
                             <label className={styles.formLabel}>
                                 Donor<span className={styles.requiredMark}>*</span>
                             </label>
-                            <FormSelect 
-                                value={form.data.donor_id?.toString() || ""} 
+                            <FormSelect
+                                value={form.data.donor_id?.toString() || ""}
                                 onChange={(value: string) => {
                                     const donorId = value ? parseInt(value) : null;
-                                    const selectedUser = users.find(u => u.id === donorId);
+                                    const selectedUser = users.find((u) => u.id === donorId);
                                     form.setData("donor_id", donorId);
                                     form.setData("donor_name", selectedUser?.name || "");
-                                }} 
+                                }}
                                 errors={form.errors.donor_id ? [form.errors.donor_id] : []}
                             >
                                 <option value="">Select a donor...</option>

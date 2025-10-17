@@ -1,4 +1,4 @@
-type AdminDataType = 'items' | 'donors' | 'users' | 'reports';
+type AdminDataType = "items" | "donors" | "users" | "reports";
 
 interface FetchOptions<T> {
     type: AdminDataType;
@@ -9,26 +9,19 @@ interface FetchOptions<T> {
     setError: (error: string) => void;
 }
 
-export async function fetchAdminData<T>({
-    type,
-    currentData,
-    isLoading,
-    setLoading,
-    setData,
-    setError,
-}: FetchOptions<T>): Promise<void> {
+export async function fetchAdminData<T>({ type, currentData, isLoading, setLoading, setData, setError }: FetchOptions<T>): Promise<void> {
     // Don't fetch if we already have data or are currently loading
     if (currentData || isLoading) return;
-    
+
     setLoading(true);
-    setError('');
-    
+    setError("");
+
     try {
         const response = await fetch(`/api/admin/${type}`);
         if (!response.ok) {
             throw new Error(`Failed to fetch ${type}`);
         }
-        
+
         const data = await response.json();
         setData(data);
     } catch (error) {

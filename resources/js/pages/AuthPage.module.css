@@ -112,7 +112,9 @@
     opacity: 0;
     max-height: 0;
     overflow: hidden;
-    transition: opacity 0.3s ease, max-height 0.3s ease;
+    transition:
+        opacity 0.3s ease,
+        max-height 0.3s ease;
 }
 
 .tabContent.active {
