@@ -36,7 +36,7 @@ export default function Header({ user }: HeaderProps): JSX.Element {
                 {user && (
                     <div className={styles.userInfoDesktop}>
                         <span className={styles.welcomeText}>Welcome, {user.name}</span>
-                        <span className={styles.bidderBadge}>Bidder #{user.bidder_number}</span>
+                        {user.bidder_number && <span className={styles.bidderBadge}>Bidder #{user.bidder_number}</span>}
 
                         <div className={styles.dropdownMenu}>
                             <button className={styles.dropdownButton} onClick={toggleDropdown} aria-haspopup="true" aria-expanded={dropdownOpen}>
@@ -44,9 +44,14 @@ export default function Header({ user }: HeaderProps): JSX.Element {
                             </button>
                             <div className={`${styles.dropdownContent} ${dropdownOpen ? styles.open : ""}`}>
                                 {user.role === "admin" && (
-                                    <Link href="/admin" className={styles.dropdownItem}>
-                                        Admin Dashboard
-                                    </Link>
+                                    <>
+                                        <Link href="/" className={styles.dropdownItem}>
+                                            Bidder Page
+                                        </Link>
+                                        <Link href="/admin" className={styles.dropdownItem}>
+                                            Admin Dashboard
+                                        </Link>
+                                    </>
                                 )}
                                 <button onClick={handleLogout} className={`${styles.dropdownItem} ${styles.logoutButton}`}>
                                     <LogOut size={16} className={styles.menuIcon} />
@@ -73,9 +78,14 @@ export default function Header({ user }: HeaderProps): JSX.Element {
                             </div>
                             <hr className={styles.divider} />
                             {user.role === "admin" && (
-                                <Link href="/admin" className={styles.menuLink}>
-                                    Admin Dashboard
-                                </Link>
+                                <>
+                                    <Link href="/" className={styles.menuLink}>
+                                        Bidding Page
+                                    </Link>
+                                    <Link href="/admin" className={styles.menuLink}>
+                                        Admin Dashboard
+                                    </Link>
+                                </>
                             )}
                             <button onClick={handleLogout} className={`${styles.menuButton} ${styles.logoutButton}`}>
                                 <LogOut size={16} className={styles.menuIcon} />

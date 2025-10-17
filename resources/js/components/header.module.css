@@ -203,7 +203,7 @@
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    padding: 0.5rem 1rem;
+    padding: 0.66rem 1.15rem;
     color: #6b7280;
     text-decoration: none;
     cursor: pointer;
@@ -215,7 +215,6 @@
     font-weight: 500;
     transition: all 0.2s ease;
     border-radius: 0.25rem;
-    margin: 0.125rem;
 }
 
 .dropdownItem:hover {

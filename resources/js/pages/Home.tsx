@@ -1,5 +1,5 @@
-import { type JSX, useState, useEffect } from "react";
-import { Head, router } from "@inertiajs/react";
+import { type JSX, useState } from "react";
+import { Head } from "@inertiajs/react";
 import Header from "@/components/Header";
 import MobileNavigation from "@/components/MobileNavigation";
 import AuctionItemCard from "@/components/AuctionItemCard";
@@ -23,13 +23,6 @@ export default function Home({ auth, auctionItems, userBids }: HomeProps): JSX.E
     const [searchQuery, setSearchQuery] = useState("");
     const [bidModalItem, setBidModalItem] = useState<AuctionItem | null>(null);
     const [buyNowModalItem, setBuyNowModalItem] = useState<AuctionItem | null>(null);
-
-    // Redirect admin users to the admin page
-    useEffect(() => {
-        if (auth.user?.role === "admin") {
-            router.visit("/admin");
-        }
-    }, [auth.user]);
 
     // Filter items by search query
     const filteredItems = auctionItems?.filter((item) => {
