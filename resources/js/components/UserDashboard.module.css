@@ -287,11 +287,21 @@
 
 /* Responsive */
 @media (max-width: 768px) {
-    .userGrid {
-        grid-template-columns: 1fr;
+    .userTable {
+        font-size: 0.75rem;
+    }
+    
+    .userTable th, .userTable td {
+        padding: 0.5rem;
     }
 
     .userDashboard {
         padding: 1rem;
+    }
+    
+    /* Stack action buttons vertically on small screens */
+    .actionsCell {
+        flex-direction: column;
+        gap: 0.25rem;
     }
 }

@@ -43,7 +43,9 @@ export interface AuctionItem {
     estimated_value?: number;
     status: "active" | "sold" | "unsold" | "draft";
     category?: string;
+    donor_id?: number;
     donor_name?: string;
+    donor?: User;
     is_donor_public?: boolean;
     item_number?: string;
     auction_type: "silent" | "live";

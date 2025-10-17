@@ -61,13 +61,16 @@ Route::middleware(['auth', 'admin'])->group(function () {
     })->name('admin');
 
     Route::get('/admin/items', function () {
-        $items = \App\Models\AuctionItem::with(['files', 'bids'])
+        $items = \App\Models\AuctionItem::with(['files', 'bids', 'donor'])
             ->orderBy('display_order')
             ->orderBy('name')
             ->get();
 
+        $users = \App\Models\User::all();
+
         return Inertia::render('ItemPage', [
             'auctionItems' => $items,
+            'users' => $users,
         ]);
     })->name('admin.items');
 

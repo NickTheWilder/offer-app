@@ -1,24 +1,31 @@
 import { useToast } from "@/hooks/use-toast";
 import { formatCurrency } from "@/lib/utils";
-import type { AuctionItem } from "@/types";
-import { router } from "@inertiajs/react";
+import type { AuctionItem, User } from "@/types";
 import { Edit, PlusCircle, Trash2 } from "lucide-react";
-import { type JSX, useState } from "react";
+import { type JSX, useState, useEffect } from "react";
 import styles from "./AdminDashboard.module.css";
 import { AuctionItemForm } from "./AuctionItemForm";
 import DeleteConfirmationModal from "./DeleteConfirmationModal";
 
 interface ItemDashboardProps {
     items: AuctionItem[];
+    users: User[];
+    onItemsUpdate?: (items: AuctionItem[]) => void;
 }
 
-export default function ItemDashboard({ items }: ItemDashboardProps): JSX.Element {
+export default function ItemDashboard({ items, users, onItemsUpdate }: ItemDashboardProps): JSX.Element {
     const { toast } = useToast();
+    const [localItems, setLocalItems] = useState<AuctionItem[]>(items);
     const [selectedItem, setSelectedItem] = useState<AuctionItem | null>(null);
     const [newItemMode, setNewItemMode] = useState(false);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [itemToDelete, setItemToDelete] = useState<AuctionItem | null>(null);
     const [isDeleting, setIsDeleting] = useState(false);
+
+    // Update local items when props change
+    useEffect(() => {
+        setLocalItems(items);
+    }, [items]);
 
     // Handle new item
     const handleAddItem = () => {
@@ -51,13 +58,22 @@ export default function ItemDashboard({ items }: ItemDashboardProps): JSX.Elemen
                 },
             });
 
+            // Update local items state
+            const newItems = localItems.filter(item => item.id !== itemToDelete.id);
+            setLocalItems(newItems);
+            
+            // Clear selection if deleted item was selected
+            if (selectedItem?.id === itemToDelete.id) {
+                setSelectedItem(null);
+                setNewItemMode(false);
+            }
+            
+            onItemsUpdate?.(newItems);
+
             toast({
                 title: "Item deleted",
                 description: `"${itemToDelete.name}" has been deleted successfully.`,
             });
-
-            // Refresh the page data
-            router.reload();
         } catch (error: unknown) {
             console.error("Failed to delete auction item", error);
             toast({
@@ -79,10 +95,28 @@ export default function ItemDashboard({ items }: ItemDashboardProps): JSX.Elemen
     };
 
     // Handle form success
-    const handleFormSuccess = () => {
-        setNewItemMode(false);
-        setSelectedItem(null);
-        router.reload();
+    const handleFormSuccess = (updatedItem: AuctionItem) => {
+        if (newItemMode) {
+            // Adding new item
+            const newItems = [...localItems, updatedItem];
+            setLocalItems(newItems);
+            setSelectedItem(updatedItem);
+            setNewItemMode(false);
+            onItemsUpdate?.(newItems);
+        } else {
+            // Updating existing item
+            const newItems = localItems.map(item => 
+                item.id === updatedItem.id ? updatedItem : item
+            );
+            setLocalItems(newItems);
+            setSelectedItem(updatedItem);
+            onItemsUpdate?.(newItems);
+        }
+        
+        toast({
+            title: newItemMode ? "Item created" : "Item updated",
+            description: `"${updatedItem.name}" has been ${newItemMode ? "created" : "updated"} successfully.`,
+        });
     };
 
     return (
@@ -100,7 +134,7 @@ export default function ItemDashboard({ items }: ItemDashboardProps): JSX.Elemen
                         </div>
 
                         <div className={styles.itemList}>
-                            {!items || items.length === 0 ? (
+                            {!localItems || localItems.length === 0 ? (
                                 <div className={styles.emptyState}>
                                     <div className={styles.emptyIconContainer}>
                                         <PlusCircle className={styles.emptyIcon} />
@@ -112,7 +146,7 @@ export default function ItemDashboard({ items }: ItemDashboardProps): JSX.Elemen
                                 </div>
                             ) : (
                                 <>
-                                    {items.map((item) => (
+                                    {localItems.map((item) => (
                                         <div key={item.id} className={`${styles.itemCard} ${selectedItem?.id === item.id ? styles.selectedCard : ""}`} onClick={() => handleEditItem(item)}>
                                             <div className={styles.itemCardContent}>
                                                 <div className={styles.itemImage}>{item.files && item.files.length > 0 ? <img src={item.files[0]?.url || ""} alt={item.name} /> : <div className={styles.noImage}>No Image</div>}</div>
@@ -151,7 +185,7 @@ export default function ItemDashboard({ items }: ItemDashboardProps): JSX.Elemen
                     {/* Main content - Item Form */}
                     <div className={styles.mainContent}>
                         {selectedItem || newItemMode ? (
-                            <AuctionItemForm key={selectedItem?.id || "new"} selectedItem={selectedItem} onSuccess={handleFormSuccess} />
+                            <AuctionItemForm key={selectedItem?.id || "new"} selectedItem={selectedItem} users={users} onSuccess={handleFormSuccess} />
                         ) : (
                             <div className={styles.noSelection}>
                                 <div className={styles.noSelectionContent}>

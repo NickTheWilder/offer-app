@@ -49,6 +49,7 @@ class AuctionItemController extends Controller
             'estimated_value' => ['nullable', 'numeric', 'min:0'],
             'category' => ['nullable', 'string', 'max:100'],
             'auction_type' => ['required', 'in:silent,live'],
+            'donor_id' => ['nullable', 'exists:users,id'],
             'donor_name' => ['required', 'string', 'max:255'],
             'is_donor_public' => ['boolean'],
             'status' => ['required', 'in:draft,active,closed,paid,cancelled'],
@@ -83,8 +84,14 @@ class AuctionItemController extends Controller
             }
         }
 
-        return redirect()->back()
-            ->with('success', 'Auction item created successfully!');
+        // Load the created item with relationships for the response
+        $auctionItem->load(['files', 'bids', 'donor']);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Auction item created successfully!',
+            'item' => $auctionItem
+        ]);
     }
 
     /**
@@ -128,6 +135,7 @@ class AuctionItemController extends Controller
             'estimated_value' => ['nullable', 'numeric', 'min:0'],
             'category' => ['nullable', 'string', 'max:100'],
             'auction_type' => ['required', 'in:silent,live'],
+            'donor_id' => ['nullable', 'exists:users,id'],
             'donor_name' => ['required', 'string', 'max:255'],
             'is_donor_public' => ['boolean'],
             'status' => ['required', 'in:draft,active,closed,paid,cancelled'],
@@ -183,8 +191,14 @@ class AuctionItemController extends Controller
             }
         }
 
-        return redirect()->back()
-            ->with('success', 'Auction item updated successfully!');
+        // Load the updated item with relationships for the response
+        $auctionItem->load(['files', 'bids', 'donor']);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Auction item updated successfully!',
+            'item' => $auctionItem
+        ]);
     }
 
     /**

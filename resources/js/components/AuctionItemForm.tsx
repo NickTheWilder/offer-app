@@ -1,7 +1,7 @@
 import { type JSX, FormEvent } from "react";
 import { useForm } from "@inertiajs/react";
 import styles from "./AdminDashboard.module.css";
-import type { AuctionItem } from "@/types";
+import type { AuctionItem, User } from "@/types";
 import { FormInput } from "./fields/form-input";
 import { FormTextarea } from "./fields/form-textarea";
 import { FormCurrencyInput } from "./fields/form-currency-input";
@@ -10,10 +10,11 @@ import FormFileUpload from "./fields/form-file-upload";
 
 interface AuctionItemFormProps {
     selectedItem: AuctionItem | null;
-    onSuccess: () => void;
+    users: User[];
+    onSuccess: (updatedItem: AuctionItem) => void;
 }
 
-export function AuctionItemForm({ selectedItem, onSuccess }: AuctionItemFormProps): JSX.Element {
+export function AuctionItemForm({ selectedItem, users, onSuccess }: AuctionItemFormProps): JSX.Element {
     const form = useForm({
         name: selectedItem?.name || "",
         description: selectedItem?.description || "",
@@ -22,6 +23,7 @@ export function AuctionItemForm({ selectedItem, onSuccess }: AuctionItemFormProp
         buy_now_price: selectedItem?.buy_now_price,
         estimated_value: selectedItem?.estimated_value,
         category: selectedItem?.category || "",
+        donor_id: selectedItem?.donor_id || null,
         donor_name: selectedItem?.donor_name || "",
         is_donor_public: selectedItem?.is_donor_public || false,
         auction_type: selectedItem?.auction_type || "silent",
@@ -44,6 +46,9 @@ export function AuctionItemForm({ selectedItem, onSuccess }: AuctionItemFormProp
         formData.append("auction_type", form.data.auction_type);
         formData.append("status", form.data.status);
         formData.append("category", form.data.category);
+        if (form.data.donor_id) {
+            formData.append("donor_id", form.data.donor_id.toString());
+        }
         formData.append("donor_name", form.data.donor_name);
         formData.append("is_donor_public", form.data.is_donor_public ? "1" : "0");
 
@@ -76,18 +81,37 @@ export function AuctionItemForm({ selectedItem, onSuccess }: AuctionItemFormProp
             },
             body: formData,
         })
-            .then((response) => {
-                if (response.ok) {
-                    onSuccess();
+            .then(async (response) => {
+                const data = await response.json();
+                
+                if (response.ok && data.success) {
+                    // Update form data with the returned item
+                    if (data.item) {
+                        form.setData({
+                            name: data.item.name,
+                            description: data.item.description,
+                            starting_bid: data.item.starting_bid,
+                            minimum_bid_increment: data.item.minimum_bid_increment,
+                            buy_now_price: data.item.buy_now_price,
+                            estimated_value: data.item.estimated_value,
+                            category: data.item.category,
+                            donor_id: data.item.donor_id,
+                            donor_name: data.item.donor_name,
+                            is_donor_public: data.item.is_donor_public,
+                            auction_type: data.item.auction_type,
+                            status: data.item.status,
+                            restrictions: data.item.restrictions,
+                            files: null, // Reset files after successful upload
+                        });
+                    }
+                    onSuccess(data.item);
                 } else {
-                    response.json().then((data) => {
-                        // Handle validation errors
-                        if (data.errors) {
-                            Object.keys(data.errors).forEach((key) => {
-                                form.setError(key as keyof typeof form.data, data.errors[key][0]);
-                            });
-                        }
-                    });
+                    // Handle validation errors
+                    if (data.errors) {
+                        Object.keys(data.errors).forEach((key) => {
+                            form.setError(key as keyof typeof form.data, data.errors[key][0]);
+                        });
+                    }
                 }
             })
             .catch((error) => {
@@ -193,9 +217,25 @@ export function AuctionItemForm({ selectedItem, onSuccess }: AuctionItemFormProp
 
                         <div className={styles.formGroup}>
                             <label className={styles.formLabel}>
-                                Donor Name<span className={styles.requiredMark}>*</span>
+                                Donor<span className={styles.requiredMark}>*</span>
                             </label>
-                            <FormInput value={form.data.donor_name} onChange={(value) => form.setData("donor_name", value)} placeholder="John Smith" errors={form.errors.donor_name ? [form.errors.donor_name] : []} />
+                            <FormSelect 
+                                value={form.data.donor_id?.toString() || ""} 
+                                onChange={(value: string) => {
+                                    const donorId = value ? parseInt(value) : null;
+                                    const selectedUser = users.find(u => u.id === donorId);
+                                    form.setData("donor_id", donorId);
+                                    form.setData("donor_name", selectedUser?.name || "");
+                                }} 
+                                errors={form.errors.donor_id ? [form.errors.donor_id] : []}
+                            >
+                                <option value="">Select a donor...</option>
+                                {users.map((user) => (
+                                    <option key={user.id} value={user.id}>
+                                        {user.name} ({user.email})
+                                    </option>
+                                ))}
+                            </FormSelect>
                         </div>
 
                         <div className={styles.formGroup}>
