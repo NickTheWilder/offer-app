@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuctionItemController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BidController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -100,4 +101,8 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::put('/auction-items/{id}', [AuctionItemController::class, 'update'])->name('auction-items.update');
     Route::delete('/auction-items/{id}', [AuctionItemController::class, 'destroy'])->name('auction-items.destroy');
     Route::get('/auction-items/create', [AuctionItemController::class, 'create'])->name('auction-items.create');
+
+    // User management
+    Route::get('/admin/users/{id}', [UserController::class, 'show'])->name('admin.users.show');
+    Route::put('/admin/users/{id}', [UserController::class, 'update'])->name('admin.users.update');
 });

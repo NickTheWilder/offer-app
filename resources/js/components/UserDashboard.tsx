@@ -1,4 +1,5 @@
 import { type JSX, useState, useMemo } from "react";
+import { router } from "@inertiajs/react";
 import styles from "./UserDashboard.module.css";
 import { User } from "@/types";
 
@@ -120,9 +121,7 @@ export function UserDashboard({ users = [] }: { users: User[] }): JSX.Element {
                                                 <button
                                                     className={`${styles.actionButton} ${styles.view}`}
                                                     title="View details"
-                                                    onClick={() => {
-                                                        console.log("View user:", user.id);
-                                                    }}
+                                                    onClick={() => router.visit(`/admin/users/${user.id}`)}
                                                 >
                                                     <svg className={styles.actionIcon} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -132,9 +131,7 @@ export function UserDashboard({ users = [] }: { users: User[] }): JSX.Element {
                                                 <button
                                                     className={`${styles.actionButton} ${styles.edit}`}
                                                     title="Edit user"
-                                                    onClick={() => {
-                                                        console.log("Edit user:", user.id);
-                                                    }}
+                                                    onClick={() => router.visit(`/admin/users/${user.id}?edit=true`)}
                                                 >
                                                     <svg className={styles.actionIcon} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />

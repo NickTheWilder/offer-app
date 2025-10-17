@@ -34,6 +34,6 @@ You are assisting with the development of a church bazaar auction software MVP d
 
 ## Code Quality Preferences
 - **Pass only the minimum required parameters to functions** - don't pass entire objects when only specific properties/methods are needed
-- **Always run `bun lint` and `bun check` after making changes** - fix all errors and warnings before considering work complete. This is mandatory, not optional.
+- **Always run `bun lint` and `bun types` after making changes** - fix all errors and warnings before considering work complete. This is mandatory, not optional.
 - **Use meaningful variable names** - avoid single-letter variables and descriptive names for functions and classes
 - **Follow the DRY principle** - avoid repeating code and use abstractions where possible

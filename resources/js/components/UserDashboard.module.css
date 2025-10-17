@@ -2,6 +2,10 @@
 .userDashboard {
     background-color: #f9fafb;
     min-height: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
 }
 
 .dashboardHeader {
@@ -26,6 +30,8 @@
     padding: 1rem;
     background-color: white;
     border-bottom: 1px solid #e5e7eb;
+    flex-shrink: 0;
+    border-top: 1px solid #e5e7eb;
 }
 
 .searchInputWrapper {
@@ -96,14 +102,17 @@
 /* Table Container */
 .tableContainer {
     background-color: white;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-    border: 1px solid #e5e7eb;
     overflow: hidden;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
 }
 
 /* Table Wrapper for Horizontal Scroll */
 .tableWrapper {
     overflow-x: auto;
+    overflow-y: auto;
+    flex: 1;
 }
 
 /* Table Styles */
@@ -241,9 +250,9 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     background-color: white;
-    border-radius: 0.5rem;
-    border: 1px solid #e5e7eb;
+    flex: 1;
 }
 
 .emptyIconContainer {

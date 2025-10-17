@@ -23,7 +23,11 @@ interface DataState {
 }
 
 export default function AdminDashboard(): JSX.Element {
-    const [activeAdminTab, setActiveAdminTab] = useState("items");
+    // Check for tab query parameter
+    const urlParams = new URLSearchParams(window.location.search);
+    const initialTab = urlParams.get("tab") || "items";
+
+    const [activeAdminTab, setActiveAdminTab] = useState(initialTab);
     const [loading, setLoading] = useState<LoadingState>({
         items: false,
         donors: false,
@@ -88,6 +92,10 @@ export default function AdminDashboard(): JSX.Element {
         async (tab: string) => {
             setActiveAdminTab(tab);
 
+            if (window.location.search) {
+                window.history.replaceState({}, "", "/admin");
+            }
+
             switch (tab) {
                 case "items":
                     await fetchItems();
@@ -106,10 +114,25 @@ export default function AdminDashboard(): JSX.Element {
         [fetchItems, fetchDonors, fetchUsers, fetchReports]
     );
 
-    // First load, fetch items
+    // First load, fetch data based on initial tab
     useEffect(() => {
-        fetchItems();
-    }, [fetchItems]);
+        switch (initialTab) {
+            case "items":
+                fetchItems();
+                break;
+            case "donors":
+                fetchDonors();
+                break;
+            case "users":
+                fetchUsers();
+                break;
+            case "reports":
+                fetchReports();
+                break;
+            default:
+                fetchItems();
+        }
+    }, [initialTab, fetchItems, fetchDonors, fetchUsers, fetchReports]);
 
     return (
         <div className={styles.adminLayout}>
