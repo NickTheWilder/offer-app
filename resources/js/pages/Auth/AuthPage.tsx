@@ -1,4 +1,4 @@
-import React, { type JSX, useState, FormEvent } from "react";
+import { type JSX, useState, FormEvent } from "react";
 import { Head, useForm, router } from "@inertiajs/react";
 import { Loader2, Church } from "lucide-react";
 import styles from "./AuthPage.module.css";

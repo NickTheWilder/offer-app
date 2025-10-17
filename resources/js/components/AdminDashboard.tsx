@@ -1,108 +1,122 @@
-import { useToast } from "@/hooks/use-toast";
-import { formatCurrency } from "@/lib/utils";
-import type { AuctionItem } from "@/types";
-import { router } from "@inertiajs/react";
-import { Edit, PlusCircle, Trash2 } from "lucide-react";
-import { type JSX, useState } from "react";
+import { type JSX, useState, useCallback } from "react";
+import { Loader2 } from "lucide-react";
 import styles from "./AdminDashboard.module.css";
-import { AuctionItemForm } from "./AuctionItemForm";
 import { DonorDashboard } from "./DonorDashboard";
 import { ReportDashboard } from "./ReportDashboard";
 import { UserDashboard } from "./UserDashboard";
-import DeleteConfirmationModal from "./DeleteConfirmationModal";
+import ItemDashboard from "./ItemDashboard";
+import type { AuctionItem } from "@/types";
+import { fetchAdminData } from "@/utils/adminApi";
 
-interface AdminDashboardProps {
-    items: AuctionItem[];
+interface LoadingState {
+    items: boolean;
+    donors: boolean;
+    users: boolean;
+    reports: boolean;
 }
 
-export default function AdminDashboard({ items }: AdminDashboardProps): JSX.Element {
-    const { toast } = useToast();
-    const [activeAdminTab, setActiveAdminTab] = useState("items");
-    const [selectedItem, setSelectedItem] = useState<AuctionItem | null>(null);
-    const [newItemMode, setNewItemMode] = useState(false);
-    const [showDeleteModal, setShowDeleteModal] = useState(false);
-    const [itemToDelete, setItemToDelete] = useState<AuctionItem | null>(null);
-    const [isDeleting, setIsDeleting] = useState(false);
+interface DataState {
+    items: AuctionItem[] | null;
+    donors: unknown[] | null;
+    users: unknown[] | null;
+    reports: unknown[] | null;
+}
 
-    // Handle new item
-    const handleAddItem = () => {
-        setSelectedItem(null);
-        setNewItemMode(true);
-    };
+export default function AdminDashboard(): JSX.Element {
+    const [activeAdminTab, setActiveAdminTab] = useState("donors");
+    const [loading, setLoading] = useState<LoadingState>({
+        items: false,
+        donors: false,
+        users: false,
+        reports: false,
+    });
+    const [data, setData] = useState<DataState>({
+        items: null,
+        donors: null,
+        users: null,
+        reports: null,
+    });
+    const [errors, setErrors] = useState<Record<string, string>>({});
 
-    // Handle edit item
-    const handleEditItem = (item: AuctionItem) => {
-        setSelectedItem(item);
-        setNewItemMode(false);
-    };
+    // Data fetching functions using the utility
+    const fetchItems = useCallback(async () => {
+        await fetchAdminData({
+            type: 'items',
+            currentData: data.items,
+            isLoading: loading.items,
+            setLoading: (isLoading) => setLoading(prev => ({ ...prev, items: isLoading })),
+            setData: (items) => setData(prev => ({ ...prev, items })),
+            setError: (error) => setErrors(prev => ({ ...prev, items: error })),
+        });
+    }, [data.items, loading.items]);
 
-    // Handle delete button click
-    const handleDeleteClick = (item: AuctionItem) => {
-        setItemToDelete(item);
-        setShowDeleteModal(true);
-    };
+    const fetchDonors = useCallback(async () => {
+        await fetchAdminData({
+            type: 'donors',
+            currentData: data.donors,
+            isLoading: loading.donors,
+            setLoading: (isLoading) => setLoading(prev => ({ ...prev, donors: isLoading })),
+            setData: (donors) => setData(prev => ({ ...prev, donors })),
+            setError: (error) => setErrors(prev => ({ ...prev, donors: error })),
+        });
+    }, [data.donors, loading.donors]);
 
-    // Handle confirmed deletion
-    const handleDeleteConfirm = async () => {
-        if (!itemToDelete) return;
+    const fetchUsers = useCallback(async () => {
+        await fetchAdminData({
+            type: 'users',
+            currentData: data.users,
+            isLoading: loading.users,
+            setLoading: (isLoading) => setLoading(prev => ({ ...prev, users: isLoading })),
+            setData: (users) => setData(prev => ({ ...prev, users })),
+            setError: (error) => setErrors(prev => ({ ...prev, users: error })),
+        });
+    }, [data.users, loading.users]);
 
-        setIsDeleting(true);
-        try {
-            await fetch(`/auction-items/${itemToDelete.id}`, {
-                method: "DELETE",
-                headers: {
-                    "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]')?.getAttribute("content") || "",
-                },
-            });
+    const fetchReports = useCallback(async () => {
+        await fetchAdminData({
+            type: 'reports',
+            currentData: data.reports,
+            isLoading: loading.reports,
+            setLoading: (isLoading) => setLoading(prev => ({ ...prev, reports: isLoading })),
+            setData: (reports) => setData(prev => ({ ...prev, reports })),
+            setError: (error) => setErrors(prev => ({ ...prev, reports: error })),
+        });
+    }, [data.reports, loading.reports]);
 
-            toast({
-                title: "Item deleted",
-                description: `"${itemToDelete.name}" has been deleted successfully.`,
-            });
-
-            // Refresh the page data
-            router.reload();
-        } catch (error: unknown) {
-            console.error("Failed to delete auction item", error);
-            toast({
-                title: "Error",
-                description: "Failed to delete auction item",
-                variant: "destructive",
-            });
-        } finally {
-            setIsDeleting(false);
-            setShowDeleteModal(false);
-            setItemToDelete(null);
+    // Handle tab changes with data fetching
+    const handleTabChange = useCallback(async (tab: string) => {
+        setActiveAdminTab(tab);
+        
+        switch (tab) {
+            case 'items':
+                await fetchItems();
+                break;
+            case 'donors':
+                await fetchDonors();
+                break;
+            case 'users':
+                await fetchUsers();
+                break;
+            case 'reports':
+                await fetchReports();
+                break;
         }
-    };
-
-    // Handle delete modal close
-    const handleDeleteCancel = () => {
-        setShowDeleteModal(false);
-        setItemToDelete(null);
-    };
-
-    // Handle form success
-    const handleFormSuccess = () => {
-        setNewItemMode(false);
-        setSelectedItem(null);
-        router.reload();
-    };
+    }, [fetchItems, fetchDonors, fetchUsers, fetchReports]);
 
     return (
         <div className={styles.adminLayout}>
             {/* Admin Tabs */}
             <div className={styles.tabsList}>
-                <button onClick={() => setActiveAdminTab("items")} className={`${styles.tabTrigger} ${activeAdminTab === "items" ? styles.active : ""}`}>
+                <button onClick={() => handleTabChange("items")} className={`${styles.tabTrigger} ${activeAdminTab === "items" ? styles.active : ""}`}>
                     Items
                 </button>
-                <button onClick={() => setActiveAdminTab("donors")} className={`${styles.tabTrigger} ${activeAdminTab === "donors" ? styles.active : ""}`}>
+                <button onClick={() => handleTabChange("donors")} className={`${styles.tabTrigger} ${activeAdminTab === "donors" ? styles.active : ""}`}>
                     Donors
                 </button>
-                <button onClick={() => setActiveAdminTab("users")} className={`${styles.tabTrigger} ${activeAdminTab === "users" ? styles.active : ""}`}>
+                <button onClick={() => handleTabChange("users")} className={`${styles.tabTrigger} ${activeAdminTab === "users" ? styles.active : ""}`}>
                     Users
                 </button>
-                <button onClick={() => setActiveAdminTab("reports")} className={`${styles.tabTrigger} ${activeAdminTab === "reports" ? styles.active : ""}`}>
+                <button onClick={() => handleTabChange("reports")} className={`${styles.tabTrigger} ${activeAdminTab === "reports" ? styles.active : ""}`}>
                     Reports
                 </button>
             </div>
@@ -110,111 +124,79 @@ export default function AdminDashboard({ items }: AdminDashboardProps): JSX.Elem
             {/* Main content area */}
             <div className={styles.adminContent}>
                 {activeAdminTab === "items" ? (
-                    <div className={styles.splitLayout}>
-                        {/* Sidebar - Item List */}
-                        <div className={styles.sidebar}>
-                            <div className={styles.sidebarHeader}>
-                                <h2 className={styles.sidebarTitle}>Auction Items</h2>
-                                <button className={styles.addButton} onClick={handleAddItem}>
-                                    <PlusCircle className={styles.plusIcon} />
-                                    Add New
+                    <>
+                        {loading.items ? (
+                            <div className={styles.loadingContainer}>
+                                <Loader2 className={styles.loadingSpinner} />
+                                <p>Loading items...</p>
+                            </div>
+                        ) : errors.items ? (
+                            <div className={styles.errorContainer}>
+                                <p className={styles.errorText}>Error: {errors.items}</p>
+                                <button onClick={fetchItems} className={styles.retryButton}>
+                                    Retry
                                 </button>
                             </div>
-
-                            <div className={styles.itemList}>
-                                {!items || items.length === 0 ? (
-                                    <div className={styles.emptyState}>
-                                        <div className={styles.emptyIconContainer}>
-                                            <PlusCircle className={styles.emptyIcon} />
-                                        </div>
-                                        <p className={styles.emptyText}>No auction items yet</p>
-                                        <button className={styles.addButton} onClick={handleAddItem}>
-                                            Add New Item
-                                        </button>
-                                    </div>
-                                ) : (
-                                    <>
-                                        {items.map((item) => (
-                                            <div key={item.id} className={`${styles.itemCard} ${selectedItem?.id === item.id ? styles.selectedCard : ""}`} onClick={() => handleEditItem(item)}>
-                                                <div className={styles.itemCardContent}>
-                                                    <div className={styles.itemImage}>{item.files && item.files.length > 0 ? <img src={item.files[0]?.url || ""} alt={item.name} /> : <div className={styles.noImage}>No Image</div>}</div>
-                                                    <div className={styles.itemInfo}>
-                                                        <h3 className={styles.itemName}>{item.name}</h3>
-                                                        <p className={styles.itemPrice}>{formatCurrency(item.starting_bid)}</p>
-                                                    </div>
-                                                </div>
-                                                <div className={styles.itemActions}>
-                                                    <button
-                                                        className={styles.editButton}
-                                                        onClick={(e) => {
-                                                            e.stopPropagation();
-                                                            handleEditItem(item);
-                                                        }}
-                                                    >
-                                                        <Edit className={styles.actionIcon} />
-                                                    </button>
-                                                    <button
-                                                        className={styles.deleteButton}
-                                                        onClick={(e) => {
-                                                            e.stopPropagation();
-                                                            handleDeleteClick(item);
-                                                        }}
-                                                    >
-                                                        <Trash2 className={styles.actionIcon} />
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        ))}
-                                    </>
-                                )}
-                            </div>
-                        </div>
-
-                        {/* Main content - Item Form */}
-                        <div className={styles.mainContent}>
-                            {selectedItem || newItemMode ? (
-                                <AuctionItemForm key={selectedItem?.id || "new"} selectedItem={selectedItem} onSuccess={handleFormSuccess} />
-                            ) : (
-                                <div className={styles.noSelection}>
-                                    <div className={styles.noSelectionContent}>
-                                        <h3 className={styles.noSelectionTitle}>No Item Selected</h3>
-                                        <p className={styles.noSelectionText}>Select an item from the list or add a new one to get started.</p>
-                                        <div
-                                            style={{
-                                                display: "flex",
-                                                justifyContent: "center",
-                                                alignItems: "center",
-                                            }}
-                                        >
-                                            <button className={styles.addButton} onClick={handleAddItem}>
-                                                <PlusCircle className={styles.plusIcon} />
-                                                Add New Item
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            )}
-                        </div>
-                    </div>
+                        ) : (
+                            <ItemDashboard items={data.items || []} />
+                        )}
+                    </>
                 ) : activeAdminTab === "donors" ? (
-                    <DonorDashboard />
+                    <>
+                        {loading.donors ? (
+                            <div className={styles.loadingContainer}>
+                                <Loader2 className={styles.loadingSpinner} />
+                                <p>Loading donors...</p>
+                            </div>
+                        ) : errors.donors ? (
+                            <div className={styles.errorContainer}>
+                                <p className={styles.errorText}>Error: {errors.donors}</p>
+                                <button onClick={fetchDonors} className={styles.retryButton}>
+                                    Retry
+                                </button>
+                            </div>
+                        ) : (
+                            <DonorDashboard />
+                        )}
+                    </>
                 ) : activeAdminTab === "users" ? (
-                    <UserDashboard />
+                    <>
+                        {loading.users ? (
+                            <div className={styles.loadingContainer}>
+                                <Loader2 className={styles.loadingSpinner} />
+                                <p>Loading users...</p>
+                            </div>
+                        ) : errors.users ? (
+                            <div className={styles.errorContainer}>
+                                <p className={styles.errorText}>Error: {errors.users}</p>
+                                <button onClick={fetchUsers} className={styles.retryButton}>
+                                    Retry
+                                </button>
+                            </div>
+                        ) : (
+                            <UserDashboard />
+                        )}
+                    </>
                 ) : (
-                    <ReportDashboard />
+                    <>
+                        {loading.reports ? (
+                            <div className={styles.loadingContainer}>
+                                <Loader2 className={styles.loadingSpinner} />
+                                <p>Loading reports...</p>
+                            </div>
+                        ) : errors.reports ? (
+                            <div className={styles.errorContainer}>
+                                <p className={styles.errorText}>Error: {errors.reports}</p>
+                                <button onClick={fetchReports} className={styles.retryButton}>
+                                    Retry
+                                </button>
+                            </div>
+                        ) : (
+                            <ReportDashboard />
+                        )}
+                    </>
                 )}
             </div>
-
-            {/* Delete Confirmation Modal */}
-            <DeleteConfirmationModal
-                isOpen={showDeleteModal}
-                onClose={handleDeleteCancel}
-                onConfirm={handleDeleteConfirm}
-                title="Delete Auction Item"
-                message="Are you sure you want to delete this auction item? This action cannot be undone and will remove all associated bids."
-                itemName={itemToDelete?.name}
-                isLoading={isDeleting}
-            />
         </div>
     );
 }

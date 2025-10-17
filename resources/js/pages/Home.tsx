@@ -1,4 +1,4 @@
-import React, { type JSX, useState, useEffect } from "react";
+import { type JSX, useState, useEffect } from "react";
 import { Head, router } from "@inertiajs/react";
 import Header from "@/components/Header";
 import MobileNavigation from "@/components/MobileNavigation";

@@ -1,4 +1,4 @@
-import React, { type JSX, useState } from "react";
+import { type JSX, useState } from "react";
 import { Link, router } from "@inertiajs/react";
 import { ChevronDown, LogOut, Menu, X, Church } from "lucide-react";
 import { User } from "@/types";

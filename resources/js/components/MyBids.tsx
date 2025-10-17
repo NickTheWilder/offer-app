@@ -1,4 +1,4 @@
-import React, { type JSX } from "react";
+import { type JSX } from "react";
 import { Link } from "@inertiajs/react";
 import { Loader2 } from "lucide-react";
 import styles from "./MyBids.module.css";

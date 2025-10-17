@@ -1,4 +1,4 @@
-import React, { type JSX } from "react";
+import { type JSX } from "react";
 import { Trash2, AlertTriangle } from "lucide-react";
 import styles from "./DeleteConfirmationModal.module.css";
 

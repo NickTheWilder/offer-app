@@ -1,4 +1,4 @@
-import React, { type JSX } from "react";
+import { type JSX } from "react";
 import styles from "../AdminDashboard.module.css";
 
 interface FormInputProps {

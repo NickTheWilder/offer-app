@@ -2,13 +2,15 @@ import { type JSX, useEffect } from "react";
 import { Head, router } from "@inertiajs/react";
 import { Loader2 } from "lucide-react";
 import Header from "@/components/Header";
-import AdminDashboard from "@/components/AdminDashboard";
-import type { PageProps } from "@/types";
+import ItemDashboard from "@/components/ItemDashboard";
+import type { PageProps, AuctionItem } from "@/types";
 import styles from "./AdminPage.module.css";
 
-type AdminPageProps = PageProps;
+type ItemPageProps = PageProps<{
+    auctionItems: AuctionItem[];
+}>;
 
-export default function AdminPage({ auth }: AdminPageProps): JSX.Element {
+export default function ItemPage({ auth, auctionItems }: ItemPageProps): JSX.Element {
     // Redirect non-admin users to the home page
     useEffect(() => {
         if (auth.user && auth.user.role !== "admin") {
@@ -27,12 +29,12 @@ export default function AdminPage({ auth }: AdminPageProps): JSX.Element {
 
     return (
         <>
-            <Head title="Admin Dashboard" />
+            <Head title="Item Dashboard" />
             <div className={styles.adminPage}>
                 <Header user={auth.user} />
 
                 <main className={styles.mainContent}>
-                    <AdminDashboard />
+                    <ItemDashboard items={auctionItems} />
                 </main>
             </div>
         </>

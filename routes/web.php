@@ -56,15 +56,43 @@ Route::middleware(['auth'])->group(function () {
 // Admin routes - require authentication and admin role
 Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin', function () {
+        return Inertia::render('AdminPage');
+    })->name('admin');
+
+    Route::get('/admin/items', function () {
         $items = \App\Models\AuctionItem::with(['files', 'bids'])
             ->orderBy('display_order')
             ->orderBy('name')
             ->get();
 
-        return Inertia::render('AdminPage', [
+        return Inertia::render('ItemPage', [
             'auctionItems' => $items,
         ]);
-    })->name('admin');
+    })->name('admin.items');
+
+    // API endpoints for lazy loading admin data
+    Route::get('/api/admin/items', function () {
+        $items = \App\Models\AuctionItem::with(['files', 'bids'])
+            ->orderBy('display_order')
+            ->orderBy('name')
+            ->get();
+        return response()->json($items);
+    });
+
+    Route::get('/api/admin/donors', function () {
+        // For now, return empty array since we don't have donor models yet
+        return response()->json([]);
+    });
+
+    Route::get('/api/admin/users', function () {
+        // For now, return empty array since we don't have user management yet
+        return response()->json([]);
+    });
+
+    Route::get('/api/admin/reports', function () {
+        // For now, return empty array since we don't have reports yet
+        return response()->json([]);
+    });
 
     // Auction item management (except index and show which are public)
     Route::post('/auction-items', [AuctionItemController::class, 'store'])->name('auction-items.store');

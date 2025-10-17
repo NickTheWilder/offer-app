@@ -1,4 +1,4 @@
-import React, { type JSX, FormEvent } from "react";
+import { type JSX, FormEvent } from "react";
 import { useForm } from "@inertiajs/react";
 import styles from "./AdminDashboard.module.css";
 import type { AuctionItem } from "@/types";

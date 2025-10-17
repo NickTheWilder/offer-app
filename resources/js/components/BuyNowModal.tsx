@@ -1,4 +1,4 @@
-import React, { type JSX } from "react";
+import { type JSX } from "react";
 import { useForm } from "@inertiajs/react";
 import { useToast } from "@/hooks/use-toast";
 import { Loader2, ShoppingCart } from "lucide-react";

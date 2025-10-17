@@ -1,4 +1,4 @@
-import React, { type JSX, useState, useEffect, FormEvent } from "react";
+import { type JSX, useState, useEffect, FormEvent } from "react";
 import { router } from "@inertiajs/react";
 import { useToast } from "@/hooks/use-toast";
 import { Loader2 } from "lucide-react";
