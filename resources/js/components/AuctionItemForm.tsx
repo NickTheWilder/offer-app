@@ -1,4 +1,4 @@
-import { type JSX, FormEvent } from "react";
+import { type JSX, FormEvent, useState } from "react";
 import { useForm } from "@inertiajs/react";
 import styles from "./AdminDashboard.module.css";
 import type { AuctionItem, User } from "@/types";
@@ -15,6 +15,8 @@ interface AuctionItemFormProps {
 }
 
 export function AuctionItemForm({ selectedItem, users, onSuccess }: AuctionItemFormProps): JSX.Element {
+    const [filesToRemove, setFilesToRemove] = useState<string[]>([]);
+
     const form = useForm({
         name: selectedItem?.name || "",
         description: selectedItem?.description || "",
@@ -69,6 +71,13 @@ export function AuctionItemForm({ selectedItem, users, onSuccess }: AuctionItemF
             });
         }
 
+        // Add files to remove if any
+        if (filesToRemove.length > 0) {
+            filesToRemove.forEach((fileId, index) => {
+                formData.append(`remove_files[${index}]`, fileId);
+            });
+        }
+
         if (selectedItem) {
             formData.append("_method", "PUT");
         }
@@ -104,6 +113,7 @@ export function AuctionItemForm({ selectedItem, users, onSuccess }: AuctionItemF
                             files: null, // Reset files after successful upload
                         });
                     }
+                    setFilesToRemove([]); // Clear files to remove
                     onSuccess(data.item);
                 } else {
                     // Handle validation errors
@@ -197,18 +207,21 @@ export function AuctionItemForm({ selectedItem, users, onSuccess }: AuctionItemF
                                 label="Item Images"
                                 value={form.data.files}
                                 existingFiles={
-                                    selectedItem?.files?.map((f) => ({
-                                        id: f.id.toString(),
-                                        fileName: f.file_name,
-                                        originalFileName: f.original_file_name,
-                                        contentType: f.content_type,
-                                        fileSize: f.file_size,
-                                        uploadedAt: f.created_at,
-                                        isPrimary: f.is_primary,
-                                        dataUrl: f.url,
-                                    })) || null
+                                    selectedItem?.files
+                                        ?.filter((f) => !filesToRemove.includes(f.id.toString()))
+                                        .map((f) => ({
+                                            id: f.id.toString(),
+                                            fileName: f.file_name,
+                                            originalFileName: f.original_file_name,
+                                            contentType: f.content_type,
+                                            fileSize: f.file_size,
+                                            uploadedAt: f.created_at,
+                                            isPrimary: f.is_primary,
+                                            dataUrl: f.url,
+                                        })) || null
                                 }
                                 onChange={(files) => form.setData("files", files)}
+                                onRemoveExisting={(fileId) => setFilesToRemove([...filesToRemove, fileId])}
                                 error={form.errors.files as string}
                                 multiple={true}
                                 required

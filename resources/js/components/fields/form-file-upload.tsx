@@ -1,4 +1,4 @@
-import React, { type JSX, useState, useRef, useCallback } from "react";
+import React, { type JSX, useState, useRef, useCallback, useEffect } from "react";
 import { Upload, X, Image } from "lucide-react";
 import styles from "./form-file-upload.module.css";
 
@@ -18,6 +18,7 @@ interface FormFileUploadProps {
     value?: File[] | null;
     onChange: (files: File[] | null) => void;
     existingFiles?: Array<ExistingFile | null> | null;
+    onRemoveExisting?: (fileId: string) => void;
     error?: string;
     accept?: string;
     maxSizeMB?: number;
@@ -25,13 +26,13 @@ interface FormFileUploadProps {
     multiple?: boolean;
 }
 
-export default function FormFileUpload({ label, value, onChange, existingFiles, error, accept = "image/*", maxSizeMB = 5, required = false, multiple = true }: FormFileUploadProps): JSX.Element {
+export default function FormFileUpload({ label, value, onChange, existingFiles, onRemoveExisting, error, accept = "image/*", maxSizeMB = 5, required = false, multiple = true }: FormFileUploadProps): JSX.Element {
     const [dragActive, setDragActive] = useState(false);
     const [previews, setPreviews] = useState<string[]>([]);
     const fileInputRef = useRef<HTMLInputElement>(null);
 
     // Initialize previews from existing files
-    useState(() => {
+    useEffect(() => {
         if (existingFiles && Array.isArray(existingFiles)) {
             const urls: string[] = [];
 
@@ -45,7 +46,7 @@ export default function FormFileUpload({ label, value, onChange, existingFiles, 
                 setPreviews(urls);
             }
         }
-    });
+    }, [existingFiles]);
 
     const handleFiles = useCallback(
         async (files: FileList) => {
@@ -132,9 +133,15 @@ export default function FormFileUpload({ label, value, onChange, existingFiles, 
                 const newPreviews = previews.filter((_, i) => i !== index);
                 setPreviews(newPreviews);
 
-                // If removing an existing file (index < existingFilesCount), we can't remove it from server
-                // Only remove new files that haven't been uploaded yet
-                if (index >= existingFilesCount) {
+                // If removing an existing file (index < existingFilesCount), notify parent
+                if (index < existingFilesCount) {
+                    const existingFilesList = existingFiles?.filter((f) => f?.dataUrl) || [];
+                    const fileToRemove = existingFilesList[index];
+                    if (fileToRemove && onRemoveExisting) {
+                        onRemoveExisting(fileToRemove.id);
+                    }
+                } else {
+                    // Remove new files that haven't been uploaded yet
                     const newFileIndex = index - existingFilesCount;
                     const currentFiles = value && Array.isArray(value) ? value : [];
                     const newFiles = currentFiles.filter((_, i) => i !== newFileIndex);
@@ -151,7 +158,7 @@ export default function FormFileUpload({ label, value, onChange, existingFiles, 
                 fileInputRef.current.value = "";
             }
         },
-        [onChange, previews, value, existingFiles]
+        [onChange, previews, value, existingFiles, onRemoveExisting]
     );
 
     const handleClick = useCallback(() => {

@@ -22,6 +22,13 @@ class AuctionItemFile extends Model
     ];
 
     /**
+     * The accessors to append to the model's array form.
+     *
+     * @var array<string>
+     */
+    protected $appends = ['url'];
+
+    /**
      * Get the attributes that should be cast.
      *
      * @return array<string, string>
