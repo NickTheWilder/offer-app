@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\AuctionItem;
+use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -13,6 +14,9 @@ class AuctionItemSeeder extends Seeder
      */
     public function run(): void
     {
+        // Get some users to assign as donors
+        $users = User::where('role', 'bidder')->get();
+        
         $items = [
             [
                 'name' => 'Handmade Quilt',
@@ -97,6 +101,9 @@ class AuctionItemSeeder extends Seeder
         ];
 
         foreach ($items as $index => $item) {
+            // Assign a random donor from the users, or leave as null for some items
+            $donor = $users->isNotEmpty() && ($index % 3 !== 0) ? $users->random() : null;
+            
             AuctionItem::create([
                 'name' => $item['name'],
                 'description' => $item['description'],
@@ -105,8 +112,9 @@ class AuctionItemSeeder extends Seeder
                 'buy_now_price' => $item['buy_now_price'],
                 'category' => $item['category'],
                 'auction_type' => 'silent',
-                'donor_name' => 'Anonymous Donor',
-                'is_donor_public' => true,
+                'donor_id' => $donor?->id,
+                'donor_name' => $donor ? $donor->name : 'Anonymous Donor',
+                'is_donor_public' => $donor ? true : false,
                 'status' => 'active',
                 'display_order' => $index + 1,
             ]);

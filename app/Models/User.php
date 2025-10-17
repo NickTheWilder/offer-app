@@ -57,4 +57,12 @@ class User extends Authenticatable
     {
         return $this->hasMany(Bid::class);
     }
+
+    /**
+     * Get the auction items donated by the user.
+     */
+    public function donatedItems()
+    {
+        return $this->hasMany(AuctionItem::class, 'donor_id');
+    }
 }

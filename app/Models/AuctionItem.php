@@ -20,6 +20,7 @@ class AuctionItem extends Model
         'estimated_value',
         'category',
         'auction_type',
+        'donor_id',
         'donor_name',
         'is_donor_public',
         'status',
@@ -65,5 +66,13 @@ class AuctionItem extends Model
     public function currentHighBid()
     {
         return $this->hasOne(Bid::class)->latestOfMany('amount');
+    }
+
+    /**
+     * Get the donor (user) for the auction item.
+     */
+    public function donor()
+    {
+        return $this->belongsTo(User::class, 'donor_id');
     }
 }
