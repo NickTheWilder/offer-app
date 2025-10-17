@@ -1,61 +1,78 @@
-import { Head, Link, useForm } from "@inertiajs/react";
-import { FormEventHandler } from "react";
-import styles from "./auth.module.css";
+import { router, useForm } from "@inertiajs/react";
+import { Loader2 } from "lucide-react";
+import { FormEvent } from "react";
+import styles from "./AuthPage.module.css";
 
 export default function Login() {
-    const { data, setData, post, processing, errors } = useForm({
+    const loginForm = useForm({
         email: "",
         password: "",
-        remember: false,
     });
 
-    const submit: FormEventHandler = (e) => {
+    // Login form submission
+    const onLoginSubmit = (e: FormEvent) => {
         e.preventDefault();
-        post("/login");
+        loginForm.post("/login");
     };
 
     return (
-        <>
-            <Head title="Login" />
-            <div className={styles.authContainer}>
-                <div className={styles.authCard}>
-                    <h1 className={styles.authTitle}>Welcome Back</h1>
-                    <p className={styles.authSubtitle}>Sign in to your auction account</p>
+        <form onSubmit={onLoginSubmit}>
+            <div className={styles.formGroup}>
+                <label htmlFor="email" className={styles.label}>
+                    Email
+                </label>
+                <input id="email" type="email" placeholder="you@example.com" className={styles.input} value={loginForm.data.email} onChange={(e) => loginForm.setData("email", e.target.value)} />
+                {loginForm.errors.email && <span className={styles.error}>{loginForm.errors.email}</span>}
+            </div>
 
-                    <form onSubmit={submit} className={styles.authForm}>
-                        <div className={styles.formGroup}>
-                            <label htmlFor="email" className={styles.formLabel}>
-                                Email Address
-                            </label>
-                            <input id="email" type="email" name="email" value={data.email} className={styles.formInput} autoComplete="username" autoFocus onChange={(e) => setData("email", e.target.value)} required />
-                            {errors.email && <div className={styles.formError}>{errors.email}</div>}
-                        </div>
+            <div className={styles.formGroup}>
+                <label htmlFor="password" className={styles.label}>
+                    Password
+                </label>
+                <input id="password" type="password" placeholder="••••••••" className={styles.input} value={loginForm.data.password} onChange={(e) => loginForm.setData("password", e.target.value)} />
+                {loginForm.errors.password && <span className={styles.error}>{loginForm.errors.password}</span>}
+            </div>
 
-                        <div className={styles.formGroup}>
-                            <label htmlFor="password" className={styles.formLabel}>
-                                Password
-                            </label>
-                            <input id="password" type="password" name="password" value={data.password} className={styles.formInput} autoComplete="current-password" onChange={(e) => setData("password", e.target.value)} required />
-                            {errors.password && <div className={styles.formError}>{errors.password}</div>}
-                        </div>
+            <button type="submit" className={styles.button} disabled={loginForm.processing}>
+                {loginForm.processing ? (
+                    <span className={styles.flexRow}>
+                        <Loader2 className={styles.spinIcon} size={16} />
+                        <span>Logging in...</span>
+                    </span>
+                ) : (
+                    "Login"
+                )}
+            </button>
 
-                        <div className={styles.checkboxGroup}>
-                            <input id="remember" type="checkbox" name="remember" checked={data.remember} className={styles.checkboxInput} onChange={(e) => setData("remember", e.target.checked)} />
-                            <label htmlFor="remember" className={styles.checkboxLabel}>
-                                Remember me
-                            </label>
-                        </div>
-
-                        <button type="submit" className={styles.submitButton} disabled={processing}>
-                            {processing ? "Signing In..." : "Sign In"}
-                        </button>
-                    </form>
-
-                    <div className={styles.authFooter}>
-                        Don&apos;t have an account? <Link href="/register">Register here</Link>
-                    </div>
+            <div className={styles.demoAccountsContainer}>
+                <p className={styles.demoAccountsTitle}>Demo Accounts</p>
+                <div className={styles.demoButtonsGrid}>
+                    <button
+                        type="button"
+                        className={`${styles.button} ${styles.buttonOutline}`}
+                        onClick={() => {
+                            router.post("/login", {
+                                email: "admin@example.com",
+                                password: "password",
+                            });
+                        }}
+                    >
+                        Admin Demo
+                    </button>
+                    <button
+                        type="button"
+                        className={`${styles.button} ${styles.buttonOutline}`}
+                        onClick={() => {
+                            router.post("/login", {
+                                email: "john@example.com",
+                                password: "password",
+                            });
+                        }}
+                    >
+                        Bidder Demo
+                    </button>
                 </div>
             </div>
-        </>
+        </form>
     );
 }

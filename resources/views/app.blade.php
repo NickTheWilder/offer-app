@@ -31,6 +31,9 @@
             :root {
                 --primary-color: {{ $primaryColor }};
                 --primary-color-dark: {{ $primaryColorDark }};
+                --success-color: #10b981;
+                --error-color: #ef4444;
+                --warning-color: #f59e0b;
             }
         </style>
     </head>
