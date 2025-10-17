@@ -66,8 +66,8 @@ All bidder accounts use the password: `password`
 
 | Email                 | Bidder Number | Name           |
 | --------------------- | ------------- | -------------- |
-| `john@example.com`    | B0001         | John Doe       |
-| `jane@example.com`    | B0002         | Jane Smith     |
-| `bob@example.com`     | B0003         | Bob Johnson    |
-| `alice@example.com`   | B0004         | Alice Williams |
-| `charlie@example.com` | B0005         | Charlie Brown  |
+| `john@example.com`    | 1         | John Doe       |
+| `jane@example.com`    | 2         | Jane Smith     |
+| `bob@example.com`     | 3         | Bob Johnson    |
+| `alice@example.com`   | 4         | Alice Williams |
+| `charlie@example.com` | 5         | Charlie Brown  |

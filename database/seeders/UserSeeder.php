@@ -21,17 +21,17 @@ class UserSeeder extends Seeder
             'password' => Hash::make('password'),
             'role' => 'admin',
             'bidder_number' => null,
-            'phone' => '555-0100',
+            'phone' => '832-555-0100',
             'address' => '123 Admin St',
         ]);
 
         // Create bidder users
         $bidders = [
-            ['name' => 'John Doe', 'email' => 'john@example.com', 'bidder_number' => 'B0001'],
-            ['name' => 'Jane Smith', 'email' => 'jane@example.com', 'bidder_number' => 'B0002'],
-            ['name' => 'Bob Johnson', 'email' => 'bob@example.com', 'bidder_number' => 'B0003'],
-            ['name' => 'Alice Williams', 'email' => 'alice@example.com', 'bidder_number' => 'B0004'],
-            ['name' => 'Charlie Brown', 'email' => 'charlie@example.com', 'bidder_number' => 'B0005'],
+            ['name' => 'John Doe', 'email' => 'john@example.com', 'bidder_number' => '1'],
+            ['name' => 'Jane Smith', 'email' => 'jane@example.com', 'bidder_number' => '2'],
+            ['name' => 'Bob Johnson', 'email' => 'bob@example.com', 'bidder_number' => '3'],
+            ['name' => 'Alice Williams', 'email' => 'alice@example.com', 'bidder_number' => '4'],
+            ['name' => 'Charlie Brown', 'email' => 'charlie@example.com', 'bidder_number' => '5'],
         ];
 
         foreach ($bidders as $index => $bidder) {
@@ -41,7 +41,7 @@ class UserSeeder extends Seeder
                 'password' => Hash::make('password'),
                 'role' => 'bidder',
                 'bidder_number' => $bidder['bidder_number'],
-                'phone' => '555-' . str_pad((string)($index + 1), 4, '0', STR_PAD_LEFT),
+                'phone' => '832-555-' . str_pad((string)($index + 1), 4, '0', STR_PAD_LEFT),
                 'address' => ($index + 1) . ' Bidder Lane',
             ]);
         }
