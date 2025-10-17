@@ -18,7 +18,7 @@ type HomeProps = PageProps<{
     userBids?: BidWithItem[];
 }>;
 
-export default function Home({ auth, auctionItems, userBids }: HomeProps): JSX.Element {
+export default function Home({ auth, auctionItems, userBids, settings }: HomeProps): JSX.Element {
     const [activeTab, setActiveTab] = useState("bidderDashboard");
     const [searchQuery, setSearchQuery] = useState("");
     const [bidModalItem, setBidModalItem] = useState<AuctionItem | null>(null);
@@ -52,7 +52,25 @@ export default function Home({ auth, auctionItems, userBids }: HomeProps): JSX.E
                         <div className={styles.dashboardSection}>
                             {/* Top section with filtering */}
                             <div className={styles.sectionHeader}>
-                                <h2 className={styles.sectionTitle}>Browse Auction Items</h2>
+                                <div className={styles.titleRow}>
+                                    <h2 className={styles.sectionTitle}>Browse Auction Items</h2>
+                                    {settings.auction_end && (
+                                        <div className={styles.timeLeft}>
+                                            <span className={styles.timeLabel}>Time Left:</span>
+                                            <span className={styles.timeValue}>
+                                                {new Date(settings.auction_end) > new Date()
+                                                    ? (() => {
+                                                        const diff = new Date(settings.auction_end).getTime() - new Date().getTime();
+                                                        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                                                        const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                                                        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                                                        return days > 0 ? `${days}d ${hours}h` : hours > 0 ? `${hours}h ${minutes}m` : `${minutes}m`;
+                                                    })()
+                                                    : "Ended"}
+                                            </span>
+                                        </div>
+                                    )}
+                                </div>
                                 <div className={styles.filtersContainer}>
                                     <div className={styles.searchContainer}>
                                         <input type="text" placeholder="Search items..." className={styles.searchInput} value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
@@ -82,7 +100,15 @@ export default function Home({ auth, auctionItems, userBids }: HomeProps): JSX.E
                             )}
 
                             {/* Auction items grid */}
-                            {filteredItems && filteredItems.length > 0 && <AuctionItemCard items={filteredItems} user={auth.user} onBidClick={handleBidClick} onBuyNowClick={handleBuyNowClick} />}
+                            {filteredItems && filteredItems.length > 0 && (
+                                <AuctionItemCard
+                                    items={filteredItems}
+                                    user={auth.user}
+                                    userBids={(userBids || []) as Bid[]}
+                                    onBidClick={handleBidClick}
+                                    onBuyNowClick={handleBuyNowClick}
+                                />
+                            )}
                         </div>
                     )}
 

@@ -1,4 +1,4 @@
-import { type JSX, useState, useEffect, FormEvent } from "react";
+import { type JSX, useState, FormEvent } from "react";
 import { router } from "@inertiajs/react";
 import { useToast } from "@/hooks/use-toast";
 import { Loader2 } from "lucide-react";
@@ -13,24 +13,17 @@ interface BidModalProps {
 
 export default function BidModal({ item, onClose }: BidModalProps): JSX.Element {
     const { toast } = useToast();
-    const [bidAmount, setBidAmount] = useState<string>("");
-    const [minBid, setMinBid] = useState<number>(item.starting_bid);
+
+    // Calculate minimum bid amount (convert to numbers in case they're strings from Laravel)
+    const currentBid = item.current_bid ? Number(item.current_bid) : null;
+    const startingBid = Number(item.starting_bid);
+    const increment = Number(item.minimum_bid_increment) || 5;
+
+    const minBid = currentBid ? currentBid + increment : startingBid;
+
+    const [bidAmount, setBidAmount] = useState<string>(minBid.toString());
     const [error, setError] = useState<string>("");
     const [isSubmitting, setIsSubmitting] = useState(false);
-
-    // Calculate minimum bid amount
-    useEffect(() => {
-        // If there's a current bid, minimum is current + increment
-        if (item.current_bid) {
-            setMinBid(item.current_bid + (item.minimum_bid_increment || 5));
-        } else {
-            // Otherwise use starting bid
-            setMinBid(item.starting_bid);
-        }
-
-        // Set initial bid amount to minimum bid
-        setBidAmount(minBid.toString());
-    }, [item, minBid]);
 
     // Submit handler
     const handleSubmit = async (e: FormEvent) => {
@@ -151,7 +144,7 @@ export default function BidModal({ item, onClose }: BidModalProps): JSX.Element 
                             {error && <p className={styles.errorMessage}>{error}</p>}
                             <p className={styles.bidHelp}>
                                 Minimum bid is {formatCurrency(minBid)}
-                                {item.current_bid ? ` (current bid + $${item.minimum_bid_increment || 5})` : ""}
+                                {item.current_bid ? ` (current bid + ${formatCurrency(increment)})` : ""}
                             </p>
                         </div>
                     </div>

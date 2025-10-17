@@ -90,7 +90,7 @@
 }
 
 .winningBadge {
-    background: #10b981;
+    background: #eab308;
     color: white;
 }
 
@@ -243,15 +243,9 @@
     gap: 1rem;
 }
 
-.timeInfo {
-    display: flex;
-    flex-direction: column;
-}
-
-.timeValue {
+.donorInfo {
+    margin-bottom: 1rem;
     font-size: 0.875rem;
-    font-weight: 600;
-    color: #1f2937;
 }
 
 .buttonsContainer {

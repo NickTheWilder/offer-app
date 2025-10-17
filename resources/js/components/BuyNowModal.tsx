@@ -15,7 +15,7 @@ export default function BuyNowModal({ item, onClose }: BuyNowModalProps): JSX.El
 
     const { post, processing } = useForm({
         auction_item_id: item.id,
-        amount: item.estimated_value || 0,
+        amount: item.buy_now_price || 0,
         is_buy_now: true,
     });
 
@@ -34,7 +34,7 @@ export default function BuyNowModal({ item, onClose }: BuyNowModalProps): JSX.El
             onSuccess: () => {
                 toast({
                     title: "Purchase successful",
-                    description: `You have successfully purchased ${item.name} for ${formatCurrency(item.estimated_value)}.`,
+                    description: `You have successfully purchased ${item.name} for ${formatCurrency(item.buy_now_price)}.`,
                 });
                 onClose();
             },
@@ -62,7 +62,7 @@ export default function BuyNowModal({ item, onClose }: BuyNowModalProps): JSX.El
                             <ShoppingCart className={styles.cartIcon} />
                         </div>
                         <h4 className={styles.itemName}>{item.name}</h4>
-                        <p className={styles.buyNowPrice}>Buy now price: {formatCurrency(item.estimated_value)}</p>
+                        <p className={styles.buyNowPrice}>Buy now price: {formatCurrency(item.buy_now_price)}</p>
                     </div>
 
                     <div className={styles.infoBox}>

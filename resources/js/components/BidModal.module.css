@@ -1,4 +1,4 @@
-.overlay {
+.modalOverlay {
     position: fixed;
     top: 0;
     left: 0;
@@ -22,7 +22,7 @@
     }
 }
 
-.modal {
+.modalContent {
     background: white;
     border-radius: 12px;
     box-shadow: 0 20px 25px rgba(0, 0, 0, 0.15);
@@ -44,36 +44,25 @@
     }
 }
 
-.header {
+.modalHeader {
     padding: 1.5rem;
     border-bottom: 1px solid #e5e7eb;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
 }
 
-.title {
+.modalTitle {
     font-size: 1.5rem;
     font-weight: bold;
     color: #1f2937;
+    margin: 0 0 0.5rem 0;
 }
 
-.closeButton {
-    background: none;
-    border: none;
-    font-size: 1.5rem;
+.modalDescription {
+    font-size: 0.875rem;
     color: #6b7280;
-    cursor: pointer;
-    padding: 0.25rem;
-    line-height: 1;
-    transition: color 0.2s;
+    margin: 0;
 }
 
-.closeButton:hover {
-    color: #1f2937;
-}
-
-.content {
+.modalBody {
     padding: 1.5rem;
 }
 
@@ -86,15 +75,21 @@
     border-radius: 8px;
 }
 
-.itemImage {
+.imageContainer {
     width: 80px;
     height: 80px;
     border-radius: 6px;
-    object-fit: cover;
     flex-shrink: 0;
+    overflow: hidden;
 }
 
-.itemPlaceholder {
+.image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.imagePlaceholder {
     width: 80px;
     height: 80px;
     background: #e5e7eb;
@@ -102,8 +97,13 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 2rem;
     flex-shrink: 0;
+}
+
+.placeholderIcon {
+    width: 2.5rem;
+    height: 2.5rem;
+    color: #9ca3af;
 }
 
 .itemDetails {
@@ -117,37 +117,28 @@
     font-weight: 600;
     color: #1f2937;
     font-size: 1.125rem;
+    margin: 0;
 }
 
-.itemNumber {
-    font-size: 0.75rem;
-    color: #6b7280;
-    text-transform: uppercase;
-}
-
-.currentBidInfo {
+.itemMeta {
     font-size: 0.875rem;
-    color: #4b5563;
-}
-
-.currentBidAmount {
-    font-weight: 600;
-    color: var(--primary-color);
-}
-
-.form {
+    color: #6b7280;
     display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
+    align-items: center;
+    gap: 0.5rem;
 }
 
-.formGroup {
+.metaSeparator {
+    color: #d1d5db;
+}
+
+.bidFormGroup {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
 }
 
-.label {
+.bidLabel {
     font-size: 0.875rem;
     font-weight: 600;
     color: #374151;
@@ -159,7 +150,7 @@
     align-items: center;
 }
 
-.inputPrefix {
+.currencyPrefix {
     position: absolute;
     left: 1rem;
     color: #6b7280;
@@ -167,9 +158,9 @@
     pointer-events: none;
 }
 
-.input {
+.bidInput {
     width: 100%;
-    padding: 0.875rem 1rem 0.875rem 2rem;
+    padding: 0.875rem 4rem 0.875rem 2rem;
     border: 2px solid #d1d5db;
     border-radius: 8px;
     font-size: 1.25rem;
@@ -177,13 +168,13 @@
     transition: all 0.2s;
 }
 
-.input:focus {
+.bidInput:focus {
     outline: none;
     border-color: var(--primary-color);
     box-shadow: 0 0 0 3px rgba(52, 143, 235, 0.1);
 }
 
-.inputSuffix {
+.currencySuffix {
     position: absolute;
     right: 1rem;
     color: #6b7280;
@@ -191,17 +182,19 @@
     pointer-events: none;
 }
 
-.error {
-    color: var(--error-color);
+.errorMessage {
+    color: #dc2626;
     font-size: 0.875rem;
+    margin: 0;
 }
 
-.helperText {
+.bidHelp {
     color: #6b7280;
     font-size: 0.875rem;
+    margin: 0;
 }
 
-.footer {
+.modalFooter {
     padding: 1.5rem;
     border-top: 1px solid #e5e7eb;
     display: flex;
@@ -247,28 +240,35 @@
     cursor: not-allowed;
 }
 
-.successMessage {
-    padding: 1rem;
-    background: #d1fae5;
-    color: #065f46;
-    border-radius: 6px;
-    margin-bottom: 1rem;
-    text-align: center;
-    font-weight: 600;
+.spinnerIcon {
+    display: inline-block;
+    width: 1rem;
+    height: 1rem;
+    margin-right: 0.5rem;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 @media (max-width: 640px) {
-    .modal {
+    .modalContent {
         max-height: 95vh;
     }
 
-    .header,
-    .content,
-    .footer {
+    .modalHeader,
+    .modalBody,
+    .modalFooter {
         padding: 1rem;
     }
 
-    .title {
+    .modalTitle {
         font-size: 1.25rem;
     }
 
@@ -278,7 +278,7 @@
         text-align: center;
     }
 
-    .footer {
+    .modalFooter {
         flex-direction: column;
     }
 }

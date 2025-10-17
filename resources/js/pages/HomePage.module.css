@@ -36,17 +36,47 @@
     }
 }
 
-.sectionTitle {
-    font-size: 1.25rem;
-    font-weight: 600;
-    color: #1f2937;
+.titleRow {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
     margin-bottom: 1rem;
 }
 
 @media (min-width: 768px) {
-    .sectionTitle {
+    .titleRow {
+        flex-direction: row;
+        align-items: center;
+        gap: 1.5rem;
         margin-bottom: 0;
     }
+}
+
+.sectionTitle {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #1f2937;
+}
+
+.timeLeft {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: #f3f4f6;
+    border-radius: 0.5rem;
+}
+
+.timeLabel {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #6b7280;
+}
+
+.timeValue {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #1f2937;
 }
 
 .filtersContainer {

@@ -12,12 +12,12 @@ use Inertia\Inertia;
 Route::get('/', function () {
     $items = \App\Models\AuctionItem::where('status', 'active')
         ->orderBy('display_order')
-        ->with(['files', 'bids'])
+        ->with(['files', 'bids', 'donor'])
         ->get()
         ->map(function ($item) {
-            // Add current_bid to each item
+            // Add current_bid to each item (null if no bids)
             $highestBid = $item->bids->max('amount');
-            $item->current_bid = $highestBid;
+            $item->current_bid = $highestBid ?: null;
             return $item;
         });
 

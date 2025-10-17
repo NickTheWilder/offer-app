@@ -1,7 +1,6 @@
 import { formatCurrency } from "@/lib/utils";
 import { AuctionItem, Bid, User } from "@/types";
-import { formatDistanceToNow } from "date-fns";
-import { type JSX, useEffect, useState } from "react";
+import { type JSX } from "react";
 import styles from "./AuctionItemCard.module.css";
 
 interface UserBidStatus {
@@ -12,22 +11,12 @@ interface UserBidStatus {
 interface AuctionItemCardProps {
     items: AuctionItem[];
     user: User | null;
+    userBids: Bid[];
     onBidClick: (item: AuctionItem) => void;
     onBuyNowClick: (item: AuctionItem) => void;
 }
 
-export default function AuctionItemCard({ items, user, onBidClick, onBuyNowClick }: AuctionItemCardProps): JSX.Element {
-    const [userBids, setUserBids] = useState<Bid[]>([]);
-
-    // Fetch user's bids
-    useEffect(() => {
-        if (user) {
-            fetch("/api/user/bids")
-                .then((res) => res.json())
-                .then((data) => setUserBids(data))
-                .catch((err) => console.error("Failed to fetch user bids:", err));
-        }
-    }, [user]);
+export default function AuctionItemCard({ items, userBids, onBidClick, onBuyNowClick }: AuctionItemCardProps): JSX.Element {
 
     // Determine if user is winning or has been outbid for each item
     const getUserBidStatus = (itemId: number): UserBidStatus | null => {
@@ -48,16 +37,6 @@ export default function AuctionItemCard({ items, user, onBidClick, onBuyNowClick
             amount: highestUserBid.amount,
             isWinning: isWinning || false,
         };
-    };
-
-    // Format time remaining
-    const getTimeRemaining = (endTime: Date | null) => {
-        if (!endTime) return "N/A";
-        try {
-            return formatDistanceToNow(new Date(endTime), { addSuffix: false });
-        } catch {
-            return "N/A";
-        }
     };
 
     return (
@@ -98,6 +77,11 @@ export default function AuctionItemCard({ items, user, onBidClick, onBuyNowClick
                             </div>
 
                             <p className={styles.description}>{item.description || "No description provided."}</p>
+                            <div className={styles.donorInfo}>
+                                <p className={styles.label}>
+                                    Donated by: <span className={styles.donorValue}>{item.is_donor_public ? item.donor?.name || item.donor_name || "Unknown" : "Anonymous"}</span>
+                                </p>
+                            </div>
 
                             <div className={styles.bidContainer}>
                                 <div className={styles.bidInfo}>
@@ -121,11 +105,6 @@ export default function AuctionItemCard({ items, user, onBidClick, onBuyNowClick
                             </div>
 
                             <div className={styles.footerContainer}>
-                                <div className={styles.timeInfo}>
-                                    <p className={styles.label}>Time Left</p>
-                                    <p className={styles.timeValue}>{getTimeRemaining(null)}</p>
-                                </div>
-
                                 <div className={styles.buttonsContainer}>
                                     <button
                                         onClick={() => onBidClick(item)}
