@@ -75,7 +75,7 @@
 
 .selectedCard {
     border-color: var(--primary-color);
-    background-color: rgba(52, 143, 235, 0.05);
+    background-color: color-mix(in srgb, var(--primary-color) 10%, transparent);
 }
 
 .itemCardContent {

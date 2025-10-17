@@ -83,11 +83,6 @@ Route::middleware(['auth', 'admin'])->group(function () {
         return response()->json($items);
     });
 
-    Route::get('/api/admin/donors', function () {
-        // For now, return empty array since we don't have donor models yet
-        return response()->json([]);
-    });
-
     Route::get('/api/admin/users', function () {
         $users = \App\Models\User::all();
         return response()->json($users);
@@ -109,5 +104,8 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin/users/{id}', [UserController::class, 'show'])->name('admin.users.show');
     Route::put('/admin/users/{id}', [UserController::class, 'update'])->name('admin.users.update');
     Route::put('/admin/users/{id}/assign-bidder-number', [UserController::class, 'assignBidderNumber']);
+
+    // Settings management
+    Route::put('/admin/settings', [\App\Http\Controllers\SettingController::class, 'update'])->name('admin.settings.update');
 
 });

@@ -1,7 +1,7 @@
 import { type JSX, useState } from "react";
-import { Link, router } from "@inertiajs/react";
+import { Link, router, usePage } from "@inertiajs/react";
 import { ChevronDown, LogOut, Menu, X, Church } from "lucide-react";
-import { User } from "@/types";
+import { User, PageProps } from "@/types";
 import styles from "./header.module.css";
 
 interface HeaderProps {
@@ -9,6 +9,7 @@ interface HeaderProps {
 }
 
 export default function Header({ user }: HeaderProps): JSX.Element {
+    const { settings } = usePage<PageProps>().props;
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const [dropdownOpen, setDropdownOpen] = useState(false);
 
@@ -29,7 +30,7 @@ export default function Header({ user }: HeaderProps): JSX.Element {
             <div className={styles.container}>
                 <div className={styles.logoContainer}>
                     <Church className={styles.logoIcon} />
-                    <h1 className={styles.logoText}>Church Bazaar</h1>
+                    <h1 className={styles.logoText}>{settings.event_name}</h1>
                 </div>
 
                 {user && (

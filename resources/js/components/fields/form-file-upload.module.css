@@ -35,7 +35,7 @@
 
 .dropZone:hover {
     border-color: var(--primary-color);
-    background-color: rgba(52, 143, 235, 0.05);
+    background-color: color-mix(in srgb, var(--primary-color) 10%, transparent);
 }
 
 .dropZone.dragActive {
@@ -180,7 +180,7 @@
 }
 
 .addMoreButton:hover {
-    background-color: rgba(52, 143, 235, 0.05);
+    background-color: color-mix(in srgb, var(--primary-color) 10%, transparent);
     border-color: var(--primary-color-dark);
 }
 

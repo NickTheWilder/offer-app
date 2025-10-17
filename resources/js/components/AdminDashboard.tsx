@@ -1,7 +1,7 @@
 import { type JSX, useState, useCallback, useEffect } from "react";
 import { Loader2 } from "lucide-react";
 import styles from "./AdminDashboard.module.css";
-import { DonorDashboard } from "./DonorDashboard";
+import { SystemDashboard } from "./SystemDashboard";
 import { ReportDashboard } from "./ReportDashboard";
 import { UserDashboard } from "./UserDashboard";
 import ItemDashboard from "./ItemDashboard";
@@ -10,14 +10,12 @@ import { fetchAdminData } from "@/utils/adminApi";
 
 interface LoadingState {
     items: boolean;
-    donors: boolean;
     users: boolean;
     reports: boolean;
 }
 
 interface DataState {
     items: AuctionItem[] | null;
-    donors: unknown[] | null;
     users: User[] | null;
     reports: unknown[] | null;
 }
@@ -30,13 +28,11 @@ export default function AdminDashboard(): JSX.Element {
     const [activeAdminTab, setActiveAdminTab] = useState(initialTab);
     const [loading, setLoading] = useState<LoadingState>({
         items: false,
-        donors: false,
         users: false,
         reports: false,
     });
     const [data, setData] = useState<DataState>({
         items: null,
-        donors: null,
         users: null,
         reports: null,
     });
@@ -65,17 +61,6 @@ export default function AdminDashboard(): JSX.Element {
             });
         }
     }, [data.items, data.users, loading.items, loading.users]);
-
-    const fetchDonors = useCallback(async () => {
-        await fetchAdminData({
-            type: "donors",
-            currentData: data.donors,
-            isLoading: loading.donors,
-            setLoading: (isLoading) => setLoading((prev) => ({ ...prev, donors: isLoading })),
-            setData: (donors) => setData((prev) => ({ ...prev, donors })),
-            setError: (error) => setErrors((prev) => ({ ...prev, donors: error })),
-        });
-    }, [data.donors, loading.donors]);
 
     const fetchUsers = useCallback(async () => {
         await fetchAdminData({
@@ -112,18 +97,18 @@ export default function AdminDashboard(): JSX.Element {
                 case "items":
                     await fetchItems();
                     break;
-                case "donors":
-                    await fetchDonors();
-                    break;
                 case "users":
                     await fetchUsers();
                     break;
                 case "reports":
                     await fetchReports();
                     break;
+                case "system":
+                    // System settings don't need data fetching
+                    break;
             }
         },
-        [fetchItems, fetchDonors, fetchUsers, fetchReports]
+        [fetchItems, fetchUsers, fetchReports]
     );
 
     // First load, fetch data based on initial tab
@@ -132,19 +117,19 @@ export default function AdminDashboard(): JSX.Element {
             case "items":
                 fetchItems();
                 break;
-            case "donors":
-                fetchDonors();
-                break;
             case "users":
                 fetchUsers();
                 break;
             case "reports":
                 fetchReports();
                 break;
+            case "system":
+                // System settings don't need data fetching
+                break;
             default:
                 fetchItems();
         }
-    }, [initialTab, fetchItems, fetchDonors, fetchUsers, fetchReports]);
+    }, [initialTab, fetchItems, fetchUsers, fetchReports]);
 
     return (
         <div className={styles.adminLayout}>
@@ -153,14 +138,14 @@ export default function AdminDashboard(): JSX.Element {
                 <button onClick={() => handleTabChange("items")} className={`${styles.tabTrigger} ${activeAdminTab === "items" ? styles.active : ""}`}>
                     Items
                 </button>
-                <button onClick={() => handleTabChange("donors")} className={`${styles.tabTrigger} ${activeAdminTab === "donors" ? styles.active : ""}`}>
-                    Donors
-                </button>
                 <button onClick={() => handleTabChange("users")} className={`${styles.tabTrigger} ${activeAdminTab === "users" ? styles.active : ""}`}>
                     Users
                 </button>
                 <button onClick={() => handleTabChange("reports")} className={`${styles.tabTrigger} ${activeAdminTab === "reports" ? styles.active : ""}`}>
                     Reports
+                </button>
+                <button onClick={() => handleTabChange("system")} className={`${styles.tabTrigger} ${activeAdminTab === "system" ? styles.active : ""}`}>
+                    System
                 </button>
             </div>
 
@@ -184,24 +169,6 @@ export default function AdminDashboard(): JSX.Element {
                             <ItemDashboard items={data.items || []} users={data.users || []} onItemsUpdate={(updatedItems) => setData((prev) => ({ ...prev, items: updatedItems }))} />
                         )}
                     </>
-                ) : activeAdminTab === "donors" ? (
-                    <>
-                        {loading.donors ? (
-                            <div className={styles.loadingContainer}>
-                                <Loader2 className={styles.loadingSpinner} />
-                                <p>Loading donors...</p>
-                            </div>
-                        ) : errors.donors ? (
-                            <div className={styles.errorContainer}>
-                                <p className={styles.errorText}>Error: {errors.donors}</p>
-                                <button onClick={fetchDonors} className={styles.retryButton}>
-                                    Retry
-                                </button>
-                            </div>
-                        ) : (
-                            <DonorDashboard />
-                        )}
-                    </>
                 ) : activeAdminTab === "users" ? (
                     <>
                         {loading.users ? (
@@ -220,6 +187,8 @@ export default function AdminDashboard(): JSX.Element {
                             <UserDashboard users={data.users || []} />
                         )}
                     </>
+                ) : activeAdminTab === "system" ? (
+                    <SystemDashboard />
                 ) : (
                     <>
                         {loading.reports ? (

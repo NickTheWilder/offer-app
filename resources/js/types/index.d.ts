@@ -62,6 +62,13 @@ export type PageProps<T extends Record<string, unknown> = Record<string, unknown
     auth: {
         user: User | null;
     };
+    settings: {
+        event_name: string;
+        event_location: string | null;
+        primary_color: string;
+        auction_start: string | null;
+        auction_end: string | null;
+    };
     errors?: Record<string, string>;
     flash?: {
         success?: string;

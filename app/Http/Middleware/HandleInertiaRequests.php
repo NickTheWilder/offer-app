@@ -35,6 +35,8 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
+        $settings = \App\Models\Setting::get();
+
         return [
             ...parent::share($request),
             'auth' => [
@@ -45,6 +47,13 @@ class HandleInertiaRequests extends Middleware
                     'role' => $request->user()->role,
                     'bidder_number' => $request->user()->bidder_number,
                 ] : null,
+            ],
+            'settings' => [
+                'event_name' => $settings->event_name,
+                'event_location' => $settings->event_location,
+                'primary_color' => $settings->primary_color,
+                'auction_start' => $settings->auction_start?->toISOString(),
+                'auction_end' => $settings->auction_end?->toISOString(),
             ],
         ];
     }
