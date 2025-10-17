@@ -85,8 +85,8 @@ Route::middleware(['auth', 'admin'])->group(function () {
     });
 
     Route::get('/api/admin/users', function () {
-        // For now, return empty array since we don't have user management yet
-        return response()->json([]);
+        $users = \App\Models\User::all();
+        return response()->json($users);
     });
 
     Route::get('/api/admin/reports', function () {

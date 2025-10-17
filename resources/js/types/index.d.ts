@@ -1,9 +1,13 @@
 export interface User {
     id: number;
-    name: string;
-    email: string;
-    role: 'admin' | 'bidder';
+    address: string;
     bidder_number?: string;
+    created_at: string;
+    name: string;
+    phone: string;
+    role: "admin" | "bidder";
+    email: string;
+    updated_at: string;
 }
 
 export interface AuctionItemFile {
@@ -37,12 +41,12 @@ export interface AuctionItem {
     current_bid?: number;
     buy_now_price?: number;
     estimated_value?: number;
-    status: 'active' | 'sold' | 'unsold' | 'draft';
+    status: "active" | "sold" | "unsold" | "draft";
     category?: string;
     donor_name?: string;
     is_donor_public?: boolean;
     item_number?: string;
-    auction_type: 'silent' | 'live';
+    auction_type: "silent" | "live";
     restrictions?: string;
     display_order?: number;
     created_at: string;
