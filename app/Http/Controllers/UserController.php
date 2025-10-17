@@ -3,15 +3,20 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 use Inertia\Inertia;
+use Inertia\Response;
 
 class UserController extends Controller
 {
     /**
      * Show the user detail page.
+     * @param mixed $id
+     * @return Response
      */
     public function show($id)
     {
@@ -24,6 +29,8 @@ class UserController extends Controller
 
     /**
      * Update the user.
+     * @param mixed $id
+     * @return RedirectResponse
      */
     public function update(Request $request, $id)
     {
@@ -35,7 +42,7 @@ class UserController extends Controller
             'phone' => ['nullable', 'string', 'max:20'],
             'address' => ['nullable', 'string', 'max:500'],
             'role' => ['required', 'in:admin,bidder'],
-            'bidder_number' => ['nullable', 'string', 'max:20'],
+            'bidder_number' => ['nullable', 'string', 'max:20', 'unique:users,bidder_number'],
             'password' => ['nullable', 'string', 'min:8'],
         ]);
 
@@ -49,5 +56,30 @@ class UserController extends Controller
         $user->update($validated);
 
         return back()->with('success', 'User updated successfully.');
+    }
+
+    /**
+     * Assign a new bidder number to the user.
+     * @param mixed $id
+     * @return RedirectResponse
+     */
+    public function assignBidderNumber($id)
+    {
+        $user = User::findOrFail($id);
+
+        DB::transaction(function () use ($user) {
+            $maxBidderNumber = User::where('role', 'bidder')
+                ->lockForUpdate()
+                ->max('bidder_number');
+            $nextBidderNumber = $maxBidderNumber ? (int)$maxBidderNumber + 1 : 1;
+
+            $user->bidder_number = (string)$nextBidderNumber;
+            $user->save();
+        });
+
+        return back()->with([
+                'success' => 'Bidder number ' . $user->bidder_number . ' assigned successfully.',
+                'nextBidderNumber' => $user->bidder_number
+        ]);
     }
 }

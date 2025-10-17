@@ -53,6 +53,21 @@ export default function UserDetail({ auth, user, flash }: UserDetailProps): JSX.
         });
     };
 
+    const assignBidderNumber = () => {
+        router.put(
+            `/admin/users/${user.id}/assign-bidder-number`,
+            {},
+            {
+                preserveState: true,
+                preserveScroll: true,
+                onSuccess: (page) => {
+                    const updatedUser = page.props.user as User;
+                    setFormData({ ...formData, bidder_number: updatedUser.bidder_number as string });
+                },
+            }
+        );
+    };
+
     const handleCancel = () => {
         setIsEditing(false);
         setFormData({
@@ -228,7 +243,15 @@ export default function UserDetail({ auth, user, flash }: UserDetailProps): JSX.
 
                                                 <div className={styles.formGroup}>
                                                     <label htmlFor="bidder_number">Bidder Number</label>
-                                                    <input type="text" id="bidder_number" className={styles.formInput} value={formData.bidder_number} onChange={(e) => setFormData({ ...formData, bidder_number: e.target.value })} />
+                                                    <div className={styles.bidderNumberWrapper}>
+                                                        <input type="text" id="bidder_number" className={styles.formInput} value={formData.bidder_number} onChange={(e) => setFormData({ ...formData, bidder_number: e.target.value })} />
+                                                        <button type="button" className={styles.assignBidderNumberButton} onClick={() => assignBidderNumber()}>
+                                                            Assign Number
+                                                            <svg className={styles.gavelIcon} fill="none" stroke="currentColor" viewBox="0 0 24 24" width="16" height="16">
+                                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                                                            </svg>
+                                                        </button>
+                                                    </div>
                                                     {errors.bidder_number && <span className={styles.error}>{errors.bidder_number}</span>}
                                                 </div>
                                             </div>

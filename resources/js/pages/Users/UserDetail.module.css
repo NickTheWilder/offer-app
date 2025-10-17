@@ -289,6 +289,16 @@
     color: #374151;
 }
 
+.bidderNumberWrapper {
+    display: flex;
+    gap: 0.75rem;
+    align-items: flex-start;
+}
+
+.bidderNumberInput {
+    flex: 0 0 250px;
+}
+
 .required {
     color: #ef4444;
 }
@@ -402,6 +412,36 @@ select.formInput:focus {
     font-size: 0.875rem;
     max-width: 24rem;
     margin: 0;
+}
+
+.assignBidderNumberButton {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.625rem 1rem;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 0.375rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.15s;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.assignBidderNumberButton:hover:not(:disabled) {
+    background-color: var(--primary-color-dark);
+}
+
+.assignBidderNumberButton:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.gavelIcon {
+    flex-shrink: 0;
 }
 
 /* Responsive */
