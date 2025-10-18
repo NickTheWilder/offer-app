@@ -3,7 +3,7 @@ import { Loader2 } from "lucide-react";
 import styles from "./AdminDashboard.module.css";
 import { SystemDashboard } from "./SystemDashboard";
 import { ReportDashboard } from "./ReportDashboard";
-import { UserDashboard } from "./UserDashboard";
+import { UserGrid } from "./UserGrid";
 import ItemDashboard from "./ItemDashboard";
 import type { AuctionItem, User } from "@/types";
 import { fetchAdminData } from "@/utils/adminApi";
@@ -184,7 +184,7 @@ export default function AdminDashboard(): JSX.Element {
                                 </button>
                             </div>
                         ) : (
-                            <UserDashboard users={data.users || []} />
+                            <UserGrid users={data.users || []} />
                         )}
                     </>
                 ) : activeAdminTab === "system" ? (

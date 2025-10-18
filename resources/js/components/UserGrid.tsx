@@ -1,9 +1,9 @@
 import { type JSX, useState, useMemo } from "react";
 import { router } from "@inertiajs/react";
-import styles from "./UserDashboard.module.css";
+import styles from "./UserGrid.module.css";
 import { User } from "@/types";
 
-export function UserDashboard({ users = [] }: { users: User[] }): JSX.Element {
+export function UserGrid({ users = [] }: { users: User[] }): JSX.Element {
     const [searchTerm, setSearchTerm] = useState("");
 
     const formatDate = (dateString: string): string => {
@@ -100,7 +100,7 @@ export function UserDashboard({ users = [] }: { users: User[] }): JSX.Element {
                             </thead>
                             <tbody>
                                 {filteredUsers.map((user) => (
-                                    <tr key={user.id}>
+                                    <tr key={user.id} onDoubleClick={() => router.visit(`/admin/users/${user.id}`)}>
                                         <td>
                                             <span className={styles.userName}>{user.name}</span>
                                         </td>
