@@ -1,6 +1,7 @@
 import { formatCurrency } from "@/lib/utils";
 import { AuctionItem, Bid, User } from "@/types";
 import { type JSX } from "react";
+import { Link } from "@inertiajs/react";
 import styles from "./AuctionItemCard.module.css";
 
 interface UserBidStatus {
@@ -119,6 +120,10 @@ export default function AuctionItemCard({ items, userBids, onBidClick, onBuyNowC
                                         </button>
                                     )}
                                 </div>
+
+                                <Link href={`/auction-items/${item.id}`} className={styles.viewDetailsLink}>
+                                    View Details →
+                                </Link>
                             </div>
                         </div>
                     </div>

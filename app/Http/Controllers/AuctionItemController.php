@@ -99,10 +99,14 @@ class AuctionItemController extends Controller
      */
     public function show(string $id)
     {
-        $item = AuctionItem::with(['files', 'bids.user'])
+        $item = AuctionItem::with(['files', 'bids.user', 'donor'])
             ->findOrFail($id);
 
-        return Inertia::render('AuctionItems/Show', [
+        // Add current_bid to the item
+        $highestBid = $item->bids->max('amount');
+        $item->current_bid = $highestBid ?: null;
+
+        return Inertia::render('AuctionItems/AuctionItemDetail', [
             'item' => $item,
         ]);
     }

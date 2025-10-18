@@ -253,6 +253,20 @@
     gap: 0.5rem;
 }
 
+.viewDetailsLink {
+    display: block;
+    text-align: center;
+    margin-top: 0.75rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #6b7280;
+    transition: color 0.2s;
+}
+
+.viewDetailsLink:hover {
+    color: var(--primary-color);
+}
+
 .bidButton {
     flex: 1;
     padding: 0.75rem;
