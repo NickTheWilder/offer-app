@@ -32,7 +32,7 @@ class BidController extends Controller
 
         // Validate bid amount
         $validated = $request->validate([
-            'amount' => ['required', 'numeric', 'min:' . $minimumBid],
+            'amount' => ['required', 'numeric', 'min:'.$minimumBid],
         ]);
 
         // Prevent user from outbidding themselves

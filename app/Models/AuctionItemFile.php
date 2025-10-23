@@ -54,6 +54,6 @@ class AuctionItemFile extends Model
      */
     public function getUrlAttribute(): string
     {
-        return Storage::url('auction-items/' . $this->file_name);
+        return Storage::url('auction-items/'.$this->file_name);
     }
 }

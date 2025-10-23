@@ -66,7 +66,7 @@ class AuctionItemController extends Controller
 
             foreach ($request->file('files') as $file) {
                 $originalName = $file->getClientOriginalName();
-                $fileName = Str::uuid() . '.' . $file->getClientOriginalExtension();
+                $fileName = Str::uuid().'.'.$file->getClientOriginalExtension();
 
                 // Store file in storage/app/public/auction-items
                 $file->storeAs('auction-items', $fileName, 'public');
@@ -89,7 +89,7 @@ class AuctionItemController extends Controller
 
         return back()->with([
             'success' => 'Auction item created successfully!',
-            'item' => $auctionItem
+            'item' => $auctionItem,
         ]);
     }
 
@@ -158,7 +158,7 @@ class AuctionItemController extends Controller
                     ->findOrFail($fileId);
 
                 // Delete from storage
-                Storage::disk('public')->delete('auction-items/' . $file->file_name);
+                Storage::disk('public')->delete('auction-items/'.$file->file_name);
 
                 // Delete from database
                 $file->delete();
@@ -172,11 +172,11 @@ class AuctionItemController extends Controller
                 ->where('is_primary', true)
                 ->exists();
 
-            $isPrimary = !$hasPrimaryFile;
+            $isPrimary = ! $hasPrimaryFile;
 
             foreach ($request->file('files') as $file) {
                 $originalName = $file->getClientOriginalName();
-                $fileName = Str::uuid() . '.' . $file->getClientOriginalExtension();
+                $fileName = Str::uuid().'.'.$file->getClientOriginalExtension();
 
                 // Store file in storage/app/public/auction-items
                 $file->storeAs('auction-items', $fileName, 'public');
@@ -199,7 +199,7 @@ class AuctionItemController extends Controller
 
         return back()->with([
             'success' => 'Auction item updated successfully!',
-            'item' => $auctionItem
+            'item' => $auctionItem,
         ]);
     }
 
@@ -212,7 +212,7 @@ class AuctionItemController extends Controller
 
         // Delete all associated files from storage
         foreach ($auctionItem->files as $file) {
-            Storage::disk('public')->delete('auction-items/' . $file->file_name);
+            Storage::disk('public')->delete('auction-items/'.$file->file_name);
         }
 
         // Delete the auction item (cascade will handle bids and files in database)

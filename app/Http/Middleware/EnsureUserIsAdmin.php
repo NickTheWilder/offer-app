@@ -16,7 +16,7 @@ class EnsureUserIsAdmin
     public function handle(Request $request, Closure $next): Response
     {
         // Check if user is authenticated and has admin role
-        if (!$request->user() || $request->user()->role !== 'admin') {
+        if (! $request->user() || $request->user()->role !== 'admin') {
             return redirect('/')->with('error', 'You must be an administrator to access this page.');
         }
 

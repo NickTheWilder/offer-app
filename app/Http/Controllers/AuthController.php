@@ -74,7 +74,7 @@ class AuthController extends Controller
             $number = 1;
         }
 
-        $bidderNumber = 'B' . str_pad($number, 4, '0', STR_PAD_LEFT);
+        $bidderNumber = 'B'.str_pad($number, 4, '0', STR_PAD_LEFT);
 
         $user = User::create([
             'name' => $validated['name'],
@@ -88,7 +88,7 @@ class AuthController extends Controller
 
         Auth::login($user);
 
-        return redirect('/')->with('success', 'Registration successful! Your bidder number is ' . $bidderNumber);
+        return redirect('/')->with('success', 'Registration successful! Your bidder number is '.$bidderNumber);
     }
 
     /**

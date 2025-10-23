@@ -18,6 +18,7 @@ Route::get('/', function () {
             // Add current_bid to each item (null if no bids)
             $highestBid = $item->bids->max('amount');
             $item->current_bid = $highestBid ?: null;
+
             return $item;
         });
 
@@ -80,11 +81,13 @@ Route::middleware(['auth', 'admin'])->group(function () {
             ->orderBy('display_order')
             ->orderBy('name')
             ->get();
+
         return response()->json($items);
     });
 
     Route::get('/api/admin/users', function () {
         $users = \App\Models\User::all();
+
         return response()->json($users);
     });
 

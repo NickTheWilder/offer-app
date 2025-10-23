@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
@@ -41,8 +40,8 @@ class UserSeeder extends Seeder
                 'password' => Hash::make('password'),
                 'role' => 'bidder',
                 'bidder_number' => $bidder['bidder_number'],
-                'phone' => '832-555-' . str_pad((string)($index + 1), 4, '0', STR_PAD_LEFT),
-                'address' => ($index + 1) . ' Bidder Lane',
+                'phone' => '832-555-'.str_pad((string) ($index + 1), 4, '0', STR_PAD_LEFT),
+                'address' => ($index + 1).' Bidder Lane',
             ]);
         }
     }

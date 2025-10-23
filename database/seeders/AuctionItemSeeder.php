@@ -5,7 +5,6 @@ namespace Database\Seeders;
 use App\Models\AuctionItem;
 use App\Models\AuctionItemFile;
 use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -19,7 +18,7 @@ class AuctionItemSeeder extends Seeder
     {
         // Get some users to assign as donors
         $users = User::where('role', 'bidder')->get();
-        
+
         $items = [
             [
                 'name' => 'Handmade Quilt',
@@ -139,7 +138,7 @@ class AuctionItemSeeder extends Seeder
         $seedImagesPath = database_path('seeders/images');
 
         // Find all files matching this item's slug
-        $pattern = $seedImagesPath . '/' . $slug . '-*.*';
+        $pattern = $seedImagesPath.'/'.$slug.'-*.*';
         $imageFiles = glob($pattern);
 
         if (empty($imageFiles)) {
@@ -150,17 +149,17 @@ class AuctionItemSeeder extends Seeder
         sort($imageFiles);
 
         foreach ($imageFiles as $index => $sourceFile) {
-            if (!file_exists($sourceFile)) {
+            if (! file_exists($sourceFile)) {
                 continue;
             }
 
             // Get file info
             $originalFileName = basename($sourceFile);
             $extension = pathinfo($sourceFile, PATHINFO_EXTENSION);
-            $fileName = Str::uuid() . '.' . strtolower($extension);
+            $fileName = Str::uuid().'.'.strtolower($extension);
 
             // Copy file to storage/app/public/auction-items
-            $destinationPath = 'auction-items/' . $fileName;
+            $destinationPath = 'auction-items/'.$fileName;
             Storage::disk('public')->put(
                 $destinationPath,
                 file_get_contents($sourceFile)
