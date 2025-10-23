@@ -87,9 +87,8 @@ class AuctionItemController extends Controller
         // Load the created item with relationships for the response
         $auctionItem->load(['files', 'bids', 'donor']);
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Auction item created successfully!',
+        return back()->with([
+            'success' => 'Auction item created successfully!',
             'item' => $auctionItem
         ]);
     }
@@ -198,9 +197,8 @@ class AuctionItemController extends Controller
         // Load the updated item with relationships for the response
         $auctionItem->load(['files', 'bids', 'donor']);
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Auction item updated successfully!',
+        return back()->with([
+            'success' => 'Auction item updated successfully!',
             'item' => $auctionItem
         ]);
     }

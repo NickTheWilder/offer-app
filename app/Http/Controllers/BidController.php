@@ -19,10 +19,9 @@ class BidController extends Controller
 
         // Validate the auction item is active
         if ($item->status !== 'active') {
-            return response()->json([
-                'success' => false,
-                'message' => 'This auction item is not currently accepting bids.',
-            ], 422);
+            return back()->withErrors([
+                'amount' => 'This auction item is not currently accepting bids.',
+            ]);
         }
 
         // Get current high bid
@@ -38,10 +37,9 @@ class BidController extends Controller
 
         // Prevent user from outbidding themselves
         if ($currentHighBid && $currentHighBid->user_id === Auth::id()) {
-            return response()->json([
-                'success' => false,
-                'message' => 'You are already the highest bidder on this item.',
-            ], 422);
+            return back()->withErrors([
+                'amount' => 'You are already the highest bidder on this item.',
+            ]);
         }
 
         // Create the bid within a transaction to ensure data consistency
@@ -57,17 +55,15 @@ class BidController extends Controller
             // Load the user relationship for the response
             $bid->load('user');
 
-            return response()->json([
-                'success' => true,
-                'message' => 'Bid placed successfully!',
+            return back()->with([
+                'success' => 'Bid placed successfully!',
                 'bid' => $bid,
-            ], 201);
+            ]);
 
         } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Failed to place bid. Please try again.',
-            ], 500);
+            return back()->withErrors([
+                'amount' => 'Failed to place bid. Please try again.',
+            ]);
         }
     }
 

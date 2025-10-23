@@ -26,7 +26,7 @@ export default function BidModal({ item, onClose }: BidModalProps): JSX.Element 
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     // Submit handler
-    const handleSubmit = async (e: FormEvent) => {
+    const handleSubmit = (e: FormEvent) => {
         e.preventDefault();
 
         // Validate bid amount
@@ -46,46 +46,33 @@ export default function BidModal({ item, onClose }: BidModalProps): JSX.Element 
         setError("");
         setIsSubmitting(true);
 
-        // Submit bid via fetch
-        try {
-            const response = await fetch(`/auction-items/${item.id}/bids`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]')?.getAttribute("content") || "",
+        router.post(
+            `/auction-items/${item.id}/bids`,
+            { amount },
+            {
+                preserveScroll: true,
+                onSuccess: () => {
+                    toast({
+                        title: "Bid placed successfully",
+                        description: `Your bid of ${formatCurrency(amount)} has been placed.`,
+                    });
+                    onClose();
                 },
-                body: JSON.stringify({ amount }),
-            });
-
-            const data = await response.json();
-
-            if (response.ok) {
-                toast({
-                    title: "Bid placed successfully",
-                    description: `Your bid of ${formatCurrency(amount)} has been placed.`,
-                });
-
-                // Reload the page to get updated data
-                router.reload();
-                onClose();
-            } else {
-                setError(data.error || "Failed to place bid");
-                toast({
-                    title: "Bid failed",
-                    description: data.error || "Failed to place bid",
-                    variant: "destructive",
-                });
+                onError: (errors) => {
+                    // Laravel validation errors come as an object with field names as keys
+                    const errorMessage = (errors.amount as string) || "Failed to place bid";
+                    setError(errorMessage);
+                    toast({
+                        title: "Bid failed",
+                        description: errorMessage,
+                        variant: "destructive",
+                    });
+                },
+                onFinish: () => {
+                    setIsSubmitting(false);
+                },
             }
-        } catch {
-            setError("Network error. Please try again.");
-            toast({
-                title: "Bid failed",
-                description: "Network error. Please try again.",
-                variant: "destructive",
-            });
-        } finally {
-            setIsSubmitting(false);
-        }
+        );
     };
 
     return (

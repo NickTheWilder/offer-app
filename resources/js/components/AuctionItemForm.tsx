@@ -1,5 +1,5 @@
 import { type JSX, FormEvent, useState } from "react";
-import { useForm } from "@inertiajs/react";
+import { useForm, router } from "@inertiajs/react";
 import styles from "./AdminDashboard.module.css";
 import type { AuctionItem, User } from "@/types";
 import { FormInput } from "./fields/form-input";
@@ -39,7 +39,6 @@ export function AuctionItemForm({ selectedItem, users, onSuccess }: AuctionItemF
 
         const url = selectedItem ? `/auction-items/${selectedItem.id}` : "/auction-items";
 
-        // Create FormData for file upload
         const formData = new FormData();
         formData.append("name", form.data.name);
         formData.append("description", form.data.description);
@@ -82,51 +81,43 @@ export function AuctionItemForm({ selectedItem, users, onSuccess }: AuctionItemF
             formData.append("_method", "PUT");
         }
 
-        // Inertia doesn't directly support FormData, so we use fetch with CSRF
-        fetch(url, {
-            method: "POST",
-            headers: {
-                "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]')?.getAttribute("content") || "",
-            },
-            body: formData,
-        })
-            .then(async (response) => {
-                const data = await response.json();
+        router.post(url, formData, {
+            preserveScroll: true,
+            forceFormData: true,
+            onSuccess: (page) => {
+                // Extract the item from shared props (back()->with() shares it at root level)
+                const updatedItem = (page.props as { item?: AuctionItem }).item;
 
-                if (response.ok && data.success) {
+                if (updatedItem) {
                     // Update form data with the returned item
-                    if (data.item) {
-                        form.setData({
-                            name: data.item.name,
-                            description: data.item.description,
-                            starting_bid: data.item.starting_bid,
-                            minimum_bid_increment: data.item.minimum_bid_increment,
-                            buy_now_price: data.item.buy_now_price,
-                            estimated_value: data.item.estimated_value,
-                            category: data.item.category,
-                            donor_id: data.item.donor_id,
-                            donor_name: data.item.donor_name,
-                            is_donor_public: data.item.is_donor_public,
-                            auction_type: data.item.auction_type,
-                            status: data.item.status,
-                            restrictions: data.item.restrictions,
-                            files: null, // Reset files after successful upload
-                        });
-                    }
+                    form.setData({
+                        name: updatedItem.name,
+                        description: updatedItem.description,
+                        starting_bid: updatedItem.starting_bid,
+                        minimum_bid_increment: updatedItem.minimum_bid_increment,
+                        buy_now_price: updatedItem.buy_now_price,
+                        estimated_value: updatedItem.estimated_value,
+                        category: updatedItem.category,
+                        donor_id: updatedItem.donor_id,
+                        donor_name: updatedItem.donor_name,
+                        is_donor_public: updatedItem.is_donor_public,
+                        auction_type: updatedItem.auction_type,
+                        status: updatedItem.status,
+                        restrictions: updatedItem.restrictions,
+                        files: null, // Reset files after successful upload
+                    });
                     setFilesToRemove([]); // Clear files to remove
-                    onSuccess(data.item);
-                } else {
-                    // Handle validation errors
-                    if (data.errors) {
-                        Object.keys(data.errors).forEach((key) => {
-                            form.setError(key as keyof typeof form.data, data.errors[key][0]);
-                        });
-                    }
+                    onSuccess(updatedItem);
                 }
-            })
-            .catch((error) => {
-                console.error("Failed to submit form", error);
-            });
+            },
+            onError: (errors) => {
+                console.error("Form submission errors:", errors);
+
+                Object.keys(errors).forEach((key) => {
+                    form.setError(key as keyof typeof form.data, errors[key] as string);
+                });
+            },
+        });
     };
 
     return (

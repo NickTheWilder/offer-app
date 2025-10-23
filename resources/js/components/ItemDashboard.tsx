@@ -3,6 +3,7 @@ import { formatCurrency } from "@/lib/utils";
 import type { AuctionItem, User } from "@/types";
 import { Edit, PlusCircle, Trash2 } from "lucide-react";
 import { type JSX, useState, useEffect } from "react";
+import { router } from "@inertiajs/react";
 import styles from "./AdminDashboard.module.css";
 import { AuctionItemForm } from "./AuctionItemForm";
 import DeleteConfirmationModal from "./DeleteConfirmationModal";
@@ -46,46 +47,43 @@ export default function ItemDashboard({ items, users, onItemsUpdate }: ItemDashb
     };
 
     // Handle confirmed deletion
-    const handleDeleteConfirm = async () => {
+    const handleDeleteConfirm = () => {
         if (!itemToDelete) return;
 
         setIsDeleting(true);
-        try {
-            await fetch(`/auction-items/${itemToDelete.id}`, {
-                method: "DELETE",
-                headers: {
-                    "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]')?.getAttribute("content") || "",
-                },
-            });
 
-            // Update local items state
-            const newItems = localItems.filter((item) => item.id !== itemToDelete.id);
-            setLocalItems(newItems);
+        router.delete(`/auction-items/${itemToDelete.id}`, {
+            preserveScroll: true,
+            onSuccess: () => {
+                const newItems = localItems.filter((item) => item.id !== itemToDelete.id);
+                setLocalItems(newItems);
 
-            // Clear selection if deleted item was selected
-            if (selectedItem?.id === itemToDelete.id) {
-                setSelectedItem(null);
-                setNewItemMode(false);
-            }
+                if (selectedItem?.id === itemToDelete.id) {
+                    setSelectedItem(null);
+                    setNewItemMode(false);
+                }
 
-            onItemsUpdate?.(newItems);
+                onItemsUpdate?.(newItems);
 
-            toast({
-                title: "Item deleted",
-                description: `"${itemToDelete.name}" has been deleted successfully.`,
-            });
-        } catch (error: unknown) {
-            console.error("Failed to delete auction item", error);
-            toast({
-                title: "Error",
-                description: "Failed to delete auction item",
-                variant: "destructive",
-            });
-        } finally {
-            setIsDeleting(false);
-            setShowDeleteModal(false);
-            setItemToDelete(null);
-        }
+                toast({
+                    title: "Item deleted",
+                    description: `"${itemToDelete.name}" has been deleted successfully.`,
+                });
+            },
+            onError: (errors) => {
+                console.error("Failed to delete auction item", errors);
+                toast({
+                    title: "Error",
+                    description: "Failed to delete auction item",
+                    variant: "destructive",
+                });
+            },
+            onFinish: () => {
+                setIsDeleting(false);
+                setShowDeleteModal(false);
+                setItemToDelete(null);
+            },
+        });
     };
 
     // Handle delete modal close
