@@ -1,4 +1,4 @@
-import { type JSX, useState } from "react";
+import { type JSX, useMemo, useState } from "react";
 import { Head } from "@inertiajs/react";
 import Header from "@/components/Header";
 import MobileNavigation from "@/components/MobileNavigation";
@@ -25,11 +25,15 @@ export default function Home({ auth, auctionItems, userBids, settings }: HomePro
     const [buyNowModalItem, setBuyNowModalItem] = useState<AuctionItem | null>(null);
 
     // Filter items by search query
-    const filteredItems = auctionItems?.filter((item) => {
-        if (!searchQuery) return true;
-        const query = searchQuery.toLowerCase();
-        return item.name.toLowerCase().includes(query) || (item.description || "").toLowerCase().includes(query) || (item.category || "").toLowerCase().includes(query);
-    });
+    const filteredItems = useMemo(
+        () =>
+            auctionItems?.filter((item) => {
+                if (!searchQuery) return true;
+                const query = searchQuery.toLowerCase();
+                return item.name.toLowerCase().includes(query) || (item.description || "").toLowerCase().includes(query) || (item.category || "").toLowerCase().includes(query);
+            }),
+        [auctionItems, searchQuery]
+    );
 
     // Handle bid button click
     const handleBidClick = (item: AuctionItem) => {
@@ -60,12 +64,12 @@ export default function Home({ auth, auctionItems, userBids, settings }: HomePro
                                             <span className={styles.timeValue}>
                                                 {new Date(settings.auction_end) > new Date()
                                                     ? (() => {
-                                                        const diff = new Date(settings.auction_end).getTime() - new Date().getTime();
-                                                        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-                                                        const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                                                        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-                                                        return days > 0 ? `${days}d ${hours}h` : hours > 0 ? `${hours}h ${minutes}m` : `${minutes}m`;
-                                                    })()
+                                                          const diff = new Date(settings.auction_end).getTime() - new Date().getTime();
+                                                          const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                                                          const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                                                          const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                                                          return days > 0 ? `${days}d ${hours}h` : hours > 0 ? `${hours}h ${minutes}m` : `${minutes}m`;
+                                                      })()
                                                     : "Ended"}
                                             </span>
                                         </div>
@@ -100,15 +104,7 @@ export default function Home({ auth, auctionItems, userBids, settings }: HomePro
                             )}
 
                             {/* Auction items grid */}
-                            {filteredItems && filteredItems.length > 0 && (
-                                <AuctionItemCard
-                                    items={filteredItems}
-                                    user={auth.user}
-                                    userBids={(userBids || []) as Bid[]}
-                                    onBidClick={handleBidClick}
-                                    onBuyNowClick={handleBuyNowClick}
-                                />
-                            )}
+                            {filteredItems && filteredItems.length > 0 && <AuctionItemCard items={filteredItems} user={auth.user} userBids={(userBids || []) as Bid[]} onBidClick={handleBidClick} onBuyNowClick={handleBuyNowClick} />}
                         </div>
                     )}
 
