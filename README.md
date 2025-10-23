@@ -50,6 +50,27 @@ composer run dev
 
 Then visit: **http://localhost:8000**
 
+## Development
+
+### Code Quality & Linting
+
+This project uses automated linting for both PHP and JavaScript/TypeScript to maintain consistent code quality.
+
+#### Quick Commands
+
+```bash
+bun lint          # Check all code without fixing (ESLint + TypeScript + Pint)
+bun lint:fix      # Fix all code style issues (ESLint + Pint)
+```
+
+#### Individual Linters
+
+```bash
+bun lint:js       # Fix only JavaScript/TypeScript (ESLint)
+bun lint:php      # Fix only PHP (Laravel Pint)
+bun types         # Run TypeScript type checker
+```
+
 ## Resetting Demo Data
 
 To completely reset your database and demo data (useful during development):

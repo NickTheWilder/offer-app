@@ -35,6 +35,12 @@ You are assisting with the development of a church bazaar auction software MVP d
 ## Code Quality Preferences
 
 - **Pass only the minimum required parameters to functions** - don't pass entire objects when only specific properties/methods are needed
-- **Always run `bun lint` and `bun types` after making changes** - fix all errors and warnings before considering work complete. This is mandatory, not optional.
+- **Always run `bun lint` before considering work complete** - this checks all code (ESLint, TypeScript, PHP Pint) without modifying files. If issues are found, run `bun lint:fix` to automatically fix them. This is mandatory, not optional.
+- **Available linting commands:**
+    - `bun lint` - Check all code without fixing (ESLint, TypeScript, and PHP Pint)
+    - `bun lint:fix` - Fix all code style issues (ESLint and PHP Pint)
+    - `bun lint:js` - Fix only JavaScript/TypeScript issues
+    - `bun lint:php` - Fix only PHP issues (Laravel Pint)
+    - `bun types` - Run TypeScript type checker only
 - **Use meaningful variable names** - avoid single-letter variables and descriptive names for functions and classes
 - **Follow the DRY principle** - avoid repeating code and use abstractions where possible

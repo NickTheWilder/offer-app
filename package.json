@@ -7,7 +7,10 @@
         "dev": "vite",
         "format": "prettier --write resources/",
         "format:check": "prettier --check resources/",
-        "lint": "eslint . --fix",
+        "lint": "concurrently -c \"#fb7185,#c4b5fd,#93c5fd\" \"eslint .\" \"tsc --noEmit\" \"composer lint:test\" --names=eslint,tsc,pint",
+        "lint:fix": "concurrently -c \"#fb7185,#c4b5fd\" \"eslint . --fix\" \"composer lint\" --names=eslint,pint",
+        "lint:js": "eslint . --fix",
+        "lint:php": "composer lint",
         "types": "tsc --noEmit"
     },
     "devDependencies": {
