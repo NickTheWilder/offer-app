@@ -4,6 +4,7 @@ import { Loader2 } from "lucide-react";
 import Header from "@/components/Header";
 import type { PageProps, User } from "@/types";
 import styles from "./UserDetail.module.css";
+import { formatDate } from "@/lib/utils";
 
 type UserDetailProps = PageProps<{
     user: User;
@@ -79,17 +80,6 @@ export default function UserDetail({ auth, user, flash }: UserDetailProps): JSX.
             bidder_number: user.bidder_number || "",
         });
         setErrors({});
-    };
-
-    const formatDate = (dateString: string): string => {
-        const date = new Date(dateString);
-        return date.toLocaleDateString("en-US", {
-            year: "numeric",
-            month: "long",
-            day: "numeric",
-            hour: "2-digit",
-            minute: "2-digit",
-        });
     };
 
     if (auth.user && auth.user.role !== "admin") {

@@ -2,18 +2,10 @@ import { type JSX, useState, useMemo } from "react";
 import { router } from "@inertiajs/react";
 import styles from "./UserGrid.module.css";
 import { User } from "@/types";
+import { formatDate } from "@/lib/utils";
 
 export function UserGrid({ users = [] }: { users: User[] }): JSX.Element {
     const [searchTerm, setSearchTerm] = useState("");
-
-    const formatDate = (dateString: string): string => {
-        const date = new Date(dateString);
-        return date.toLocaleDateString("en-US", {
-            year: "numeric",
-            month: "short",
-            day: "numeric",
-        });
-    };
 
     const filteredUsers = useMemo(() => {
         if (!searchTerm.trim()) {

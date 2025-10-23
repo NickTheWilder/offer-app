@@ -4,6 +4,7 @@ import { useToast } from "@/hooks/use-toast";
 import { Loader2, ShoppingCart } from "lucide-react";
 import styles from "./BuyNowModal.module.css";
 import type { AuctionItem } from "@/types";
+import { formatCurrency } from "@/lib/utils";
 
 interface BuyNowModalProps {
     item: AuctionItem;
@@ -18,16 +19,6 @@ export default function BuyNowModal({ item, onClose }: BuyNowModalProps): JSX.El
         amount: item.buy_now_price || 0,
         is_buy_now: true,
     });
-
-    // Format currency
-    const formatCurrency = (amount: number | null | undefined) => {
-        if (amount === null || amount === undefined) return "N/A";
-        return new Intl.NumberFormat("en-US", {
-            style: "currency",
-            currency: "USD",
-            minimumFractionDigits: 2,
-        }).format(amount);
-    };
 
     const handleConfirm = () => {
         post("/bids", {
