@@ -1,7 +1,6 @@
 import { createInertiaApp } from "@inertiajs/react";
 import { createRoot } from "react-dom/client";
 import { Toaster } from "@/components/ui/toaster";
-import { TooltipProvider } from "@/components/ui/tooltip";
 
 createInertiaApp({
     title: (title) => `${title} - Church Auction`,
@@ -11,10 +10,10 @@ createInertiaApp({
     },
     setup({ el, App, props }) {
         createRoot(el).render(
-            <TooltipProvider>
+            <>
                 <Toaster />
                 <App {...props} />
-            </TooltipProvider>
+            </>
         );
     },
     progress: {
