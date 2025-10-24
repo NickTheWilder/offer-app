@@ -1,6 +1,5 @@
 import type { JSX, FormEvent } from "react";
 import { Loader2 } from "lucide-react";
-import type { User } from "@/types";
 import styles from "./UserEditForm.module.css";
 
 interface UserFormData {

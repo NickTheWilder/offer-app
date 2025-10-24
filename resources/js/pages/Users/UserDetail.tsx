@@ -14,14 +14,12 @@ type UserDetailProps = PageProps<{
     user: User;
 }>;
 
-type TabType = "info" | "bids" | "sales" | "activity";
-
 export default function UserDetail({ auth, user, flash }: UserDetailProps): JSX.Element {
     // Check if we should start in edit mode
     const urlParams = new URLSearchParams(window.location.search);
     const startInEditMode = urlParams.get("edit") === "true";
 
-    const [activeTab, setActiveTab] = useState<TabType>("info");
+    const [activeTab, setActiveTab] = useState<string>("info");
     const [isEditing, setIsEditing] = useState(startInEditMode);
     const [isSaving, setIsSaving] = useState(false);
     const [formData, setFormData] = useState({
