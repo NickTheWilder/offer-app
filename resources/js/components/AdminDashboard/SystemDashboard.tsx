@@ -2,7 +2,7 @@ import { type JSX, useState } from "react";
 import { router, usePage } from "@inertiajs/react";
 import { PageProps } from "@/types";
 import styles from "./SystemDashboard.module.css";
-import sharedStyles from "./AdminDashboard.module.css";
+import sharedStyles from "../AdminDashboard.module.css";
 
 export function SystemDashboard(): JSX.Element {
     const { settings } = usePage<PageProps>().props;

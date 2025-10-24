@@ -4,9 +4,9 @@ import type { AuctionItem, User } from "@/types";
 import { Edit, PlusCircle, Trash2 } from "lucide-react";
 import { type JSX, useState, useEffect } from "react";
 import { router } from "@inertiajs/react";
-import styles from "./AdminDashboard.module.css";
-import { AuctionItemForm } from "./AuctionItemForm";
-import DeleteConfirmationModal from "./DeleteConfirmationModal";
+import styles from "./ItemDashboard.module.css";
+import { AuctionItemForm } from "../AuctionItemForm";
+import DeleteConfirmationModal from "../DeleteConfirmationModal";
 
 interface ItemDashboardProps {
     items: AuctionItem[];

@@ -2,7 +2,7 @@ import { type JSX, useEffect, useState } from "react";
 import { Head, router } from "@inertiajs/react";
 import { Loader2 } from "lucide-react";
 import Header from "@/components/Header";
-import ItemDashboard from "@/components/ItemDashboard";
+import ItemDashboard from "@/components/AdminDashboard/ItemDashboard";
 import type { PageProps, AuctionItem, User } from "@/types";
 import styles from "./AdminPage.module.css";
 

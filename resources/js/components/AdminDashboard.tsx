@@ -2,10 +2,10 @@ import { type JSX, useState, useCallback, useEffect } from "react";
 import { Loader2 } from "lucide-react";
 import styles from "./AdminDashboard.module.css";
 import Tabs from "./ui/Tabs";
-import { SystemDashboard } from "./SystemDashboard";
-import { ReportDashboard } from "./ReportDashboard";
-import { UserGrid } from "./UserGrid";
-import ItemDashboard from "./ItemDashboard";
+import { SystemDashboard } from "./AdminDashboard/SystemDashboard";
+import { ReportDashboard } from "./AdminDashboard/ReportDashboard";
+import { UserGrid } from "./AdminDashboard/UserGrid";
+import ItemDashboard from "./AdminDashboard/ItemDashboard";
 import type { AuctionItem, User } from "@/types";
 import { fetchAdminData } from "@/utils/adminApi";
 
