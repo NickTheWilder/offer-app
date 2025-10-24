@@ -1,5 +1,8 @@
 import type { JSX, FormEvent } from "react";
 import { Loader2 } from "lucide-react";
+import { FormInput } from "../fields/FormInput";
+import { FormSelect } from "../fields/FormSelect";
+import sharedStyles from "../fields/Fields.module.css";
 import styles from "./UserEditForm.module.css";
 
 interface UserFormData {
@@ -36,101 +39,75 @@ export default function UserEditForm({
                 <h2>Edit User</h2>
             </div>
 
-            <div className={styles.formGrid}>
-                <div className={styles.formGroup}>
-                    <label htmlFor="name">
-                        Name <span className={styles.required}>*</span>
-                    </label>
-                    <input
-                        type="text"
-                        id="name"
-                        className={styles.formInput}
+            <div className={sharedStyles.formGrid}>
+                <div className={sharedStyles.formLeftColumn}>
+                    <FormInput
+                        label="Name"
                         value={formData.name}
-                        onChange={(e) => onFieldChange("name", e.target.value)}
+                        onChange={(value) => onFieldChange("name", value)}
+                        errors={errors.name ? [errors.name] : []}
                         required
                     />
-                    {errors.name && <span className={styles.error}>{errors.name}</span>}
-                </div>
 
-                <div className={styles.formGroup}>
-                    <label htmlFor="email">
-                        Email <span className={styles.required}>*</span>
-                    </label>
-                    <input
-                        type="email"
-                        id="email"
-                        className={styles.formInput}
+                    <FormInput
+                        label="Email"
                         value={formData.email}
-                        onChange={(e) => onFieldChange("email", e.target.value)}
+                        onChange={(value) => onFieldChange("email", value)}
+                        errors={errors.email ? [errors.email] : []}
                         required
                     />
-                    {errors.email && <span className={styles.error}>{errors.email}</span>}
-                </div>
 
-                <div className={styles.formGroup}>
-                    <label htmlFor="phone">Phone</label>
-                    <input
-                        type="tel"
-                        id="phone"
-                        className={styles.formInput}
+                    <FormInput
+                        label="Phone"
                         value={formData.phone}
-                        onChange={(e) => onFieldChange("phone", e.target.value)}
+                        onChange={(value) => onFieldChange("phone", value)}
+                        errors={errors.phone ? [errors.phone] : []}
                     />
-                    {errors.phone && <span className={styles.error}>{errors.phone}</span>}
                 </div>
 
-                <div className={styles.formGroup}>
-                    <label htmlFor="address">Address</label>
-                    <input
-                        type="text"
-                        id="address"
-                        className={styles.formInput}
+                <div className={sharedStyles.formRightColumn}>
+                    <FormInput
+                        label="Address"
                         value={formData.address}
-                        onChange={(e) => onFieldChange("address", e.target.value)}
+                        onChange={(value) => onFieldChange("address", value)}
+                        errors={errors.address ? [errors.address] : []}
                     />
-                    {errors.address && <span className={styles.error}>{errors.address}</span>}
-                </div>
 
-                <div className={styles.formGroup}>
-                    <label htmlFor="role">
-                        Role <span className={styles.required}>*</span>
-                    </label>
-                    <select
-                        id="role"
-                        className={styles.formInput}
+                    <FormSelect<string>
+                        label="Role"
                         value={formData.role}
-                        onChange={(e) => onFieldChange("role", e.target.value)}
+                        onChange={(value) => onFieldChange("role", value)}
+                        errors={errors.role ? [errors.role] : []}
                         required
                     >
                         <option value="bidder">Bidder</option>
                         <option value="admin">Admin</option>
-                    </select>
-                    {errors.role && <span className={styles.error}>{errors.role}</span>}
-                </div>
+                    </FormSelect>
 
-                <div className={styles.formGroup}>
-                    <label htmlFor="bidder_number">Bidder Number</label>
-                    <div className={styles.bidderNumberWrapper}>
-                        <input
-                            type="text"
-                            id="bidder_number"
-                            className={styles.formInput}
-                            value={formData.bidder_number}
-                            onChange={(e) => onFieldChange("bidder_number", e.target.value)}
-                        />
-                        <button
-                            type="button"
-                            className={styles.assignBidderNumberButton}
-                            onClick={onAssignBidderNumber}
-                            disabled={!!formData.bidder_number}
-                        >
-                            Assign Number
-                            <svg className={styles.gavelIcon} fill="none" stroke="currentColor" viewBox="0 0 24 24" width="16" height="16">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-                            </svg>
-                        </button>
+                    <div className={sharedStyles.formGroup}>
+                        <label className={sharedStyles.formLabel} htmlFor="bidder_number">Bidder Number</label>
+                        <div className={styles.bidderNumberWrapper}>
+                            <input
+                                type="text"
+                                id="bidder_number"
+                                className={sharedStyles.formInput}
+                                value={formData.bidder_number}
+                                onChange={(e) => onFieldChange("bidder_number", e.target.value)}
+                            />
+                            <button
+                                type="button"
+                                className={styles.assignBidderNumberButton}
+                                onClick={onAssignBidderNumber}
+                                disabled={!!formData.bidder_number}
+                            >
+                                Assign Number
+                                <svg className={styles.gavelIcon} fill="none" stroke="currentColor" viewBox="0 0 24 24" width="16" height="16">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                                </svg>
+                            </button>
+                        </div>
+                        {errors.bidder_number && <span className={sharedStyles.formError}>{errors.bidder_number}</span>}
                     </div>
-                    {errors.bidder_number && <span className={styles.error}>{errors.bidder_number}</span>}
                 </div>
             </div>
 
