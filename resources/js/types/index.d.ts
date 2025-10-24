@@ -58,6 +58,22 @@ export interface AuctionItem {
     high_bidder?: User;
 }
 
+export interface Sale {
+    id: number;
+    transaction_id: string;
+    user_id: number;
+    auction_item_id: number | null;
+    amount: number;
+    sale_source: "pre_sale" | "auction" | "raffle" | "day_of" | "other" | "underwriting";
+    quantity: number;
+    notes: string | null;
+    sale_date: string;
+    created_at: string;
+    updated_at: string;
+    user?: User;
+    auction_item?: AuctionItem;
+}
+
 export type PageProps<T extends Record<string, unknown> = Record<string, unknown>> = T & {
     auth: {
         user: User | null;

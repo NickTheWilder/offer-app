@@ -1,0 +1,24 @@
+/* Placeholder Tabs */
+.placeholderTab {
+    padding: 3rem;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 300px;
+}
+
+.placeholderTab h3 {
+    font-weight: 500;
+    font-size: 1.25rem;
+    color: #1f2937;
+    margin: 0 0 0.5rem 0;
+}
+
+.placeholderTab p {
+    color: #6b7280;
+    font-size: 0.875rem;
+    max-width: 24rem;
+    margin: 0;
+}
