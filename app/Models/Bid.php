@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Bid extends Model
 {
@@ -31,16 +32,20 @@ class Bid extends Model
 
     /**
      * Get the user that owns the bid.
+     *
+     * @return BelongsTo<User,Bid>
      */
-    public function user()
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
     /**
      * Get the auction item that the bid belongs to.
+     *
+     * @return BelongsTo<AuctionItem,Bid>
      */
-    public function auctionItem()
+    public function auctionItem(): BelongsTo
     {
         return $this->belongsTo(AuctionItem::class);
     }

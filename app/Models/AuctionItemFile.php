@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Facades\Storage;
 
 class AuctionItemFile extends Model
@@ -43,8 +44,10 @@ class AuctionItemFile extends Model
 
     /**
      * Get the auction item that the file belongs to.
+     *
+     * @return BelongsTo<AuctionItem,AuctionItemFile>
      */
-    public function auctionItem()
+    public function auctionItem(): BelongsTo
     {
         return $this->belongsTo(AuctionItem::class);
     }

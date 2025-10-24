@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -52,16 +53,20 @@ class User extends Authenticatable
 
     /**
      * Get the bids for the user.
+     *
+     * @return HasMany<Bid,User>
      */
-    public function bids()
+    public function bids(): HasMany
     {
         return $this->hasMany(Bid::class);
     }
 
     /**
      * Get the auction items donated by the user.
+     *
+     * @return HasMany<AuctionItem,User>
      */
-    public function donatedItems()
+    public function donatedItems(): HasMany
     {
         return $this->hasMany(AuctionItem::class, 'donor_id');
     }

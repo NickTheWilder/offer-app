@@ -3,6 +3,9 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class AuctionItem extends Model
 {
@@ -46,16 +49,20 @@ class AuctionItem extends Model
 
     /**
      * Get the files for the auction item.
+     *
+     * @return HasMany<AuctionItemFile,AuctionItem>
      */
-    public function files()
+    public function files(): HasMany
     {
         return $this->hasMany(AuctionItemFile::class);
     }
 
     /**
      * Get the bids for the auction item.
+     *
+     * @return HasMany<Bid,AuctionItem>
      */
-    public function bids()
+    public function bids(): HasMany
     {
         return $this->hasMany(Bid::class);
     }
@@ -63,15 +70,17 @@ class AuctionItem extends Model
     /**
      * Get the current high bid for the auction item.
      */
-    public function currentHighBid()
+    public function currentHighBid(): HasOne
     {
         return $this->hasOne(Bid::class)->latestOfMany('amount');
     }
 
     /**
      * Get the donor (user) for the auction item.
+     *
+     * @return BelongsTo<User,AuctionItem>
      */
-    public function donor()
+    public function donor(): BelongsTo
     {
         return $this->belongsTo(User::class, 'donor_id');
     }
