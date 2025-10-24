@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
             SettingSeeder::class,
             UserSeeder::class,
             AuctionItemSeeder::class,
+            SaleSeeder::class,
         ]);
     }
 }
