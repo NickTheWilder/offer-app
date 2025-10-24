@@ -1,11 +1,11 @@
 import { type JSX } from "react";
-import styles from "./AdminDashboard.module.css";
+import PlaceholderTab from "./ui/PlaceholderTab";
 
 export function ReportDashboard(): JSX.Element {
     return (
-        <div className={styles.placeholderTab}>
-            <h3 className={styles.placeholderTitle}>Reports</h3>
-            <p className={styles.placeholderText}>Generate and view auction reports.</p>
-        </div>
+        <PlaceholderTab
+            title="Reports"
+            description="Generate and view auction reports."
+        />
     );
 }

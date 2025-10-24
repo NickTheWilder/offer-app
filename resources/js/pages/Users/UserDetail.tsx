@@ -3,10 +3,10 @@ import { Head, router } from "@inertiajs/react";
 import { Loader2 } from "lucide-react";
 import Header from "@/components/Header";
 import UserHeader from "@/components/UserDetail/UserHeader";
-import UserTabs from "@/components/UserDetail/UserTabs";
+import Tabs from "@/components/ui/Tabs";
 import UserInfoView from "@/components/UserDetail/UserInfoView";
 import UserEditForm from "@/components/UserDetail/UserEditForm";
-import PlaceholderTab from "@/components/UserDetail/PlaceholderTab";
+import PlaceholderTab from "@/components/ui/PlaceholderTab";
 import type { PageProps, User } from "@/types";
 import styles from "./UserDetail.module.css";
 
@@ -108,7 +108,16 @@ export default function UserDetail({ auth, user, flash }: UserDetailProps): JSX.
                         {flash?.success && <div className={styles.flashSuccess}>{flash.success}</div>}
                         {flash?.error && <div className={styles.flashError}>{flash.error}</div>}
 
-                        <UserTabs activeTab={activeTab} onTabChange={setActiveTab} />
+                        <Tabs
+                            items={[
+                                { key: "info", label: "User Information" },
+                                { key: "bids", label: "Bids" },
+                                { key: "sales", label: "Sales" },
+                                { key: "activity", label: "Activity" },
+                            ]}
+                            activeTab={activeTab}
+                            onTabChange={setActiveTab}
+                        />
 
                         {/* Tab Content */}
                         <div className={styles.tabContent}>

@@ -497,33 +497,6 @@ select.formInput:focus {
     width: 1rem;
 }
 
-/* Tabs */
-.tabsList {
-    display: flex;
-    border-bottom: 1px solid #e5e7eb;
-    width: 100%;
-}
-
-.tabTrigger {
-    padding: 0.75rem 1.25rem;
-    border: none;
-    background: none;
-    font-size: 0.875rem;
-    font-weight: 500;
-    color: #6b7280;
-    cursor: pointer;
-    transition: all 0.2s;
-    border-bottom: 2px solid transparent;
-}
-
-.tabTrigger:hover {
-    color: #111827;
-}
-
-.tabTrigger.active {
-    color: var(--primary-color);
-    border-bottom: 2px solid var(--primary-color);
-}
 
 /* Loading */
 .loadingContainer {
@@ -549,26 +522,3 @@ select.formInput:focus {
     }
 }
 
-/* Placeholder Tabs */
-.placeholderTab {
-    padding: 3rem;
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
-}
-
-.placeholderTitle {
-    font-weight: 500;
-    font-size: 1.25rem;
-    color: #1f2937;
-    margin-bottom: 0.5rem;
-}
-
-.placeholderText {
-    color: #6b7280;
-    font-size: 0.875rem;
-    max-width: 24rem;
-}

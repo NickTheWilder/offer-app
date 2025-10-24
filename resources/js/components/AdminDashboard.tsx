@@ -1,6 +1,7 @@
 import { type JSX, useState, useCallback, useEffect } from "react";
 import { Loader2 } from "lucide-react";
 import styles from "./AdminDashboard.module.css";
+import Tabs from "./ui/Tabs";
 import { SystemDashboard } from "./SystemDashboard";
 import { ReportDashboard } from "./ReportDashboard";
 import { UserGrid } from "./UserGrid";
@@ -133,21 +134,16 @@ export default function AdminDashboard(): JSX.Element {
 
     return (
         <div className={styles.adminLayout}>
-            {/* Admin Tabs */}
-            <div className={styles.tabsList}>
-                <button onClick={() => handleTabChange("items")} className={`${styles.tabTrigger} ${activeAdminTab === "items" ? styles.active : ""}`}>
-                    Items
-                </button>
-                <button onClick={() => handleTabChange("users")} className={`${styles.tabTrigger} ${activeAdminTab === "users" ? styles.active : ""}`}>
-                    Users
-                </button>
-                <button onClick={() => handleTabChange("reports")} className={`${styles.tabTrigger} ${activeAdminTab === "reports" ? styles.active : ""}`}>
-                    Reports
-                </button>
-                <button onClick={() => handleTabChange("system")} className={`${styles.tabTrigger} ${activeAdminTab === "system" ? styles.active : ""}`}>
-                    System
-                </button>
-            </div>
+            <Tabs
+                items={[
+                    { key: "items", label: "Items" },
+                    { key: "users", label: "Users" },
+                    { key: "reports", label: "Reports" },
+                    { key: "system", label: "System" },
+                ]}
+                activeTab={activeAdminTab}
+                onTabChange={handleTabChange}
+            />
 
             {/* Main content area */}
             <div className={styles.adminContent}>
