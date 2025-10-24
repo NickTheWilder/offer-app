@@ -1,8 +1,8 @@
 import { type JSX, useState } from "react";
 import { Head, Link } from "@inertiajs/react";
 import Header from "@/components/Header";
-import BidModal from "@/components/BidModal";
-import BuyNowModal from "@/components/BuyNowModal";
+import BidModal from "@/components/Bidder/BidModal";
+import BuyNowModal from "@/components/Bidder/BuyNowModal";
 import { AuctionItem, PageProps } from "@/types";
 import { formatCurrency } from "@/lib/utils";
 import { ChevronLeft, ChevronRight } from "lucide-react";

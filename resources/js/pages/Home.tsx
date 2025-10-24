@@ -2,12 +2,12 @@ import { type JSX, useMemo, useState } from "react";
 import { Head } from "@inertiajs/react";
 import Header from "@/components/Header";
 import MobileNavigation from "@/components/MobileNavigation";
-import AuctionItemCard from "@/components/AuctionItemCard";
-import BidModal from "@/components/BidModal";
-import BuyNowModal from "@/components/BuyNowModal";
+import AuctionItemCard from "@/components/Bidder/AuctionItemCard";
+import BidModal from "@/components/Bidder/BidModal";
+import BuyNowModal from "@/components/Bidder/BuyNowModal";
 import { AuctionItem, Bid, PageProps } from "@/types";
 import styles from "./HomePage.module.css";
-import MyBids from "@/components/MyBids";
+import MyBids from "@/components/Bidder/MyBids";
 
 interface BidWithItem extends Bid {
     auction_item: AuctionItem;
