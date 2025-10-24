@@ -1,0 +1,6 @@
+/* FormTextarea specific styles */
+
+.formTextarea {
+    min-height: 6rem;
+    resize: vertical;
+}

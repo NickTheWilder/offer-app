@@ -1,12 +1,14 @@
 import { type JSX, FormEvent, useState } from "react";
 import { useForm, router } from "@inertiajs/react";
-import styles from "./AdminDashboard.module.css";
+import sharedStyles from "./fields/Fields.module.css";
+import styles from "./AuctionItemForm.module.css";
 import type { AuctionItem, User } from "@/types";
-import { FormInput } from "./fields/form-input";
-import { FormTextarea } from "./fields/form-textarea";
-import { FormCurrencyInput } from "./fields/form-currency-input";
-import { FormSelect } from "./fields/form-select";
-import FormFileUpload from "./fields/form-file-upload";
+import { FormInput } from "./fields/FormInput";
+import { FormTextarea } from "./fields/FormTextarea";
+import { FormCurrencyInput } from "./fields/FormCurrencyInput";
+import { FormSelect } from "./fields/FormSelect";
+import { FormCheckbox } from "./fields/FormCheckbox";
+import FormFileUpload from "./fields/FormFileUpload";
 
 interface AuctionItemFormProps {
     selectedItem: AuctionItem | null;
@@ -127,73 +129,84 @@ export function AuctionItemForm({ selectedItem, users, onSuccess }: AuctionItemF
                     <h2 className={styles.formTitle}>{selectedItem ? "Edit Item" : "Add New Item"}</h2>
                 </div>
 
-                <div className={styles.formGrid}>
-                    <div className={styles.formLeftColumn}>
-                        {/* Basic Item Information */}
-                        <div className={styles.formGroup}>
-                            <label className={styles.formLabel}>
-                                Name<span className={styles.requiredMark}>*</span>
-                            </label>
-                            <FormInput value={form.data.name} onChange={(value) => form.setData("name", value)} placeholder="Item name" errors={form.errors.name ? [form.errors.name] : []} />
-                        </div>
+                <div className={sharedStyles.formGrid}>
+                    <div className={sharedStyles.formLeftColumn}>
+                        <FormInput
+                            label="Name"
+                            value={form.data.name}
+                            onChange={(value) => form.setData("name", value)}
+                            placeholder="Item name"
+                            errors={form.errors.name ? [form.errors.name] : []}
+                            required
+                        />
 
-                        <div className={styles.formGroup}>
-                            <label className={styles.formLabel}>
-                                Description<span className={styles.requiredMark}>*</span>
-                            </label>
-                            <FormTextarea value={form.data.description} onChange={(value) => form.setData("description", value)} placeholder="Item description" errors={form.errors.description ? [form.errors.description] : []} />
-                        </div>
+                        <FormTextarea
+                            label="Description"
+                            value={form.data.description}
+                            onChange={(value) => form.setData("description", value)}
+                            placeholder="Item description"
+                            errors={form.errors.description ? [form.errors.description] : []}
+                            required
+                        />
 
-                        <div className={styles.formGroup}>
-                            <label className={styles.formLabel}>
-                                Starting Bid<span className={styles.requiredMark}>*</span>
-                            </label>
-                            <FormCurrencyInput value={form.data.starting_bid} onChange={(value) => form.setData("starting_bid", value)} placeholder="0.00" errors={form.errors.starting_bid ? [form.errors.starting_bid] : []} />
-                        </div>
+                        <FormCurrencyInput
+                            label="Starting Bid"
+                            value={form.data.starting_bid}
+                            onChange={(value) => form.setData("starting_bid", value)}
+                            placeholder="0.00"
+                            errors={form.errors.starting_bid ? [form.errors.starting_bid] : []}
+                            required
+                        />
 
-                        <div className={styles.formGroup}>
-                            <label className={styles.formLabel}>
-                                Minimum Bid Increment<span className={styles.requiredMark}>*</span>
-                            </label>
-                            <FormCurrencyInput
-                                value={form.data.minimum_bid_increment}
-                                onChange={(value) => form.setData("minimum_bid_increment", value)}
-                                placeholder="5.00"
-                                errors={form.errors.minimum_bid_increment ? [form.errors.minimum_bid_increment] : []}
-                            />
-                        </div>
+                        <FormCurrencyInput
+                            label="Minimum Bid Increment"
+                            value={form.data.minimum_bid_increment}
+                            onChange={(value) => form.setData("minimum_bid_increment", value)}
+                            placeholder="5.00"
+                            errors={form.errors.minimum_bid_increment ? [form.errors.minimum_bid_increment] : []}
+                            required
+                        />
 
-                        <div className={styles.formGroup}>
-                            <label className={styles.formLabel}>Buy Now Price</label>
-                            <FormCurrencyInput value={form.data.buy_now_price} onChange={(value) => form.setData("buy_now_price", value)} placeholder="0.00" errors={form.errors.buy_now_price ? [form.errors.buy_now_price] : []} />
-                        </div>
+                        <FormCurrencyInput
+                            label="Buy Now Price"
+                            value={form.data.buy_now_price}
+                            onChange={(value) => form.setData("buy_now_price", value)}
+                            placeholder="0.00"
+                            errors={form.errors.buy_now_price ? [form.errors.buy_now_price] : []}
+                        />
 
-                        <div className={styles.formGroup}>
-                            <label className={styles.formLabel}>
-                                Status<span className={styles.requiredMark}>*</span>
-                            </label>
-                            <FormSelect value={form.data.status} onChange={(value) => form.setData("status", value as "draft" | "active" | "sold" | "unsold")} errors={form.errors.status ? [form.errors.status] : []}>
-                                <option value="draft">Draft</option>
-                                <option value="active">Active</option>
-                                <option value="sold">Sold</option>
-                                <option value="unsold">Unsold</option>
-                            </FormSelect>
-                        </div>
+                        <FormSelect
+                            label="Status"
+                            value={form.data.status}
+                            onChange={(value) => form.setData("status", value as "draft" | "active" | "sold" | "unsold")}
+                            errors={form.errors.status ? [form.errors.status] : []}
+                            required
+                        >
+                            <option value="draft">Draft</option>
+                            <option value="active">Active</option>
+                            <option value="sold">Sold</option>
+                            <option value="unsold">Unsold</option>
+                        </FormSelect>
 
-                        <div className={styles.formGroup}>
-                            <label className={styles.formLabel}>Estimated Value</label>
-                            <FormCurrencyInput value={form.data.estimated_value} onChange={(value) => form.setData("estimated_value", value)} placeholder="0.00" errors={form.errors.estimated_value ? [form.errors.estimated_value] : []} />
-                        </div>
+                        <FormCurrencyInput
+                            label="Estimated Value"
+                            value={form.data.estimated_value}
+                            onChange={(value) => form.setData("estimated_value", value)}
+                            placeholder="0.00"
+                            errors={form.errors.estimated_value ? [form.errors.estimated_value] : []}
+                        />
 
-                        <div className={styles.formGroup}>
-                            <label className={styles.formLabel}>Restrictions</label>
-                            <textarea className={styles.formInput} placeholder="Any restrictions or special instructions" value={form.data.restrictions} onChange={(e) => form.setData("restrictions", e.target.value)} />
-                            {form.errors.restrictions && <div className={styles.formError}>{form.errors.restrictions}</div>}
-                        </div>
+                        <FormTextarea
+                            label="Restrictions"
+                            value={form.data.restrictions}
+                            onChange={(value) => form.setData("restrictions", value)}
+                            placeholder="Any restrictions or special instructions"
+                            errors={form.errors.restrictions ? [form.errors.restrictions] : []}
+                        />
                     </div>
 
-                    <div className={styles.formRightColumn}>
-                        <div className={styles.formGroup}>
+                    <div className={sharedStyles.formRightColumn}>
+                        <div className={sharedStyles.formGroup}>
                             <FormFileUpload
                                 label="Item Images"
                                 value={form.data.files}
@@ -219,54 +232,52 @@ export function AuctionItemForm({ selectedItem, users, onSuccess }: AuctionItemF
                             />
                         </div>
 
-                        <div className={styles.formGroup}>
-                            <label className={styles.formLabel}>
-                                Donor<span className={styles.requiredMark}>*</span>
-                            </label>
-                            <FormSelect
-                                value={form.data.donor_id?.toString() || ""}
-                                onChange={(value: string) => {
-                                    const donorId = value ? parseInt(value) : null;
-                                    const selectedUser = users.find((u) => u.id === donorId);
-                                    form.setData("donor_id", donorId);
-                                    form.setData("donor_name", selectedUser?.name || "");
-                                }}
-                                errors={form.errors.donor_id ? [form.errors.donor_id] : []}
-                            >
-                                <option value="">Select a donor...</option>
-                                {users.map((user) => (
-                                    <option key={user.id} value={user.id}>
-                                        {user.name} ({user.email})
-                                    </option>
-                                ))}
-                            </FormSelect>
-                        </div>
+                        <FormSelect
+                            label="Donor"
+                            value={form.data.donor_id?.toString() || ""}
+                            onChange={(value: string) => {
+                                const donorId = value ? parseInt(value) : null;
+                                const selectedUser = users.find((u) => u.id === donorId);
+                                form.setData("donor_id", donorId);
+                                form.setData("donor_name", selectedUser?.name || "");
+                            }}
+                            errors={form.errors.donor_id ? [form.errors.donor_id] : []}
+                            required
+                        >
+                            <option value="">Select a donor...</option>
+                            {users.map((user) => (
+                                <option key={user.id} value={user.id}>
+                                    {user.name} ({user.email})
+                                </option>
+                            ))}
+                        </FormSelect>
 
-                        <div className={styles.formGroup}>
-                            <label className={styles.formLabel}>
-                                Category<span className={styles.requiredMark}>*</span>
-                            </label>
-                            <FormInput value={form.data.category} onChange={(value) => form.setData("category", value)} placeholder="Electronics, Art, Gift Cards, etc." errors={form.errors.category ? [form.errors.category] : []} />
-                        </div>
+                        <FormInput
+                            label="Category"
+                            value={form.data.category}
+                            onChange={(value) => form.setData("category", value)}
+                            placeholder="Electronics, Art, Gift Cards, etc."
+                            errors={form.errors.category ? [form.errors.category] : []}
+                            required
+                        />
 
-                        <div className={styles.formGroup}>
-                            <label className={styles.formLabel}>Donor Public?</label>
-                            <label className={styles.checkboxLabel}>
-                                <input type="checkbox" checked={form.data.is_donor_public} onChange={(e) => form.setData("is_donor_public", e.target.checked)} />
-                                Show donor name publicly
-                            </label>
-                        </div>
+                        <FormCheckbox
+                            label="Donor Public?"
+                            value={form.data.is_donor_public}
+                            onChange={(value) => form.setData("is_donor_public", value)}
+                            description="Show donor name publicly"
+                        />
 
-                        <div className={styles.formGroup}>
-                            <label className={styles.formLabel}>
-                                Auction Type<span className={styles.requiredMark}>*</span>
-                            </label>
-                            <select className={styles.formInput} value={form.data.auction_type} onChange={(e) => form.setData("auction_type", e.target.value as "silent" | "live")}>
-                                <option value="silent">Silent</option>
-                                <option value="live">Live</option>
-                            </select>
-                            {form.errors.auction_type && <div className={styles.formError}>{form.errors.auction_type}</div>}
-                        </div>
+                        <FormSelect
+                            label="Auction Type"
+                            value={form.data.auction_type}
+                            onChange={(value) => form.setData("auction_type", value as "silent" | "live")}
+                            errors={form.errors.auction_type ? [form.errors.auction_type] : []}
+                            required
+                        >
+                            <option value="silent">Silent</option>
+                            <option value="live">Live</option>
+                        </FormSelect>
                     </div>
                 </div>
 
