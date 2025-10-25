@@ -1,6 +1,6 @@
 import React, { type JSX, useState, useRef, useCallback, useEffect } from "react";
 import { Upload, X, Image } from "lucide-react";
-import styles from "./form-file-upload.module.css";
+import styles from "./FormFileUpload.module.css";
 
 type ExistingFile = {
     id: string;
@@ -26,7 +26,18 @@ interface FormFileUploadProps {
     multiple?: boolean;
 }
 
-export default function FormFileUpload({ label, value, onChange, existingFiles, onRemoveExisting, error, accept = "image/*", maxSizeMB = 5, required = false, multiple = true }: FormFileUploadProps): JSX.Element {
+export default function FormFileUpload({
+    label,
+    value,
+    onChange,
+    existingFiles,
+    onRemoveExisting,
+    error,
+    accept = "image/*",
+    maxSizeMB = 5,
+    required = false,
+    multiple = true,
+}: FormFileUploadProps): JSX.Element {
     const [dragActive, setDragActive] = useState(false);
     const [previews, setPreviews] = useState<string[]>([]);
     const fileInputRef = useRef<HTMLInputElement>(null);
@@ -149,7 +160,9 @@ export default function FormFileUpload({ label, value, onChange, existingFiles, 
                 }
             } else {
                 // Remove all new files, keep existing ones in preview
-                const existingPreviews = existingFiles ? existingFiles.filter((f) => f?.dataUrl).map((f) => f!.dataUrl!) : [];
+                const existingPreviews = existingFiles
+                    ? existingFiles.filter((f) => f?.dataUrl).map((f) => f!.dataUrl!)
+                    : [];
                 setPreviews(existingPreviews);
                 onChange(null);
             }
@@ -177,10 +190,21 @@ export default function FormFileUpload({ label, value, onChange, existingFiles, 
                     <div className={styles.previewContainer}>
                         <div className={styles.previewGrid}>
                             {previews.map((preview, index) => (
-                                <div key={index} className={styles.imagePreview}>
-                                    <img src={preview} alt={`Preview ${index + 1}`} className={styles.previewImage} />
+                                <div
+                                    key={index}
+                                    className={styles.imagePreview}
+                                >
+                                    <img
+                                        src={preview}
+                                        alt={`Preview ${index + 1}`}
+                                        className={styles.previewImage}
+                                    />
                                     <div className={styles.imageOverlay}>
-                                        <button type="button" onClick={() => handleRemove(index)} className={styles.removeButton}>
+                                        <button
+                                            type="button"
+                                            onClick={() => handleRemove(index)}
+                                            className={styles.removeButton}
+                                        >
                                             <X size={16} />
                                         </button>
                                     </div>
@@ -188,14 +212,25 @@ export default function FormFileUpload({ label, value, onChange, existingFiles, 
                             ))}
                         </div>
                         {multiple && (
-                            <button type="button" onClick={handleClick} className={styles.addMoreButton}>
+                            <button
+                                type="button"
+                                onClick={handleClick}
+                                className={styles.addMoreButton}
+                            >
                                 <Upload size={16} />
                                 Add More Images
                             </button>
                         )}
                     </div>
                 ) : (
-                    <div className={`${styles.dropZone} ${dragActive ? styles.dragActive : ""}`} onDragEnter={handleDrag} onDragLeave={handleDrag} onDragOver={handleDrag} onDrop={handleDrop} onClick={handleClick}>
+                    <div
+                        className={`${styles.dropZone} ${dragActive ? styles.dragActive : ""}`}
+                        onDragEnter={handleDrag}
+                        onDragLeave={handleDrag}
+                        onDragOver={handleDrag}
+                        onDrop={handleDrop}
+                        onClick={handleClick}
+                    >
                         <div className={styles.dropZoneContent}>
                             <div className={styles.iconContainer}>
                                 <Image className={styles.uploadIcon} />
@@ -212,7 +247,14 @@ export default function FormFileUpload({ label, value, onChange, existingFiles, 
                     </div>
                 )}
 
-                <input ref={fileInputRef} type="file" accept={accept} multiple={multiple} onChange={handleChange} className={styles.hiddenInput} />
+                <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept={accept}
+                    multiple={multiple}
+                    onChange={handleChange}
+                    className={styles.hiddenInput}
+                />
             </div>
 
             {error && <p className={styles.error}>{error}</p>}

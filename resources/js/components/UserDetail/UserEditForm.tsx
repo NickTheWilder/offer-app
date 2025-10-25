@@ -34,7 +34,10 @@ export default function UserEditForm({
     onAssignBidderNumber,
 }: UserEditFormProps): JSX.Element {
     return (
-        <form onSubmit={onSubmit} className={styles.editForm}>
+        <form
+            onSubmit={onSubmit}
+            className={styles.editForm}
+        >
             <div className={styles.formHeader}>
                 <h2>Edit User</h2>
             </div>
@@ -85,7 +88,12 @@ export default function UserEditForm({
                     </FormSelect>
 
                     <div className={sharedStyles.formGroup}>
-                        <label className={sharedStyles.formLabel} htmlFor="bidder_number">Bidder Number</label>
+                        <label
+                            className={sharedStyles.formLabel}
+                            htmlFor="bidder_number"
+                        >
+                            Bidder Number
+                        </label>
                         <div className={styles.bidderNumberWrapper}>
                             <input
                                 type="text"
@@ -101,8 +109,20 @@ export default function UserEditForm({
                                 disabled={!!formData.bidder_number}
                             >
                                 Assign Number
-                                <svg className={styles.gavelIcon} fill="none" stroke="currentColor" viewBox="0 0 24 24" width="16" height="16">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                                <svg
+                                    className={styles.gavelIcon}
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                    width="16"
+                                    height="16"
+                                >
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth={2}
+                                        d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
+                                    />
                                 </svg>
                             </button>
                         </div>
@@ -112,10 +132,19 @@ export default function UserEditForm({
             </div>
 
             <div className={styles.formActions}>
-                <button type="button" className={styles.cancelButton} onClick={onCancel} disabled={isSaving}>
+                <button
+                    type="button"
+                    className={styles.cancelButton}
+                    onClick={onCancel}
+                    disabled={isSaving}
+                >
                     Cancel
                 </button>
-                <button type="submit" className={styles.saveButton} disabled={isSaving}>
+                <button
+                    type="submit"
+                    className={styles.saveButton}
+                    disabled={isSaving}
+                >
                     {isSaving ? (
                         <>
                             <Loader2 className={styles.spinner} />
@@ -123,8 +152,18 @@ export default function UserEditForm({
                         </>
                     ) : (
                         <>
-                            <svg className={styles.saveIcon} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                            <svg
+                                className={styles.saveIcon}
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth={2}
+                                    d="M5 13l4 4L19 7"
+                                />
                             </svg>
                             Save Changes
                         </>

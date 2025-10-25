@@ -22,49 +22,106 @@ export default function Register() {
     return (
         <form onSubmit={onRegisterSubmit}>
             <div className={styles.formGroup}>
-                <label htmlFor="name" className={styles.label}>
+                <label
+                    htmlFor="name"
+                    className={styles.label}
+                >
                     Full Name
                 </label>
-                <input id="name" type="text" placeholder="John Smith" className={styles.input} value={registerForm.data.name} onChange={(e) => registerForm.setData("name", e.target.value)} />
+                <input
+                    id="name"
+                    type="text"
+                    placeholder="John Smith"
+                    className={styles.input}
+                    value={registerForm.data.name}
+                    onChange={(e) => registerForm.setData("name", e.target.value)}
+                />
                 {registerForm.errors.name && <span className={styles.error}>{registerForm.errors.name}</span>}
             </div>
 
             <div className={styles.formGroup}>
-                <label htmlFor="reg-email" className={styles.label}>
+                <label
+                    htmlFor="reg-email"
+                    className={styles.label}
+                >
                     Email
                 </label>
-                <input id="reg-email" type="email" placeholder="you@example.com" className={styles.input} value={registerForm.data.email} onChange={(e) => registerForm.setData("email", e.target.value)} />
+                <input
+                    id="reg-email"
+                    type="email"
+                    placeholder="you@example.com"
+                    className={styles.input}
+                    value={registerForm.data.email}
+                    onChange={(e) => registerForm.setData("email", e.target.value)}
+                />
                 {registerForm.errors.email && <span className={styles.error}>{registerForm.errors.email}</span>}
             </div>
 
             <div className={styles.formGroup}>
-                <label htmlFor="phone" className={styles.label}>
+                <label
+                    htmlFor="phone"
+                    className={styles.label}
+                >
                     Phone Number
                 </label>
-                <input id="phone" type="tel" placeholder="(555) 123-4567" className={styles.input} value={registerForm.data.phone} onChange={(e) => registerForm.setData("phone", e.target.value)} />
+                <input
+                    id="phone"
+                    type="tel"
+                    placeholder="(555) 123-4567"
+                    className={styles.input}
+                    value={registerForm.data.phone}
+                    onChange={(e) => registerForm.setData("phone", e.target.value)}
+                />
                 {registerForm.errors.phone && <span className={styles.error}>{registerForm.errors.phone}</span>}
             </div>
 
             <div className={styles.formGroup}>
-                <label htmlFor="address" className={styles.label}>
+                <label
+                    htmlFor="address"
+                    className={styles.label}
+                >
                     Address (Optional)
                 </label>
-                <input id="address" type="text" placeholder="123 Main St" className={styles.input} value={registerForm.data.address} onChange={(e) => registerForm.setData("address", e.target.value)} />
+                <input
+                    id="address"
+                    type="text"
+                    placeholder="123 Main St"
+                    className={styles.input}
+                    value={registerForm.data.address}
+                    onChange={(e) => registerForm.setData("address", e.target.value)}
+                />
                 {registerForm.errors.address && <span className={styles.error}>{registerForm.errors.address}</span>}
             </div>
 
             <div className={styles.formGroup}>
-                <label htmlFor="reg-password" className={styles.label}>
+                <label
+                    htmlFor="reg-password"
+                    className={styles.label}
+                >
                     Password
                 </label>
-                <input id="reg-password" type="password" placeholder="••••••••" className={styles.input} value={registerForm.data.password} onChange={(e) => registerForm.setData("password", e.target.value)} />
+                <input
+                    id="reg-password"
+                    type="password"
+                    placeholder="••••••••"
+                    className={styles.input}
+                    value={registerForm.data.password}
+                    onChange={(e) => registerForm.setData("password", e.target.value)}
+                />
                 {registerForm.errors.password && <span className={styles.error}>{registerForm.errors.password}</span>}
             </div>
 
-            <button type="submit" className={styles.button} disabled={registerForm.processing}>
+            <button
+                type="submit"
+                className={styles.button}
+                disabled={registerForm.processing}
+            >
                 {registerForm.processing ? (
                     <span className={styles.flexRow}>
-                        <Loader2 className={styles.spinIcon} size={16} />
+                        <Loader2
+                            className={styles.spinIcon}
+                            size={16}
+                        />
                         <span>Registering...</span>
                     </span>
                 ) : (

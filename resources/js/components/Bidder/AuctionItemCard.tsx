@@ -17,8 +17,12 @@ interface AuctionItemCardProps {
     onBuyNowClick: (item: AuctionItem) => void;
 }
 
-export default function AuctionItemCard({ items, userBids, onBidClick, onBuyNowClick }: AuctionItemCardProps): JSX.Element {
-
+export default function AuctionItemCard({
+    items,
+    userBids,
+    onBidClick,
+    onBuyNowClick,
+}: AuctionItemCardProps): JSX.Element {
     // Determine if user is winning or has been outbid for each item
     const getUserBidStatus = (itemId: number): UserBidStatus | null => {
         if (!userBids || userBids.length === 0) return null;
@@ -47,19 +51,34 @@ export default function AuctionItemCard({ items, userBids, onBidClick, onBuyNowC
                 const badgeType = userBidStatus ? (userBidStatus.isWinning ? "winning" : "outbid") : "active";
 
                 return (
-                    <div key={item.id} className={styles.card}>
+                    <div
+                        key={item.id}
+                        className={styles.card}
+                    >
                         {/* Status badge */}
-                        <div className={`${styles.statusBadge} ${badgeType === "winning" ? styles.winningBadge : badgeType === "outbid" ? styles.outbidBadge : styles.activeBadge}`}>
+                        <div
+                            className={`${styles.statusBadge} ${badgeType === "winning" ? styles.winningBadge : badgeType === "outbid" ? styles.outbidBadge : styles.activeBadge}`}
+                        >
                             {badgeType === "winning" ? "Winning" : badgeType === "outbid" ? "Outbid" : "Active"}
                         </div>
 
                         {/* Item image or placeholder */}
                         <div className={styles.imageContainer}>
                             {item.files && item.files.length > 0 ? (
-                                <img src={item.files[0].url} alt={item.name} className={styles.image} />
+                                <img
+                                    src={item.files[0].url}
+                                    alt={item.name}
+                                    className={styles.image}
+                                />
                             ) : (
                                 <div className={styles.imagePlaceholder}>
-                                    <svg xmlns="http://www.w3.org/2000/svg" className={styles.placeholderIcon} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        className={styles.placeholderIcon}
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                        stroke="currentColor"
+                                    >
                                         <path
                                             strokeLinecap="round"
                                             strokeLinejoin="round"
@@ -80,21 +99,36 @@ export default function AuctionItemCard({ items, userBids, onBidClick, onBuyNowC
                             <p className={styles.description}>{item.description || "No description provided."}</p>
                             <div className={styles.donorInfo}>
                                 <p className={styles.label}>
-                                    Donated by: <span className={styles.donorValue}>{item.is_donor_public ? item.donor?.name || item.donor_name || "Unknown" : "Anonymous"}</span>
+                                    Donated by:{" "}
+                                    <span className={styles.donorValue}>
+                                        {item.is_donor_public
+                                            ? item.donor?.name || item.donor_name || "Unknown"
+                                            : "Anonymous"}
+                                    </span>
                                 </p>
                             </div>
 
                             <div className={styles.bidContainer}>
                                 <div className={styles.bidInfo}>
                                     <p className={styles.label}>Current Bid</p>
-                                    <p className={styles.currentBid}>{formatCurrency(item.current_bid || item.starting_bid)}</p>
+                                    <p className={styles.currentBid}>
+                                        {formatCurrency(item.current_bid || item.starting_bid)}
+                                    </p>
                                 </div>
 
                                 <div className={styles.userBidInfo}>
                                     {userBidStatus ? (
                                         <>
                                             <p className={styles.label}>Your Bid</p>
-                                            <p className={userBidStatus.isWinning ? styles.userBidWinning : styles.userBidOutbid}>{formatCurrency(userBidStatus.amount)}</p>
+                                            <p
+                                                className={
+                                                    userBidStatus.isWinning
+                                                        ? styles.userBidWinning
+                                                        : styles.userBidOutbid
+                                                }
+                                            >
+                                                {formatCurrency(userBidStatus.amount)}
+                                            </p>
                                         </>
                                     ) : (
                                         <>
@@ -111,17 +145,27 @@ export default function AuctionItemCard({ items, userBids, onBidClick, onBuyNowC
                                         onClick={() => onBidClick(item)}
                                         className={`${styles.bidButton} ${userBidStatus && !userBidStatus.isWinning ? styles.bidButtonOutbid : userBidStatus && userBidStatus.isWinning ? styles.bidButtonWinning : ""}`}
                                     >
-                                        {userBidStatus && !userBidStatus.isWinning ? "Bid Again" : userBidStatus && userBidStatus.isWinning ? "Increase Bid" : "Place Bid"}
+                                        {userBidStatus && !userBidStatus.isWinning
+                                            ? "Bid Again"
+                                            : userBidStatus && userBidStatus.isWinning
+                                              ? "Increase Bid"
+                                              : "Place Bid"}
                                     </button>
 
                                     {item.buy_now_price && (
-                                        <button onClick={() => onBuyNowClick(item)} className={styles.buyNowButton}>
+                                        <button
+                                            onClick={() => onBuyNowClick(item)}
+                                            className={styles.buyNowButton}
+                                        >
                                             Buy Now
                                         </button>
                                     )}
                                 </div>
 
-                                <Link href={`/auction-items/${item.id}`} className={styles.viewDetailsLink}>
+                                <Link
+                                    href={`/auction-items/${item.id}`}
+                                    className={styles.viewDetailsLink}
+                                >
                                     View Details →
                                 </Link>
                             </div>

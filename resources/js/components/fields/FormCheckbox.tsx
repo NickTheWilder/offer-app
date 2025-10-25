@@ -15,7 +15,11 @@ export function FormCheckbox({ label, value, onChange, description, errors = [] 
         <div className={sharedStyles.formGroup}>
             <label className={sharedStyles.formLabel}>{label}</label>
             <label className={styles.checkboxLabel}>
-                <input type="checkbox" checked={value} onChange={(e) => onChange(e.target.checked)} />
+                <input
+                    type="checkbox"
+                    checked={value}
+                    onChange={(e) => onChange(e.target.checked)}
+                />
                 {description}
             </label>
             {errors.length > 0 && <div className={sharedStyles.formError}>{errors[0]}</div>}

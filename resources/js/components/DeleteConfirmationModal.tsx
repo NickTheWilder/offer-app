@@ -12,12 +12,26 @@ interface DeleteConfirmationModalProps {
     isLoading?: boolean;
 }
 
-export default function DeleteConfirmationModal({ isOpen, onClose, onConfirm, title, message, itemName, isLoading = false }: DeleteConfirmationModalProps): JSX.Element | null {
+export default function DeleteConfirmationModal({
+    isOpen,
+    onClose,
+    onConfirm,
+    title,
+    message,
+    itemName,
+    isLoading = false,
+}: DeleteConfirmationModalProps): JSX.Element | null {
     if (!isOpen) return null;
 
     return (
-        <div className={styles.modalOverlay} onClick={onClose}>
-            <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
+        <div
+            className={styles.modalOverlay}
+            onClick={onClose}
+        >
+            <div
+                className={styles.modalContent}
+                onClick={(e) => e.stopPropagation()}
+            >
                 <div className={styles.modalHeader}>
                     <div className={styles.warningIconContainer}>
                         <AlertTriangle className={styles.warningIcon} />
@@ -32,10 +46,18 @@ export default function DeleteConfirmationModal({ isOpen, onClose, onConfirm, ti
                 </div>
 
                 <div className={styles.modalFooter}>
-                    <button className={styles.cancelButton} onClick={onClose} disabled={isLoading}>
+                    <button
+                        className={styles.cancelButton}
+                        onClick={onClose}
+                        disabled={isLoading}
+                    >
                         Cancel
                     </button>
-                    <button className={styles.deleteButton} onClick={onConfirm} disabled={isLoading}>
+                    <button
+                        className={styles.deleteButton}
+                        onClick={onConfirm}
+                        disabled={isLoading}
+                    >
                         {isLoading ? (
                             <>
                                 <div className={styles.spinner} />

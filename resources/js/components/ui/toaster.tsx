@@ -10,7 +10,10 @@ export function Toaster(): JSX.Element {
         <ToastProvider>
             {toasts.map(function ({ id, title, description, action, ...props }) {
                 return (
-                    <Toast key={id} {...props}>
+                    <Toast
+                        key={id}
+                        {...props}
+                    >
                         <div className={styles.toastGrid}>
                             {title && <ToastTitle>{title}</ToastTitle>}
                             {description && <ToastDescription>{description}</ToastDescription>}

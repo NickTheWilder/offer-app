@@ -11,14 +11,25 @@ interface FormSelectProps<T> {
     required?: boolean;
 }
 
-export function FormSelect<T>({ label, value, onChange, children, errors = [], required = false }: FormSelectProps<T>): JSX.Element {
+export function FormSelect<T>({
+    label,
+    value,
+    onChange,
+    children,
+    errors = [],
+    required = false,
+}: FormSelectProps<T>): JSX.Element {
     return (
         <div className={sharedStyles.formGroup}>
             <label className={sharedStyles.formLabel}>
                 {label}
                 {required && <span className={sharedStyles.requiredMark}>*</span>}
             </label>
-            <select className={styles.formInput} value={value} onChange={(e) => onChange(e.target.value as T)}>
+            <select
+                className={styles.formInput}
+                value={value}
+                onChange={(e) => onChange(e.target.value as T)}
+            >
                 {children}
             </select>
             {errors.length > 0 && <div className={sharedStyles.formError}>{errors[0]}</div>}

@@ -1,4 +1,7 @@
-export type QueryParams = Record<string, string | number | boolean | string[] | null | undefined | Record<string, string | number | boolean>>;
+export type QueryParams = Record<
+    string,
+    string | number | boolean | string[] | null | undefined | Record<string, string | number | boolean>
+>;
 
 type Method = "get" | "post" | "put" | "delete" | "patch" | "head" | "options";
 

@@ -40,8 +40,14 @@ export default function BuyNowModal({ item, onClose }: BuyNowModalProps): JSX.El
     };
 
     return (
-        <div className={styles.modalOverlay} onClick={onClose}>
-            <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
+        <div
+            className={styles.modalOverlay}
+            onClick={onClose}
+        >
+            <div
+                className={styles.modalContent}
+                onClick={(e) => e.stopPropagation()}
+            >
                 <div className={styles.modalHeader}>
                     <h2 className={styles.modalTitle}>Buy Now Confirmation</h2>
                     <p className={styles.modalDescription}>Confirm your purchase of this item at the buy now price.</p>
@@ -57,15 +63,25 @@ export default function BuyNowModal({ item, onClose }: BuyNowModalProps): JSX.El
                     </div>
 
                     <div className={styles.infoBox}>
-                        <p className={styles.infoText}>By proceeding, you agree to purchase this item immediately at the buy now price. This will end the auction for this item.</p>
+                        <p className={styles.infoText}>
+                            By proceeding, you agree to purchase this item immediately at the buy now price. This will
+                            end the auction for this item.
+                        </p>
                     </div>
                 </div>
 
                 <div className={styles.modalFooter}>
-                    <button className={styles.cancelButton} onClick={onClose}>
+                    <button
+                        className={styles.cancelButton}
+                        onClick={onClose}
+                    >
                         Cancel
                     </button>
-                    <button className={styles.confirmButton} onClick={handleConfirm} disabled={processing}>
+                    <button
+                        className={styles.confirmButton}
+                        onClick={handleConfirm}
+                        disabled={processing}
+                    >
                         {processing ? (
                             <>
                                 <Loader2 className={styles.spinnerIcon} />

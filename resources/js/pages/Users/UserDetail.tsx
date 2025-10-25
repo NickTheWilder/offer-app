@@ -122,7 +122,10 @@ export default function UserDetail({ auth, user, flash }: UserDetailProps): JSX.
                             {activeTab === "info" && (
                                 <div className={styles.infoTab}>
                                     {!isEditing ? (
-                                        <UserInfoView user={user} onEdit={() => setIsEditing(true)} />
+                                        <UserInfoView
+                                            user={user}
+                                            onEdit={() => setIsEditing(true)}
+                                        />
                                     ) : (
                                         <UserEditForm
                                             formData={formData}
@@ -130,7 +133,9 @@ export default function UserDetail({ auth, user, flash }: UserDetailProps): JSX.
                                             isSaving={isSaving}
                                             onSubmit={handleSubmit}
                                             onCancel={handleCancel}
-                                            onFieldChange={(field, value) => setFormData({ ...formData, [field]: value })}
+                                            onFieldChange={(field, value) =>
+                                                setFormData({ ...formData, [field]: value })
+                                            }
                                             onAssignBidderNumber={assignBidderNumber}
                                         />
                                     )}

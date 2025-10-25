@@ -39,22 +39,39 @@ export default function Header({ user }: HeaderProps): JSX.Element {
                         {user.bidder_number && <span className={styles.bidderBadge}>Bidder #{user.bidder_number}</span>}
 
                         <div className={styles.dropdownMenu}>
-                            <button className={styles.dropdownButton} onClick={toggleDropdown} aria-haspopup="true" aria-expanded={dropdownOpen}>
+                            <button
+                                className={styles.dropdownButton}
+                                onClick={toggleDropdown}
+                                aria-haspopup="true"
+                                aria-expanded={dropdownOpen}
+                            >
                                 <ChevronDown size={16} />
                             </button>
                             <div className={`${styles.dropdownContent} ${dropdownOpen ? styles.open : ""}`}>
                                 {user.role === "admin" && (
                                     <>
-                                        <Link href="/" className={styles.dropdownItem}>
+                                        <Link
+                                            href="/"
+                                            className={styles.dropdownItem}
+                                        >
                                             Bidder Page
                                         </Link>
-                                        <Link href="/admin" className={styles.dropdownItem}>
+                                        <Link
+                                            href="/admin"
+                                            className={styles.dropdownItem}
+                                        >
                                             Admin Dashboard
                                         </Link>
                                     </>
                                 )}
-                                <button onClick={handleLogout} className={`${styles.dropdownItem} ${styles.logoutButton}`}>
-                                    <LogOut size={16} className={styles.menuIcon} />
+                                <button
+                                    onClick={handleLogout}
+                                    className={`${styles.dropdownItem} ${styles.logoutButton}`}
+                                >
+                                    <LogOut
+                                        size={16}
+                                        className={styles.menuIcon}
+                                    />
                                     <span>Logout</span>
                                 </button>
                             </div>
@@ -62,8 +79,16 @@ export default function Header({ user }: HeaderProps): JSX.Element {
                     </div>
                 )}
 
-                <button className={styles.mobileMenuButton} onClick={toggleMobileMenu} aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}>
-                    {mobileMenuOpen ? <X className={styles.mobileMenuIcon} /> : <Menu className={styles.mobileMenuIcon} />}
+                <button
+                    className={styles.mobileMenuButton}
+                    onClick={toggleMobileMenu}
+                    aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
+                >
+                    {mobileMenuOpen ? (
+                        <X className={styles.mobileMenuIcon} />
+                    ) : (
+                        <Menu className={styles.mobileMenuIcon} />
+                    )}
                 </button>
             </div>
 
@@ -79,16 +104,28 @@ export default function Header({ user }: HeaderProps): JSX.Element {
                             <hr className={styles.divider} />
                             {user.role === "admin" && (
                                 <>
-                                    <Link href="/" className={styles.menuLink}>
+                                    <Link
+                                        href="/"
+                                        className={styles.menuLink}
+                                    >
                                         Bidding Page
                                     </Link>
-                                    <Link href="/admin" className={styles.menuLink}>
+                                    <Link
+                                        href="/admin"
+                                        className={styles.menuLink}
+                                    >
                                         Admin Dashboard
                                     </Link>
                                 </>
                             )}
-                            <button onClick={handleLogout} className={`${styles.menuButton} ${styles.logoutButton}`}>
-                                <LogOut size={16} className={styles.menuIcon} />
+                            <button
+                                onClick={handleLogout}
+                                className={`${styles.menuButton} ${styles.logoutButton}`}
+                            >
+                                <LogOut
+                                    size={16}
+                                    className={styles.menuIcon}
+                                />
                                 Logout
                             </button>
                         </div>

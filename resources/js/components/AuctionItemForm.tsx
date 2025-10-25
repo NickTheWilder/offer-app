@@ -178,7 +178,9 @@ export function AuctionItemForm({ selectedItem, users, onSuccess }: AuctionItemF
                         <FormSelect
                             label="Status"
                             value={form.data.status}
-                            onChange={(value) => form.setData("status", value as "draft" | "active" | "sold" | "unsold")}
+                            onChange={(value) =>
+                                form.setData("status", value as "draft" | "active" | "sold" | "unsold")
+                            }
                             errors={form.errors.status ? [form.errors.status] : []}
                             required
                         >
@@ -246,7 +248,10 @@ export function AuctionItemForm({ selectedItem, users, onSuccess }: AuctionItemF
                         >
                             <option value="">Select a donor...</option>
                             {users.map((user) => (
-                                <option key={user.id} value={user.id}>
+                                <option
+                                    key={user.id}
+                                    value={user.id}
+                                >
                                     {user.name} ({user.email})
                                 </option>
                             ))}
@@ -282,7 +287,11 @@ export function AuctionItemForm({ selectedItem, users, onSuccess }: AuctionItemF
                 </div>
 
                 <div className={styles.formActions}>
-                    <button type="submit" className={styles.addButton} disabled={form.processing}>
+                    <button
+                        type="submit"
+                        className={styles.addButton}
+                        disabled={form.processing}
+                    >
                         {form.processing ? "Saving..." : selectedItem ? "Update Item" : "Create Item"}
                     </button>
                 </div>

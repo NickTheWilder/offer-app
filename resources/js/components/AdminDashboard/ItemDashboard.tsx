@@ -123,7 +123,10 @@ export default function ItemDashboard({ items, users, onItemsUpdate }: ItemDashb
                     <div className={styles.sidebar}>
                         <div className={styles.sidebarHeader}>
                             <h2 className={styles.sidebarTitle}>Auction Items</h2>
-                            <button className={styles.addButton} onClick={handleAddItem}>
+                            <button
+                                className={styles.addButton}
+                                onClick={handleAddItem}
+                            >
                                 <PlusCircle className={styles.plusIcon} />
                                 Add New
                             </button>
@@ -136,19 +139,37 @@ export default function ItemDashboard({ items, users, onItemsUpdate }: ItemDashb
                                         <PlusCircle className={styles.emptyIcon} />
                                     </div>
                                     <p className={styles.emptyText}>No auction items yet</p>
-                                    <button className={styles.addButton} onClick={handleAddItem}>
+                                    <button
+                                        className={styles.addButton}
+                                        onClick={handleAddItem}
+                                    >
                                         Add New Item
                                     </button>
                                 </div>
                             ) : (
                                 <>
                                     {localItems.map((item) => (
-                                        <div key={item.id} className={`${styles.itemCard} ${selectedItem?.id === item.id ? styles.selectedCard : ""}`} onClick={() => handleEditItem(item)}>
+                                        <div
+                                            key={item.id}
+                                            className={`${styles.itemCard} ${selectedItem?.id === item.id ? styles.selectedCard : ""}`}
+                                            onClick={() => handleEditItem(item)}
+                                        >
                                             <div className={styles.itemCardContent}>
-                                                <div className={styles.itemImage}>{item.files && item.files.length > 0 ? <img src={item.files[0]?.url || ""} alt={item.name} /> : <div className={styles.noImage}>No Image</div>}</div>
+                                                <div className={styles.itemImage}>
+                                                    {item.files && item.files.length > 0 ? (
+                                                        <img
+                                                            src={item.files[0]?.url || ""}
+                                                            alt={item.name}
+                                                        />
+                                                    ) : (
+                                                        <div className={styles.noImage}>No Image</div>
+                                                    )}
+                                                </div>
                                                 <div className={styles.itemInfo}>
                                                     <h3 className={styles.itemName}>{item.name}</h3>
-                                                    <p className={styles.itemPrice}>{formatCurrency(item.starting_bid)}</p>
+                                                    <p className={styles.itemPrice}>
+                                                        {formatCurrency(item.starting_bid)}
+                                                    </p>
                                                 </div>
                                             </div>
                                             <div className={styles.itemActions}>
@@ -181,12 +202,19 @@ export default function ItemDashboard({ items, users, onItemsUpdate }: ItemDashb
                     {/* Main content - Item Form */}
                     <div className={styles.mainContent}>
                         {selectedItem || newItemMode ? (
-                            <AuctionItemForm key={selectedItem?.id || "new"} selectedItem={selectedItem} users={users} onSuccess={handleFormSuccess} />
+                            <AuctionItemForm
+                                key={selectedItem?.id || "new"}
+                                selectedItem={selectedItem}
+                                users={users}
+                                onSuccess={handleFormSuccess}
+                            />
                         ) : (
                             <div className={styles.noSelection}>
                                 <div className={styles.noSelectionContent}>
                                     <h3 className={styles.noSelectionTitle}>No Item Selected</h3>
-                                    <p className={styles.noSelectionText}>Select an item from the list or add a new one to get started.</p>
+                                    <p className={styles.noSelectionText}>
+                                        Select an item from the list or add a new one to get started.
+                                    </p>
                                     <div
                                         style={{
                                             display: "flex",
@@ -194,7 +222,10 @@ export default function ItemDashboard({ items, users, onItemsUpdate }: ItemDashb
                                             alignItems: "center",
                                         }}
                                     >
-                                        <button className={styles.addButton} onClick={handleAddItem}>
+                                        <button
+                                            className={styles.addButton}
+                                            onClick={handleAddItem}
+                                        >
                                             <PlusCircle className={styles.plusIcon} />
                                             Add New Item
                                         </button>

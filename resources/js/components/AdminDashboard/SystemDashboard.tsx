@@ -42,13 +42,27 @@ export function SystemDashboard(): JSX.Element {
                     <div className={styles.settingsGrid}>
                         <div className={styles.settingItem}>
                             <label htmlFor="auction_start">Auction Start Time</label>
-                            <input type="datetime-local" id="auction_start" name="auction_start" className={sharedStyles.formInput} value={formData.auction_start} onChange={handleChange} />
+                            <input
+                                type="datetime-local"
+                                id="auction_start"
+                                name="auction_start"
+                                className={sharedStyles.formInput}
+                                value={formData.auction_start}
+                                onChange={handleChange}
+                            />
                             <span className={styles.helpText}>When bidding opens for all items</span>
                         </div>
 
                         <div className={styles.settingItem}>
                             <label htmlFor="auction_end">Auction End Time</label>
-                            <input type="datetime-local" id="auction_end" name="auction_end" className={sharedStyles.formInput} value={formData.auction_end} onChange={handleChange} />
+                            <input
+                                type="datetime-local"
+                                id="auction_end"
+                                name="auction_end"
+                                className={sharedStyles.formInput}
+                                value={formData.auction_end}
+                                onChange={handleChange}
+                            />
                             <span className={styles.helpText}>When bidding closes for all items</span>
                         </div>
                     </div>
@@ -59,13 +73,30 @@ export function SystemDashboard(): JSX.Element {
                     <div className={styles.settingsGrid}>
                         <div className={styles.settingItem}>
                             <label htmlFor="event_name">Event Name</label>
-                            <input type="text" id="event_name" name="event_name" className={sharedStyles.formInput} placeholder="Church Bazaar 2025" value={formData.event_name} onChange={handleChange} required />
+                            <input
+                                type="text"
+                                id="event_name"
+                                name="event_name"
+                                className={sharedStyles.formInput}
+                                placeholder="Church Bazaar 2025"
+                                value={formData.event_name}
+                                onChange={handleChange}
+                                required
+                            />
                             <span className={styles.helpText}>Displayed in the header</span>
                         </div>
 
                         <div className={styles.settingItem}>
                             <label htmlFor="event_location">Event Location</label>
-                            <input type="text" id="event_location" name="event_location" className={sharedStyles.formInput} placeholder="Church Hall" value={formData.event_location} onChange={handleChange} />
+                            <input
+                                type="text"
+                                id="event_location"
+                                name="event_location"
+                                className={sharedStyles.formInput}
+                                placeholder="Church Hall"
+                                value={formData.event_location}
+                                onChange={handleChange}
+                            />
                             <span className={styles.helpText}>Optional venue information</span>
                         </div>
                     </div>
@@ -77,16 +108,37 @@ export function SystemDashboard(): JSX.Element {
                         <div className={styles.settingItem}>
                             <label htmlFor="primary_color">Primary Color</label>
                             <div className={styles.colorInputWrapper}>
-                                <input type="color" id="primary_color" name="primary_color" className={styles.colorInput} value={formData.primary_color} onChange={handleChange} required />
-                                <input type="text" className={sharedStyles.formInput} value={formData.primary_color} onChange={handleChange} pattern="^#[0-9A-Fa-f]{6}$" placeholder="#348feb" name="primary_color" />
+                                <input
+                                    type="color"
+                                    id="primary_color"
+                                    name="primary_color"
+                                    className={styles.colorInput}
+                                    value={formData.primary_color}
+                                    onChange={handleChange}
+                                    required
+                                />
+                                <input
+                                    type="text"
+                                    className={sharedStyles.formInput}
+                                    value={formData.primary_color}
+                                    onChange={handleChange}
+                                    pattern="^#[0-9A-Fa-f]{6}$"
+                                    placeholder="#348feb"
+                                    name="primary_color"
+                                />
                             </div>
-                            <span className={styles.helpText}>Main theme color for the application (requires page refresh)</span>
+                            <span className={styles.helpText}>
+                                Main theme color for the application (requires page refresh)
+                            </span>
                         </div>
                     </div>
                 </div>
 
                 <div className={styles.saveButtonContainer}>
-                    <button type="submit" className={sharedStyles.saveButton}>
+                    <button
+                        type="submit"
+                        className={sharedStyles.saveButton}
+                    >
                         Save Settings
                     </button>
                 </div>

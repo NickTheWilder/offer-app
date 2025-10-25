@@ -9,7 +9,14 @@ interface FetchOptions<T> {
     setError: (error: string) => void;
 }
 
-export async function fetchAdminData<T>({ type, currentData, isLoading, setLoading, setData, setError }: FetchOptions<T>): Promise<void> {
+export async function fetchAdminData<T>({
+    type,
+    currentData,
+    isLoading,
+    setLoading,
+    setData,
+    setError,
+}: FetchOptions<T>): Promise<void> {
     // Don't fetch if we already have data or are currently loading
     if (currentData || isLoading) return;
 

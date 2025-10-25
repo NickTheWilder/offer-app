@@ -18,25 +18,52 @@ export default function Login() {
     return (
         <form onSubmit={onLoginSubmit}>
             <div className={styles.formGroup}>
-                <label htmlFor="email" className={styles.label}>
+                <label
+                    htmlFor="email"
+                    className={styles.label}
+                >
                     Email
                 </label>
-                <input id="email" type="email" placeholder="you@example.com" className={styles.input} value={loginForm.data.email} onChange={(e) => loginForm.setData("email", e.target.value)} />
+                <input
+                    id="email"
+                    type="email"
+                    placeholder="you@example.com"
+                    className={styles.input}
+                    value={loginForm.data.email}
+                    onChange={(e) => loginForm.setData("email", e.target.value)}
+                />
                 {loginForm.errors.email && <span className={styles.error}>{loginForm.errors.email}</span>}
             </div>
 
             <div className={styles.formGroup}>
-                <label htmlFor="password" className={styles.label}>
+                <label
+                    htmlFor="password"
+                    className={styles.label}
+                >
                     Password
                 </label>
-                <input id="password" type="password" placeholder="••••••••" className={styles.input} value={loginForm.data.password} onChange={(e) => loginForm.setData("password", e.target.value)} />
+                <input
+                    id="password"
+                    type="password"
+                    placeholder="••••••••"
+                    className={styles.input}
+                    value={loginForm.data.password}
+                    onChange={(e) => loginForm.setData("password", e.target.value)}
+                />
                 {loginForm.errors.password && <span className={styles.error}>{loginForm.errors.password}</span>}
             </div>
 
-            <button type="submit" className={styles.button} disabled={loginForm.processing}>
+            <button
+                type="submit"
+                className={styles.button}
+                disabled={loginForm.processing}
+            >
                 {loginForm.processing ? (
                     <span className={styles.flexRow}>
-                        <Loader2 className={styles.spinIcon} size={16} />
+                        <Loader2
+                            className={styles.spinIcon}
+                            size={16}
+                        />
                         <span>Logging in...</span>
                     </span>
                 ) : (

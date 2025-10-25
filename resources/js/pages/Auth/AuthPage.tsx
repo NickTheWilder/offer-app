@@ -32,10 +32,18 @@ export default function AuthPage({ auth }: PageProps): JSX.Element {
                         <div className={styles.cardContent}>
                             <div className={styles.tabContainer}>
                                 <div className={styles.tabList}>
-                                    <button type="button" className={`${styles.tabTrigger} ${activeTab === "login" ? styles.active : ""}`} onClick={() => setActiveTab("login")}>
+                                    <button
+                                        type="button"
+                                        className={`${styles.tabTrigger} ${activeTab === "login" ? styles.active : ""}`}
+                                        onClick={() => setActiveTab("login")}
+                                    >
                                         Login
                                     </button>
-                                    <button type="button" className={`${styles.tabTrigger} ${activeTab === "register" ? styles.active : ""}`} onClick={() => setActiveTab("register")}>
+                                    <button
+                                        type="button"
+                                        className={`${styles.tabTrigger} ${activeTab === "register" ? styles.active : ""}`}
+                                        onClick={() => setActiveTab("register")}
+                                    >
                                         Register
                                     </button>
                                 </div>
@@ -46,7 +54,9 @@ export default function AuthPage({ auth }: PageProps): JSX.Element {
                                 </div>
 
                                 {/* Registration Form */}
-                                <div className={`${styles.tabContent} ${activeTab === "register" ? styles.active : ""}`}>
+                                <div
+                                    className={`${styles.tabContent} ${activeTab === "register" ? styles.active : ""}`}
+                                >
                                     <Register />
                                 </div>
                             </div>
@@ -60,7 +70,8 @@ export default function AuthPage({ auth }: PageProps): JSX.Element {
                     <p className={styles.heroDesc}>
                         We get it. Nonprofit auction software <i>sucks</i>. <b>We&apos;re here to change that.</b>
                         <br />
-                        Our platform is designed to make it easy for nonprofits to create and manage fundraisers, while also providing a seamless experience for bidders.
+                        Our platform is designed to make it easy for nonprofits to create and manage fundraisers, while
+                        also providing a seamless experience for bidders.
                     </p>
                     <ul className={styles.stepsList}>
                         <li className={styles.stepItem}>

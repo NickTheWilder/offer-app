@@ -171,7 +171,11 @@ function toast({ ...props }: Toast): ToastType {
     };
 }
 
-function useToast(): { toast: ({ ...props }: Toast) => ToastType; dismiss: (toastId?: string) => void; toasts: ToasterToast[] } {
+function useToast(): {
+    toast: ({ ...props }: Toast) => ToastType;
+    dismiss: (toastId?: string) => void;
+    toasts: ToasterToast[];
+} {
     const [state, setState] = React.useState<State>(memoryState);
 
     React.useEffect(() => {

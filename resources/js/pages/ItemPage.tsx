@@ -41,7 +41,11 @@ export default function ItemPage({ auth, auctionItems, users }: ItemPageProps): 
                 <Header user={auth.user} />
 
                 <main className={styles.mainContent}>
-                    <ItemDashboard items={localAuctionItems} users={users} onItemsUpdate={setLocalAuctionItems} />
+                    <ItemDashboard
+                        items={localAuctionItems}
+                        users={users}
+                        onItemsUpdate={setLocalAuctionItems}
+                    />
                 </main>
             </div>
         </>

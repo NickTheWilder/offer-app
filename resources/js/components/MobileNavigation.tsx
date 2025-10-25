@@ -11,12 +11,18 @@ export default function MobileNavigation({ activeTab, onTabChange }: MobileNavig
     return (
         <div className={styles.navigationContainer}>
             <div className={styles.navigationBar}>
-                <button onClick={() => onTabChange("bidderDashboard")} className={`${styles.tabButton} ${activeTab === "bidderDashboard" ? styles.active : ""}`}>
+                <button
+                    onClick={() => onTabChange("bidderDashboard")}
+                    className={`${styles.tabButton} ${activeTab === "bidderDashboard" ? styles.active : ""}`}
+                >
                     <Search className={styles.tabIcon} />
                     <span className={styles.tabLabel}>Browse</span>
                 </button>
 
-                <button onClick={() => onTabChange("myBids")} className={`${styles.tabButton} ${activeTab === "myBids" ? styles.active : ""}`}>
+                <button
+                    onClick={() => onTabChange("myBids")}
+                    className={`${styles.tabButton} ${activeTab === "myBids" ? styles.active : ""}`}
+                >
                     <Gavel className={styles.tabIcon} />
                     <span className={styles.tabLabel}>My Bids</span>
                 </button>

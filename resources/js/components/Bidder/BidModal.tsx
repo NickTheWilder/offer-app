@@ -76,8 +76,14 @@ export default function BidModal({ item, onClose }: BidModalProps): JSX.Element 
     };
 
     return (
-        <div className={styles.modalOverlay} onClick={onClose}>
-            <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
+        <div
+            className={styles.modalOverlay}
+            onClick={onClose}
+        >
+            <div
+                className={styles.modalContent}
+                onClick={(e) => e.stopPropagation()}
+            >
                 <div className={styles.modalHeader}>
                     <h2 className={styles.modalTitle}>Place a Bid</h2>
                     <p className={styles.modalDescription}>Enter your bid amount for this item.</p>
@@ -89,10 +95,20 @@ export default function BidModal({ item, onClose }: BidModalProps): JSX.Element 
                             {/* Item image */}
                             <div className={styles.imageContainer}>
                                 {item.files && item.files.length > 0 ? (
-                                    <img src={item.files[0].url} alt={item.name} className={styles.image} />
+                                    <img
+                                        src={item.files[0].url}
+                                        alt={item.name}
+                                        className={styles.image}
+                                    />
                                 ) : (
                                     <div className={styles.imagePlaceholder}>
-                                        <svg xmlns="http://www.w3.org/2000/svg" className={styles.placeholderIcon} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            className={styles.placeholderIcon}
+                                            fill="none"
+                                            viewBox="0 0 24 24"
+                                            stroke="currentColor"
+                                        >
                                             <path
                                                 strokeLinecap="round"
                                                 strokeLinejoin="round"
@@ -108,7 +124,12 @@ export default function BidModal({ item, onClose }: BidModalProps): JSX.Element 
                             <div className={styles.itemDetails}>
                                 <h4 className={styles.itemName}>{item.name}</h4>
                                 <div className={styles.itemMeta}>
-                                    <span>Current bid: {item.current_bid ? formatCurrency(item.current_bid) : formatCurrency(item.starting_bid)}</span>
+                                    <span>
+                                        Current bid:{" "}
+                                        {item.current_bid
+                                            ? formatCurrency(item.current_bid)
+                                            : formatCurrency(item.starting_bid)}
+                                    </span>
                                     <span className={styles.metaSeparator}>•</span>
                                     <span>Item #{item.id}</span>
                                 </div>
@@ -116,14 +137,25 @@ export default function BidModal({ item, onClose }: BidModalProps): JSX.Element 
                         </div>
 
                         <div className={styles.bidFormGroup}>
-                            <label htmlFor="bidAmount" className={styles.bidLabel}>
+                            <label
+                                htmlFor="bidAmount"
+                                className={styles.bidLabel}
+                            >
                                 Your Bid Amount
                             </label>
                             <div className={styles.inputWrapper}>
                                 <div className={styles.currencyPrefix}>
                                     <span>$</span>
                                 </div>
-                                <input type="number" id="bidAmount" className={styles.bidInput} value={bidAmount} onChange={(e) => setBidAmount(e.target.value)} min={minBid} step="0.01" />
+                                <input
+                                    type="number"
+                                    id="bidAmount"
+                                    className={styles.bidInput}
+                                    value={bidAmount}
+                                    onChange={(e) => setBidAmount(e.target.value)}
+                                    min={minBid}
+                                    step="0.01"
+                                />
                                 <div className={styles.currencySuffix}>
                                     <span>USD</span>
                                 </div>
@@ -137,10 +169,18 @@ export default function BidModal({ item, onClose }: BidModalProps): JSX.Element 
                     </div>
 
                     <div className={styles.modalFooter}>
-                        <button type="button" className={styles.cancelButton} onClick={onClose}>
+                        <button
+                            type="button"
+                            className={styles.cancelButton}
+                            onClick={onClose}
+                        >
                             Cancel
                         </button>
-                        <button type="submit" className={styles.submitButton} disabled={isSubmitting}>
+                        <button
+                            type="submit"
+                            className={styles.submitButton}
+                            disabled={isSubmitting}
+                        >
                             {isSubmitting ? (
                                 <>
                                     <Loader2 className={styles.spinnerIcon} />

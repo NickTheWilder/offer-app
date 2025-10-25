@@ -157,12 +157,19 @@ export default function AdminDashboard(): JSX.Element {
                         ) : errors.items ? (
                             <div className={styles.errorContainer}>
                                 <p className={styles.errorText}>Error: {errors.items}</p>
-                                <button onClick={fetchItems} className={styles.retryButton}>
+                                <button
+                                    onClick={fetchItems}
+                                    className={styles.retryButton}
+                                >
                                     Retry
                                 </button>
                             </div>
                         ) : (
-                            <ItemDashboard items={data.items || []} users={data.users || []} onItemsUpdate={(updatedItems) => setData((prev) => ({ ...prev, items: updatedItems }))} />
+                            <ItemDashboard
+                                items={data.items || []}
+                                users={data.users || []}
+                                onItemsUpdate={(updatedItems) => setData((prev) => ({ ...prev, items: updatedItems }))}
+                            />
                         )}
                     </>
                 ) : activeAdminTab === "users" ? (
@@ -175,7 +182,10 @@ export default function AdminDashboard(): JSX.Element {
                         ) : errors.users ? (
                             <div className={styles.errorContainer}>
                                 <p className={styles.errorText}>Error: {errors.users}</p>
-                                <button onClick={fetchUsers} className={styles.retryButton}>
+                                <button
+                                    onClick={fetchUsers}
+                                    className={styles.retryButton}
+                                >
                                     Retry
                                 </button>
                             </div>
@@ -195,7 +205,10 @@ export default function AdminDashboard(): JSX.Element {
                         ) : errors.reports ? (
                             <div className={styles.errorContainer}>
                                 <p className={styles.errorText}>Error: {errors.reports}</p>
-                                <button onClick={fetchReports} className={styles.retryButton}>
+                                <button
+                                    onClick={fetchReports}
+                                    className={styles.retryButton}
+                                >
                                     Retry
                                 </button>
                             </div>

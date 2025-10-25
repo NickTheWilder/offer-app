@@ -45,7 +45,10 @@ export default function AuctionItemDetail({ auth, item }: AuctionItemDetailProps
 
                 <main className={styles.main}>
                     {/* Back button */}
-                    <Link href="/" className={styles.backButton}>
+                    <Link
+                        href="/"
+                        className={styles.backButton}
+                    >
                         <ChevronLeft size={20} />
                         Back to Auction
                     </Link>
@@ -109,11 +112,12 @@ export default function AuctionItemDetail({ auth, item }: AuctionItemDetailProps
                                             <button
                                                 key={file.id}
                                                 onClick={() => setCurrentImageIndex(index)}
-                                                className={`${styles.thumbnail} ${
-                                                    index === currentImageIndex ? styles.thumbnailActive : ""
-                                                }`}
+                                                className={`${styles.thumbnail} ${index === currentImageIndex ? styles.thumbnailActive : ""}`}
                                             >
-                                                <img src={file.url} alt={`${item.name} ${index + 1}`} />
+                                                <img
+                                                    src={file.url}
+                                                    alt={`${item.name} ${index + 1}`}
+                                                />
                                             </button>
                                         ))}
                                     </div>
@@ -124,19 +128,20 @@ export default function AuctionItemDetail({ auth, item }: AuctionItemDetailProps
                             <div className={styles.actionButtons}>
                                 <button
                                     onClick={() => setBidModalOpen(true)}
-                                    className={`${styles.bidButton} ${
-                                        hasUserBid && !isWinning
-                                            ? styles.bidButtonOutbid
-                                            : hasUserBid && isWinning
-                                              ? styles.bidButtonWinning
-                                              : ""
-                                    }`}
+                                    className={`${styles.bidButton} ${hasUserBid && !isWinning ? styles.bidButtonOutbid : hasUserBid && isWinning ? styles.bidButtonWinning : ""}`}
                                 >
-                                    {hasUserBid && !isWinning ? "Bid Again" : hasUserBid && isWinning ? "Increase Bid" : "Place Bid"}
+                                    {hasUserBid && !isWinning
+                                        ? "Bid Again"
+                                        : hasUserBid && isWinning
+                                          ? "Increase Bid"
+                                          : "Place Bid"}
                                 </button>
 
                                 {item.buy_now_price && (
-                                    <button onClick={() => setBuyNowModalOpen(true)} className={styles.buyNowButton}>
+                                    <button
+                                        onClick={() => setBuyNowModalOpen(true)}
+                                        className={styles.buyNowButton}
+                                    >
                                         Buy Now
                                     </button>
                                 )}
@@ -152,13 +157,7 @@ export default function AuctionItemDetail({ auth, item }: AuctionItemDetailProps
                                 </div>
                                 {/* Status badge */}
                                 <div
-                                    className={`${styles.statusBadge} ${
-                                        badgeType === "winning"
-                                            ? styles.winningBadge
-                                            : badgeType === "outbid"
-                                              ? styles.outbidBadge
-                                              : styles.activeBadge
-                                    }`}
+                                    className={`${styles.statusBadge} ${badgeType === "winning" ? styles.winningBadge : badgeType === "outbid" ? styles.outbidBadge : styles.activeBadge}`}
                                 >
                                     {badgeType === "winning" ? "Winning" : badgeType === "outbid" ? "Outbid" : "Active"}
                                 </div>
@@ -202,7 +201,9 @@ export default function AuctionItemDetail({ auth, item }: AuctionItemDetailProps
                             <div className={styles.section}>
                                 <h2 className={styles.sectionTitle}>Donor</h2>
                                 <p className={styles.donorName}>
-                                    {item.is_donor_public ? item.donor?.name || item.donor_name || "Unknown" : "Anonymous"}
+                                    {item.is_donor_public
+                                        ? item.donor?.name || item.donor_name || "Unknown"
+                                        : "Anonymous"}
                                 </p>
                             </div>
 
@@ -242,7 +243,10 @@ export default function AuctionItemDetail({ auth, item }: AuctionItemDetailProps
                                                         if (b.amount !== a.amount) {
                                                             return Number(b.amount) - Number(a.amount);
                                                         }
-                                                        return new Date(a.created_at).getTime() - new Date(b.created_at).getTime();
+                                                        return (
+                                                            new Date(a.created_at).getTime() -
+                                                            new Date(b.created_at).getTime()
+                                                        );
                                                     })
                                                     .map((bid) => (
                                                         <tr key={bid.id}>
@@ -251,7 +255,9 @@ export default function AuctionItemDetail({ auth, item }: AuctionItemDetailProps
                                                                     ? `Bidder #${bid.user.bidder_number}`
                                                                     : bid.user?.name || "Anonymous"}
                                                             </td>
-                                                            <td className={styles.bidAmount}>{formatCurrency(Number(bid.amount))}</td>
+                                                            <td className={styles.bidAmount}>
+                                                                {formatCurrency(Number(bid.amount))}
+                                                            </td>
                                                             <td className={styles.bidTime}>
                                                                 {new Date(bid.created_at).toLocaleString()}
                                                             </td>
@@ -269,8 +275,18 @@ export default function AuctionItemDetail({ auth, item }: AuctionItemDetailProps
                 </main>
 
                 {/* Modals */}
-                {bidModalOpen && <BidModal item={item} onClose={() => setBidModalOpen(false)} />}
-                {buyNowModalOpen && <BuyNowModal item={item} onClose={() => setBuyNowModalOpen(false)} />}
+                {bidModalOpen && (
+                    <BidModal
+                        item={item}
+                        onClose={() => setBidModalOpen(false)}
+                    />
+                )}
+                {buyNowModalOpen && (
+                    <BuyNowModal
+                        item={item}
+                        onClose={() => setBuyNowModalOpen(false)}
+                    />
+                )}
             </div>
         </>
     );

@@ -31,12 +31,26 @@ export default function MyBids({ bids, isLoading = false }: MyBidsProps): JSX.El
                 <h2 className={styles.title}>My Bids</h2>
 
                 <div className={styles.emptyContainer}>
-                    <svg xmlns="http://www.w3.org/2000/svg" className={styles.emptyIcon} fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122" />
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className={styles.emptyIcon}
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                    >
+                        <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122"
+                        />
                     </svg>
                     <h3 className={styles.emptyTitle}>No bids yet</h3>
                     <p className={styles.emptyText}>You haven&apos;t placed any bids on auction items.</p>
-                    <Link href="/" className={styles.browseButton}>
+                    <Link
+                        href="/"
+                        className={styles.browseButton}
+                    >
                         Browse Items
                     </Link>
                 </div>
@@ -65,15 +79,28 @@ export default function MyBids({ bids, isLoading = false }: MyBidsProps): JSX.El
             <div className={styles.bidsGrid}>
                 {/* Winning bids */}
                 {winningBids.map((bid) => (
-                    <div key={bid.id} className={`${styles.bidCard} ${styles.winningCard}`}>
+                    <div
+                        key={bid.id}
+                        className={`${styles.bidCard} ${styles.winningCard}`}
+                    >
                         <div className={`${styles.statusBadge} ${styles.winningBadge}`}>Winning</div>
                         <div className={styles.itemHeader}>
                             <div className={styles.imageContainer}>
                                 {bid.auction_item.files && bid.auction_item.files.length > 0 ? (
-                                    <img src={bid.auction_item.files[0]?.url} alt={bid.auction_item.name} className={styles.image} />
+                                    <img
+                                        src={bid.auction_item.files[0]?.url}
+                                        alt={bid.auction_item.name}
+                                        className={styles.image}
+                                    />
                                 ) : (
                                     <div className={styles.imagePlaceholder}>
-                                        <svg xmlns="http://www.w3.org/2000/svg" className={styles.placeholderIcon} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            className={styles.placeholderIcon}
+                                            fill="none"
+                                            viewBox="0 0 24 24"
+                                            stroke="currentColor"
+                                        >
                                             <path
                                                 strokeLinecap="round"
                                                 strokeLinejoin="round"
@@ -92,7 +119,9 @@ export default function MyBids({ bids, isLoading = false }: MyBidsProps): JSX.El
                         <div className={styles.bidInfo}>
                             <div>
                                 <p className={styles.bidLabel}>Your Bid</p>
-                                <p className={`${styles.bidAmount} ${styles.winningAmount}`}>{formatCurrency(bid.amount)}</p>
+                                <p className={`${styles.bidAmount} ${styles.winningAmount}`}>
+                                    {formatCurrency(bid.amount)}
+                                </p>
                             </div>
                             <div>
                                 <p className={styles.bidLabel}>Bid Time</p>
@@ -100,7 +129,10 @@ export default function MyBids({ bids, isLoading = false }: MyBidsProps): JSX.El
                             </div>
                         </div>
                         <div className={styles.bidActions}>
-                            <Link href="/" className={styles.viewItemLink}>
+                            <Link
+                                href="/"
+                                className={styles.viewItemLink}
+                            >
                                 View Item
                             </Link>
                         </div>
@@ -109,15 +141,28 @@ export default function MyBids({ bids, isLoading = false }: MyBidsProps): JSX.El
 
                 {/* Outbid bids */}
                 {outbidBids.map((bid) => (
-                    <div key={bid.id} className={`${styles.bidCard} ${styles.outbidCard}`}>
+                    <div
+                        key={bid.id}
+                        className={`${styles.bidCard} ${styles.outbidCard}`}
+                    >
                         <div className={`${styles.statusBadge} ${styles.outbidBadge}`}>Outbid</div>
                         <div className={styles.itemHeader}>
                             <div className={styles.imageContainer}>
                                 {bid.auction_item.files && bid.auction_item.files.length > 0 ? (
-                                    <img src={bid.auction_item.files[0]?.url} alt={bid.auction_item.name} className={styles.image} />
+                                    <img
+                                        src={bid.auction_item.files[0]?.url}
+                                        alt={bid.auction_item.name}
+                                        className={styles.image}
+                                    />
                                 ) : (
                                     <div className={styles.imagePlaceholder}>
-                                        <svg xmlns="http://www.w3.org/2000/svg" className={styles.placeholderIcon} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            className={styles.placeholderIcon}
+                                            fill="none"
+                                            viewBox="0 0 24 24"
+                                            stroke="currentColor"
+                                        >
                                             <path
                                                 strokeLinecap="round"
                                                 strokeLinejoin="round"
@@ -136,7 +181,9 @@ export default function MyBids({ bids, isLoading = false }: MyBidsProps): JSX.El
                         <div className={styles.bidInfo}>
                             <div>
                                 <p className={styles.bidLabel}>Your Bid</p>
-                                <p className={`${styles.bidAmount} ${styles.outbidAmount}`}>{formatCurrency(bid.amount)}</p>
+                                <p className={`${styles.bidAmount} ${styles.outbidAmount}`}>
+                                    {formatCurrency(bid.amount)}
+                                </p>
                             </div>
                             <div>
                                 <p className={styles.bidLabel}>Bid Time</p>
@@ -144,7 +191,10 @@ export default function MyBids({ bids, isLoading = false }: MyBidsProps): JSX.El
                             </div>
                         </div>
                         <div className={styles.bidActions}>
-                            <Link href="/" className={styles.viewItemLink}>
+                            <Link
+                                href="/"
+                                className={styles.viewItemLink}
+                            >
                                 View Item
                             </Link>
                             <button className={styles.bidAgainButton}>Bid Again</button>
