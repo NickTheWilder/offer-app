@@ -1,0 +1,382 @@
+/* Data Grid Container */
+.dataGrid {
+    background-color: #f9fafb;
+    min-height: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+/* Search Container */
+.searchContainer {
+    padding: 1rem;
+    background-color: white;
+    border-bottom: 1px solid #e5e7eb;
+    flex-shrink: 0;
+    border-top: 1px solid #e5e7eb;
+}
+
+.searchInputWrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.searchIcon {
+    position: absolute;
+    left: 0.75rem;
+    height: 1.25rem;
+    width: 1.25rem;
+    color: #9ca3af;
+    pointer-events: none;
+}
+
+.searchInput {
+    width: 100%;
+    padding: 0.625rem 2.5rem 0.625rem 2.5rem;
+    border: 1px solid #d1d5db;
+    border-radius: 0.375rem;
+    font-size: 0.875rem;
+    background-color: white;
+    transition: all 0.15s;
+}
+
+.searchInput:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(52, 143, 235, 0.2);
+}
+
+.searchInput::placeholder {
+    color: #9ca3af;
+}
+
+.clearButton {
+    position: absolute;
+    right: 0.5rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.25rem;
+    border-radius: 0.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.15s;
+}
+
+.clearButton:hover {
+    background-color: #f3f4f6;
+}
+
+.clearIcon {
+    height: 1rem;
+    width: 1rem;
+    color: #6b7280;
+}
+
+.searchResults {
+    margin-top: 0.5rem;
+    font-size: 0.75rem;
+    color: #6b7280;
+}
+
+/* Table Container */
+.tableContainer {
+    background-color: white;
+    overflow: hidden;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Table Wrapper for Horizontal Scroll */
+.tableWrapper {
+    overflow-x: auto;
+    overflow-y: auto;
+    flex: 1;
+}
+
+/* Table Styles */
+.dataTable {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.875rem;
+}
+
+.dataTable thead {
+    background-color: #f9fafb;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.dataTable th {
+    padding: 0.75rem 1rem;
+    text-align: left;
+    font-weight: 600;
+    color: #374151;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-size: 0.75rem;
+    white-space: nowrap;
+}
+
+.dataTable th.sortable {
+    cursor: pointer;
+    user-select: none;
+}
+
+.dataTable th.sortable:hover {
+    background-color: #f3f4f6;
+}
+
+.headerContent {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.sortIndicator {
+    display: flex;
+    align-items: center;
+}
+
+.sortIcon {
+    height: 0.875rem;
+    width: 0.875rem;
+    color: #6b7280;
+    transition: transform 0.15s;
+}
+
+.sortIcon.sortDesc {
+    transform: rotate(180deg);
+}
+
+.dataTable tbody tr {
+    border-bottom: 1px solid #f3f4f6;
+    transition: background-color 0.15s;
+}
+
+.dataTable tbody tr:last-child {
+    border-bottom: none;
+}
+
+.tableRow:hover {
+    background-color: #f9fafb;
+}
+
+.dataTable td {
+    padding: 1rem;
+    color: #1f2937;
+    vertical-align: middle;
+}
+
+/* Actions Column */
+.actionsHeader {
+    text-align: right;
+}
+
+.actionsCell {
+    text-align: right;
+}
+
+.actionButtons {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: flex-end;
+}
+
+.actionButton {
+    background: none;
+    border: none;
+    cursor: pointer;
+    height: 2rem;
+    width: 2rem;
+    border-radius: 0.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    transition: background-color 0.2s;
+}
+
+.actionButton.view {
+    color: #8b5cf6;
+}
+
+.actionButton.view:hover {
+    background-color: rgba(139, 92, 246, 0.1);
+}
+
+.actionButton.edit {
+    color: #3b82f6;
+}
+
+.actionButton.edit:hover {
+    background-color: rgba(59, 130, 246, 0.1);
+}
+
+.actionButton.delete {
+    color: #ef4444;
+}
+
+.actionButton.delete:hover {
+    background-color: rgba(239, 68, 68, 0.1);
+}
+
+.actionButton.custom {
+    color: #6b7280;
+}
+
+.actionButton.custom:hover {
+    background-color: rgba(107, 114, 128, 0.1);
+}
+
+/* Loading State */
+.loadingState {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 4rem 1rem;
+    background-color: white;
+    flex: 1;
+}
+
+.loadingSpinner {
+    width: 2rem;
+    height: 2rem;
+    border: 2px solid #e5e7eb;
+    border-top-color: var(--primary-color);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 1rem;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Error State */
+.errorState {
+    text-align: center;
+    padding: 4rem 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+    flex: 1;
+}
+
+.errorIcon {
+    background-color: #fef2f2;
+    border-radius: 9999px;
+    height: 4rem;
+    width: 4rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+}
+
+.errorIcon svg {
+    height: 2rem;
+    width: 2rem;
+    color: #dc2626;
+}
+
+/* Empty State */
+.emptyState {
+    text-align: center;
+    padding: 4rem 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+    flex: 1;
+}
+
+.emptyIconContainer {
+    background-color: #f3f4f6;
+    border-radius: 9999px;
+    height: 4rem;
+    width: 4rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+}
+
+.emptyIconContainer svg {
+    height: 2rem;
+    width: 2rem;
+    color: #9ca3af;
+}
+
+.emptyTitle {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: #1f2937;
+    margin: 0 0 0.5rem 0;
+}
+
+.emptyText {
+    color: #6b7280;
+    font-size: 0.875rem;
+    margin: 0 0 1.5rem 0;
+}
+
+.emptyAction {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 0.375rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.15s;
+}
+
+.emptyAction:hover {
+    background-color: var(--primary-color-dark);
+}
+
+/* Empty Cell */
+.emptyCell {
+    color: #9ca3af;
+    font-style: italic;
+}
+
+/* Responsive */
+.hideOnMobile {
+    display: table-cell;
+}
+
+@media (max-width: 768px) {
+    .hideOnMobile {
+        display: none;
+    }
+
+    .dataTable {
+        font-size: 0.75rem;
+    }
+
+    .dataTable th,
+    .dataTable td {
+        padding: 0.5rem;
+    }
+
+    .searchContainer {
+        padding: 0.75rem;
+    }
+
+    .actionButtons {
+        flex-direction: column;
+        gap: 0.25rem;
+    }
+}
