@@ -1,5 +1,5 @@
 {
-    "printWidth": 250,
+    "printWidth": 120,
     "tabWidth": 4,
     "useTabs": false,
     "semi": true,
@@ -14,7 +14,7 @@
     "htmlWhitespaceSensitivity": "css",
     "endOfLine": "lf",
     "embeddedLanguageFormatting": "auto",
-    "singleAttributePerLine": false,
+    "singleAttributePerLine": true,
     "overrides": [
         {
             "files": ["*.ts", "*.tsx"],
