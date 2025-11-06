@@ -30,6 +30,8 @@ export interface Bid {
     amount: number;
     created_at: string;
     user?: User;
+    user_name?: string;
+    user_bidder_number?: string;
     auction_item?: AuctionItem;
     auction_item_name?: string;
 }
