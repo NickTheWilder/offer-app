@@ -2,6 +2,7 @@ import { formatCurrency } from "@/lib/utils";
 import { AuctionItem, Bid, User } from "@/types";
 import { type JSX } from "react";
 import { Link } from "@inertiajs/react";
+import { isAuctionActive } from "@/components/AuctionStatus";
 import styles from "./AuctionItemCard.module.css";
 
 interface UserBidStatus {
@@ -15,6 +16,8 @@ interface AuctionItemCardProps {
     userBids: Bid[];
     onBidClick: (item: AuctionItem) => void;
     onBuyNowClick: (item: AuctionItem) => void;
+    auctionStart?: string | null;
+    auctionEnd?: string | null;
 }
 
 export default function AuctionItemCard({
@@ -22,7 +25,10 @@ export default function AuctionItemCard({
     userBids,
     onBidClick,
     onBuyNowClick,
+    auctionStart,
+    auctionEnd,
 }: AuctionItemCardProps): JSX.Element {
+    const isActive = isAuctionActive(auctionStart || null, auctionEnd || null);
     // Determine if user is winning or has been outbid for each item
     const getUserBidStatus = (itemId: number): UserBidStatus | null => {
         if (!userBids || userBids.length === 0) return null;
@@ -143,7 +149,9 @@ export default function AuctionItemCard({
                                 <div className={styles.buttonsContainer}>
                                     <button
                                         onClick={() => onBidClick(item)}
+                                        disabled={!isActive}
                                         className={`${styles.bidButton} ${userBidStatus && !userBidStatus.isWinning ? styles.bidButtonOutbid : userBidStatus && userBidStatus.isWinning ? styles.bidButtonWinning : ""}`}
+                                        title={!isActive ? "Auction is not currently active" : ""}
                                     >
                                         {userBidStatus && !userBidStatus.isWinning
                                             ? "Bid Again"

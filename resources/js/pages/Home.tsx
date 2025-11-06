@@ -5,6 +5,7 @@ import MobileNavigation from "@/components/MobileNavigation";
 import AuctionItemCard from "@/components/Bidder/AuctionItemCard";
 import BidModal from "@/components/Bidder/BidModal";
 import BuyNowModal from "@/components/Bidder/BuyNowModal";
+import { AuctionStatus } from "@/components/AuctionStatus";
 import { AuctionItem, Bid, PageProps } from "@/types";
 import styles from "./HomePage.module.css";
 import MyBids from "@/components/Bidder/MyBids";
@@ -58,6 +59,12 @@ export default function Home({ auth, auctionItems, userBids, settings }: HomePro
                 <main className={styles.main}>
                     {activeTab === "bidderDashboard" && (
                         <div className={styles.dashboardSection}>
+                            {/* Auction Status Banner */}
+                            <AuctionStatus
+                                auctionStart={settings.auction_start}
+                                auctionEnd={settings.auction_end}
+                            />
+
                             {/* Top section with filtering */}
                             <div className={styles.sectionHeader}>
                                 <div className={styles.titleRow}>
@@ -151,6 +158,8 @@ export default function Home({ auth, auctionItems, userBids, settings }: HomePro
                                     userBids={(userBids || []) as Bid[]}
                                     onBidClick={handleBidClick}
                                     onBuyNowClick={handleBuyNowClick}
+                                    auctionStart={settings.auction_start}
+                                    auctionEnd={settings.auction_end}
                                 />
                             )}
                         </div>

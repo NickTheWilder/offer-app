@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\AuctionItem;
 use App\Models\Bid;
+use App\Models\Setting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -21,6 +22,22 @@ class BidController extends Controller
         if ($item->status !== 'active') {
             return back()->withErrors([
                 'amount' => 'This auction item is not currently accepting bids.',
+            ]);
+        }
+
+        // Validate auction timing
+        $settings = Setting::get();
+        $now = now();
+
+        if ($settings->auction_start && $now->lt($settings->auction_start)) {
+            return back()->withErrors([
+                'amount' => 'The auction has not started yet. Bidding opens at '.$settings->auction_start->format('M j, Y g:i A').'.',
+            ]);
+        }
+
+        if ($settings->auction_end && $now->gt($settings->auction_end)) {
+            return back()->withErrors([
+                'amount' => 'The auction has ended. Bidding closed at '.$settings->auction_end->format('M j, Y g:i A').'.',
             ]);
         }
 
