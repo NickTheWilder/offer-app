@@ -109,6 +109,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::put('/admin/users/{id}/assign-bidder-number', [UserController::class, 'assignBidderNumber']);
 
     // Bid management
+    Route::put('/admin/bids/{id}', [BidController::class, 'update'])->name('admin.bids.update');
     Route::delete('/admin/bids/{id}', [BidController::class, 'destroy'])->name('admin.bids.destroy');
 
     // Settings management
