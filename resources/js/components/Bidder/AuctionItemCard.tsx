@@ -15,6 +15,7 @@ interface AuctionItemCardProps {
     userBids: Bid[];
     onBidClick: (item: AuctionItem) => void;
     onBuyNowClick: (item: AuctionItem) => void;
+    previewMode?: boolean;
 }
 
 export default function AuctionItemCard({
@@ -22,6 +23,7 @@ export default function AuctionItemCard({
     userBids,
     onBidClick,
     onBuyNowClick,
+    previewMode = false,
 }: AuctionItemCardProps): JSX.Element {
     // Determine if user is winning or has been outbid for each item
     const getUserBidStatus = (itemId: number): UserBidStatus | null => {
@@ -143,7 +145,9 @@ export default function AuctionItemCard({
                                 <div className={styles.buttonsContainer}>
                                     <button
                                         onClick={() => onBidClick(item)}
+                                        disabled={previewMode}
                                         className={`${styles.bidButton} ${userBidStatus && !userBidStatus.isWinning ? styles.bidButtonOutbid : userBidStatus && userBidStatus.isWinning ? styles.bidButtonWinning : ""}`}
+                                        title={previewMode ? "Bidding is disabled in preview mode" : ""}
                                     >
                                         {userBidStatus && !userBidStatus.isWinning
                                             ? "Bid Again"
@@ -155,7 +159,9 @@ export default function AuctionItemCard({
                                     {item.buy_now_price && (
                                         <button
                                             onClick={() => onBuyNowClick(item)}
+                                            disabled={previewMode}
                                             className={styles.buyNowButton}
+                                            title={previewMode ? "Bidding is disabled in preview mode" : ""}
                                         >
                                             Buy Now
                                         </button>

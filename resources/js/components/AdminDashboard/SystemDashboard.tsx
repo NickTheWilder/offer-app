@@ -11,6 +11,7 @@ export function SystemDashboard(): JSX.Element {
         event_name: settings.event_name,
         event_location: settings.event_location || "",
         primary_color: settings.primary_color,
+        preview_mode: settings.preview_mode,
         auction_start: settings.auction_start ? settings.auction_start.slice(0, 16) : "",
         auction_end: settings.auction_end ? settings.auction_end.slice(0, 16) : "",
     });
@@ -64,6 +65,25 @@ export function SystemDashboard(): JSX.Element {
                                 onChange={handleChange}
                             />
                             <span className={styles.helpText}>When bidding closes for all items</span>
+                        </div>
+
+                        <div className={styles.settingItem}>
+                            <label htmlFor="preview_mode">
+                                <input
+                                    type="checkbox"
+                                    id="preview_mode"
+                                    name="preview_mode"
+                                    checked={formData.preview_mode}
+                                    onChange={(e) =>
+                                        setFormData({ ...formData, preview_mode: e.target.checked })
+                                    }
+                                    style={{ marginRight: "0.5rem" }}
+                                />
+                                Enable Preview Mode
+                            </label>
+                            <span className={styles.helpText}>
+                                Allow users to view items before auction starts, but disable all bidding functionality
+                            </span>
                         </div>
                     </div>
                 </div>
