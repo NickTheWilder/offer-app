@@ -111,6 +111,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
 
     // Sale management
     Route::post('/admin/sales', [SaleController::class, 'store'])->name('admin.sales.store');
+    Route::delete('/admin/sales/{id}', [SaleController::class, 'destroy'])->name('admin.sales.destroy');
 
     // Settings management
     Route::put('/admin/settings', [\App\Http\Controllers\SettingController::class, 'update'])->name('admin.settings.update');
