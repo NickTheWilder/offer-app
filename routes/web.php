@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuctionItemController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BidController;
+use App\Http\Controllers\SaleController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -107,6 +108,9 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin/users/{id}', [UserController::class, 'show'])->name('admin.users.show');
     Route::put('/admin/users/{id}', [UserController::class, 'update'])->name('admin.users.update');
     Route::put('/admin/users/{id}/assign-bidder-number', [UserController::class, 'assignBidderNumber']);
+
+    // Sale management
+    Route::post('/admin/sales', [SaleController::class, 'store'])->name('admin.sales.store');
 
     // Settings management
     Route::put('/admin/settings', [\App\Http\Controllers\SettingController::class, 'update'])->name('admin.settings.update');
