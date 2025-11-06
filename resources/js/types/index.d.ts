@@ -34,6 +34,21 @@ export interface Bid {
     auction_item_name?: string;
 }
 
+export interface Sale {
+    id: number;
+    transaction_id?: string;
+    user_id: number;
+    auction_item_id: number;
+    amount: number;
+    sale_source?: string;
+    quantity?: number;
+    notes?: string;
+    sale_date: string;
+    user?: User;
+    auction_item?: AuctionItem;
+    auction_item_name?: string;
+}
+
 export interface AuctionItem {
     id: number;
     name: string;
