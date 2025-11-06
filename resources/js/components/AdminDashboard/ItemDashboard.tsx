@@ -1,7 +1,7 @@
 import { useToast } from "@/hooks/use-toast";
 import { formatCurrency } from "@/lib/utils";
 import type { AuctionItem, User } from "@/types";
-import { Edit, PlusCircle, Trash2 } from "lucide-react";
+import { Edit, PlusCircle, Trash2, LayoutGrid, LayoutList } from "lucide-react";
 import { type JSX, useState, useEffect } from "react";
 import { router } from "@inertiajs/react";
 import styles from "./ItemDashboard.module.css";
@@ -22,6 +22,7 @@ export default function ItemDashboard({ items, users, onItemsUpdate }: ItemDashb
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [itemToDelete, setItemToDelete] = useState<AuctionItem | null>(null);
     const [isDeleting, setIsDeleting] = useState(false);
+    const [viewMode, setViewMode] = useState<"list" | "grid">("list");
 
     // Update local items when props change
     useEffect(() => {
@@ -123,16 +124,34 @@ export default function ItemDashboard({ items, users, onItemsUpdate }: ItemDashb
                     <div className={styles.sidebar}>
                         <div className={styles.sidebarHeader}>
                             <h2 className={styles.sidebarTitle}>Auction Items</h2>
-                            <button
-                                className={styles.addButton}
-                                onClick={handleAddItem}
-                            >
-                                <PlusCircle className={styles.plusIcon} />
-                                Add New
-                            </button>
+                            <div className={styles.headerActions}>
+                                <div className={styles.viewToggle}>
+                                    <button
+                                        className={`${styles.viewButton} ${viewMode === "list" ? styles.activeView : ""}`}
+                                        onClick={() => setViewMode("list")}
+                                        aria-label="List view"
+                                    >
+                                        <LayoutList className={styles.viewIcon} />
+                                    </button>
+                                    <button
+                                        className={`${styles.viewButton} ${viewMode === "grid" ? styles.activeView : ""}`}
+                                        onClick={() => setViewMode("grid")}
+                                        aria-label="Grid view"
+                                    >
+                                        <LayoutGrid className={styles.viewIcon} />
+                                    </button>
+                                </div>
+                                <button
+                                    className={styles.addButton}
+                                    onClick={handleAddItem}
+                                >
+                                    <PlusCircle className={styles.plusIcon} />
+                                    Add New
+                                </button>
+                            </div>
                         </div>
 
-                        <div className={styles.itemList}>
+                        <div className={`${styles.itemList} ${viewMode === "grid" ? styles.gridView : styles.listView}`}>
                             {!localItems || localItems.length === 0 ? (
                                 <div className={styles.emptyState}>
                                     <div className={styles.emptyIconContainer}>
