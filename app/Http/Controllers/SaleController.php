@@ -32,6 +32,32 @@ class SaleController extends Controller
     }
 
     /**
+     * Update a sale.
+     *
+     * @param  mixed  $id
+     * @return RedirectResponse
+     */
+    public function update(Request $request, $id)
+    {
+        $sale = Sale::findOrFail($id);
+
+        $validated = $request->validate([
+            'transaction_id' => ['nullable', 'string', 'max:255'],
+            'user_id' => ['required', 'exists:users,id'],
+            'auction_item_id' => ['nullable', 'exists:auction_items,id'],
+            'amount' => ['required', 'numeric', 'min:0'],
+            'sale_source' => ['required', 'in:pre_sale,auction,raffle,day_of,other,underwriting'],
+            'quantity' => ['nullable', 'integer', 'min:1'],
+            'notes' => ['nullable', 'string'],
+            'sale_date' => ['required', 'date'],
+        ]);
+
+        $sale->update($validated);
+
+        return back()->with('success', 'Sale updated successfully.');
+    }
+
+    /**
      * Delete a sale.
      *
      * @param  mixed  $id
