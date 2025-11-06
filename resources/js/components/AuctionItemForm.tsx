@@ -124,12 +124,22 @@ export function AuctionItemForm({ selectedItem, users, onSuccess }: AuctionItemF
 
     return (
         <div className={styles.itemForm}>
-            <form onSubmit={onSubmit}>
-                <div className={styles.formHeader}>
-                    <h2 className={styles.formTitle}>{selectedItem ? "Edit Item" : "Add New Item"}</h2>
-                </div>
+            <form onSubmit={onSubmit} className={styles.form}>
+                <div className={styles.formContent}>
+                    <div className={styles.formHeader}>
+                        <h2 className={styles.formTitle}>{selectedItem ? "Edit Item" : "Add New Item"}</h2>
+                        <div className={styles.formActions}>
+                            <button
+                                type="submit"
+                                className={styles.addButton}
+                                disabled={form.processing}
+                            >
+                                {form.processing ? "Saving..." : selectedItem ? "Update Item" : "Create Item"}
+                            </button>
+                        </div>
+                    </div>
 
-                <div className={sharedStyles.formGrid}>
+                    <div className={sharedStyles.formGrid}>
                     <div className={sharedStyles.formLeftColumn}>
                         <FormInput
                             label="Name"
@@ -285,15 +295,6 @@ export function AuctionItemForm({ selectedItem, users, onSuccess }: AuctionItemF
                         </FormSelect>
                     </div>
                 </div>
-
-                <div className={styles.formActions}>
-                    <button
-                        type="submit"
-                        className={styles.addButton}
-                        disabled={form.processing}
-                    >
-                        {form.processing ? "Saving..." : selectedItem ? "Update Item" : "Create Item"}
-                    </button>
                 </div>
             </form>
         </div>
