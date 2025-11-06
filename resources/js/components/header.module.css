@@ -16,6 +16,13 @@
     display: flex;
     align-items: center;
     gap: 0.25rem;
+    text-decoration: none;
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+}
+
+.logoContainer:hover {
+    opacity: 0.8;
 }
 
 .logoIcon {

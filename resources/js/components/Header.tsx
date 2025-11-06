@@ -28,10 +28,13 @@ export default function Header({ user }: HeaderProps): JSX.Element {
     return (
         <header className={styles.header}>
             <div className={styles.container}>
-                <div className={styles.logoContainer}>
+                <Link
+                    href="/"
+                    className={styles.logoContainer}
+                >
                     <Church className={styles.logoIcon} />
                     <h1 className={styles.logoText}>{settings.event_name}</h1>
-                </div>
+                </Link>
 
                 {user && (
                     <div className={styles.userInfoDesktop}>
