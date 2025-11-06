@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\AuctionItem;
 use App\Models\Bid;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -97,5 +98,20 @@ class BidController extends Controller
 
         // Return just the array of bids
         return response()->json($bids);
+    }
+
+    /**
+     * Delete a bid.
+     *
+     * @param  mixed  $id
+     * @return RedirectResponse
+     */
+    public function destroy($id)
+    {
+        $bid = Bid::findOrFail($id);
+
+        $bid->delete();
+
+        return back()->with('success', 'Bid deleted successfully.');
     }
 }
