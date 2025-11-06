@@ -1,10 +1,11 @@
 import { type JSX, useState } from "react";
-import { ShoppingCart, Trash2, PlusCircle } from "lucide-react";
+import { ShoppingCart, Trash2, PlusCircle, Edit } from "lucide-react";
 import { router } from "@inertiajs/react";
 import { DataGrid, type DataGridColumn, type DataGridAction, type EmptyStateConfig } from "@/components/ui/DataGrid";
 import { formatCurrency, formatDate } from "@/lib/utils";
 import DeleteConfirmationModal from "../DeleteConfirmationModal";
 import CreateSaleModal from "./CreateSaleModal";
+import EditSaleModal from "./EditSaleModal";
 import type { Sale, User, AuctionItem } from "@/types";
 import styles from "./UserGrid.module.css";
 
@@ -16,9 +17,16 @@ interface SalesGridProps {
 
 export function SalesGrid({ sales, users = [], items = [] }: SalesGridProps): JSX.Element {
     const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+    const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [saleToDelete, setSaleToDelete] = useState<Sale | null>(null);
+    const [saleToEdit, setSaleToEdit] = useState<Sale | null>(null);
     const [isDeleting, setIsDeleting] = useState(false);
+
+    const handleEditClick = (sale: Sale) => {
+        setSaleToEdit(sale);
+        setIsEditModalOpen(true);
+    };
 
     const handleDeleteClick = (sale: Sale) => {
         setSaleToDelete(sale);
@@ -45,7 +53,13 @@ export function SalesGrid({ sales, users = [], items = [] }: SalesGridProps): JS
         });
     };
 
-    const saleActionsWithDelete: DataGridAction<Sale>[] = [
+    const saleActions: DataGridAction<Sale>[] = [
+        {
+            type: "edit",
+            icon: <Edit className={styles.actionIcon} />,
+            title: "Edit sale",
+            handler: handleEditClick,
+        },
         {
             type: "delete",
             icon: <Trash2 className={styles.actionIcon} />,
@@ -67,7 +81,7 @@ export function SalesGrid({ sales, users = [], items = [] }: SalesGridProps): JS
                 <DataGrid
                     data={sales}
                     columns={saleColumns}
-                    actions={saleActionsWithDelete}
+                    actions={saleActions}
                     emptyStateConfig={salesEmptyState}
                     searchConfig={{
                         placeholder: "Search sales...",
@@ -78,6 +92,14 @@ export function SalesGrid({ sales, users = [], items = [] }: SalesGridProps): JS
             <CreateSaleModal
                 isOpen={isCreateModalOpen}
                 onClose={() => setIsCreateModalOpen(false)}
+                users={users}
+                items={items}
+            />
+
+            <EditSaleModal
+                isOpen={isEditModalOpen}
+                onClose={() => setIsEditModalOpen(false)}
+                sale={saleToEdit}
                 users={users}
                 items={items}
             />
