@@ -24,16 +24,23 @@ Route::get('/', function () {
 
     // Get user's bids with auction item data if logged in
     $userBids = null;
+    $favoriteItemIds = [];
     if (Auth::check()) {
         $userBids = \App\Models\Bid::where('user_id', Auth::id())
             ->with(['auctionItem.files'])
             ->orderBy('created_at', 'desc')
             ->get();
+
+        // Get user's favorite item IDs
+        $favoriteItemIds = \App\Models\Favorite::where('user_id', Auth::id())
+            ->pluck('auction_item_id')
+            ->toArray();
     }
 
     return Inertia::render('Home', [
         'auctionItems' => $items,
         'userBids' => $userBids,
+        'favoriteItemIds' => $favoriteItemIds,
     ]);
 })->middleware('auth');
 
@@ -53,6 +60,10 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/auction-items/{id}/bids', [BidController::class, 'store']);
     Route::get('/auction-items/{id}/bids', [BidController::class, 'index']);
     Route::get('/api/user/bids', [BidController::class, 'userBids']);
+
+    // Favorite routes
+    Route::post('/auction-items/{id}/favorite', [\App\Http\Controllers\FavoriteController::class, 'toggle']);
+    Route::get('/api/user/favorites', [\App\Http\Controllers\FavoriteController::class, 'index']);
 });
 
 // Admin routes - require authentication and admin role

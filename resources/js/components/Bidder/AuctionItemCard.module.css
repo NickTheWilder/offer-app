@@ -75,7 +75,7 @@
 .statusBadge {
     position: absolute;
     top: 0.75rem;
-    right: 0.75rem;
+    left: 0.75rem;
     padding: 0.375rem 0.75rem;
     border-radius: 4px;
     font-size: 0.75rem;
@@ -97,6 +97,40 @@
 .outbidBadge {
     background: var(--error-color);
     color: white;
+}
+
+.favoriteButton {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+    background: white;
+    border: none;
+    border-radius: 50%;
+    width: 2.5rem;
+    height: 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: all 0.2s ease;
+    z-index: 10;
+}
+
+.favoriteButton:hover {
+    transform: scale(1.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.favoriteButton:active {
+    transform: scale(0.95);
+}
+
+.favoriteIcon {
+    width: 1.25rem;
+    height: 1.25rem;
+    color: #ef4444;
+    transition: fill 0.2s ease;
 }
 
 .statusActive {

@@ -1,7 +1,8 @@
 import { formatCurrency } from "@/lib/utils";
 import { AuctionItem, Bid, User } from "@/types";
-import { type JSX } from "react";
-import { Link } from "@inertiajs/react";
+import { type JSX, useState } from "react";
+import { Link, router } from "@inertiajs/react";
+import { Heart } from "lucide-react";
 import styles from "./AuctionItemCard.module.css";
 
 interface UserBidStatus {
@@ -13,6 +14,7 @@ interface AuctionItemCardProps {
     items: AuctionItem[];
     user: User | null;
     userBids: Bid[];
+    favoriteItemIds: number[];
     onBidClick: (item: AuctionItem) => void;
     onBuyNowClick: (item: AuctionItem) => void;
 }
@@ -20,9 +22,12 @@ interface AuctionItemCardProps {
 export default function AuctionItemCard({
     items,
     userBids,
+    favoriteItemIds,
     onBidClick,
     onBuyNowClick,
 }: AuctionItemCardProps): JSX.Element {
+    const [favorites, setFavorites] = useState<number[]>(favoriteItemIds || []);
+
     // Determine if user is winning or has been outbid for each item
     const getUserBidStatus = (itemId: number): UserBidStatus | null => {
         if (!userBids || userBids.length === 0) return null;
@@ -44,6 +49,21 @@ export default function AuctionItemCard({
         };
     };
 
+    const handleFavoriteToggle = (itemId: number) => {
+        router.post(
+            `/auction-items/${itemId}/favorite`,
+            {},
+            {
+                preserveScroll: true,
+                onSuccess: () => {
+                    setFavorites((prev) =>
+                        prev.includes(itemId) ? prev.filter((id) => id !== itemId) : [...prev, itemId],
+                    );
+                },
+            },
+        );
+    };
+
     return (
         <div className={styles.gridContainer}>
             {items.map((item) => {
@@ -61,6 +81,18 @@ export default function AuctionItemCard({
                         >
                             {badgeType === "winning" ? "Winning" : badgeType === "outbid" ? "Outbid" : "Active"}
                         </div>
+
+                        {/* Favorite button */}
+                        <button
+                            onClick={() => handleFavoriteToggle(item.id)}
+                            className={styles.favoriteButton}
+                            aria-label={favorites.includes(item.id) ? "Remove from favorites" : "Add to favorites"}
+                        >
+                            <Heart
+                                className={styles.favoriteIcon}
+                                fill={favorites.includes(item.id) ? "currentColor" : "none"}
+                            />
+                        </button>
 
                         {/* Item image or placeholder */}
                         <div className={styles.imageContainer}>

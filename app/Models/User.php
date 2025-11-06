@@ -70,4 +70,14 @@ class User extends Authenticatable
     {
         return $this->hasMany(AuctionItem::class, 'donor_id');
     }
+
+    /**
+     * Get the user's favorite auction items.
+     *
+     * @return HasMany<Favorite,User>
+     */
+    public function favorites(): HasMany
+    {
+        return $this->hasMany(Favorite::class);
+    }
 }
