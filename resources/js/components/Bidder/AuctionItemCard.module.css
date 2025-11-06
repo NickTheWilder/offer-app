@@ -250,6 +250,30 @@
     font-size: 0.875rem;
 }
 
+.auctionTypeContainer {
+    margin-bottom: 1rem;
+}
+
+.auctionTypeBadge {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.025em;
+}
+
+.silentAuctionBadge {
+    background-color: #dbeafe;
+    color: #1e40af;
+}
+
+.liveAuctionBadge {
+    background-color: #fef3c7;
+    color: #92400e;
+}
+
 .buttonsContainer {
     display: flex;
     gap: 0.5rem;
