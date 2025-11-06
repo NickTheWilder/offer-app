@@ -71,7 +71,10 @@ export interface Sale {
     created_at: string;
     updated_at: string;
     user?: User;
+    user_name?: string;
+    user_bidder_number?: string;
     auction_item?: AuctionItem;
+    auction_item_name?: string;
 }
 
 export type PageProps<T extends Record<string, unknown> = Record<string, unknown>> = T & {

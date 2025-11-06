@@ -1,4 +1,4 @@
-type AdminDataType = "items" | "donors" | "users" | "reports";
+type AdminDataType = "items" | "donors" | "users" | "reports" | "sales";
 
 interface FetchOptions<T> {
     type: AdminDataType;
