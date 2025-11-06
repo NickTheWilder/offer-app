@@ -1,20 +1,30 @@
 import { type JSX, useState } from "react";
-import { Trash2, TrendingUp } from "lucide-react";
+import { Trash2, TrendingUp, Edit } from "lucide-react";
 import { router } from "@inertiajs/react";
 import { DataGrid, type DataGridColumn, type DataGridAction, type EmptyStateConfig } from "@/components/ui/DataGrid";
 import { formatCurrency, formatDate } from "@/lib/utils";
 import DeleteConfirmationModal from "../DeleteConfirmationModal";
-import type { Bid } from "@/types";
+import EditBidModal from "./EditBidModal";
+import type { Bid, User, AuctionItem } from "@/types";
 import styles from "./UserGrid.module.css";
 
 interface BidsGridProps {
     bids: Bid[];
+    users?: User[];
+    items?: AuctionItem[];
 }
 
-export function BidsGrid({ bids }: BidsGridProps): JSX.Element {
+export function BidsGrid({ bids, users = [], items = [] }: BidsGridProps): JSX.Element {
+    const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [bidToDelete, setBidToDelete] = useState<Bid | null>(null);
+    const [bidToEdit, setBidToEdit] = useState<Bid | null>(null);
     const [isDeleting, setIsDeleting] = useState(false);
+
+    const handleEditClick = (bid: Bid) => {
+        setBidToEdit(bid);
+        setIsEditModalOpen(true);
+    };
 
     const handleDeleteClick = (bid: Bid) => {
         setBidToDelete(bid);
@@ -43,6 +53,12 @@ export function BidsGrid({ bids }: BidsGridProps): JSX.Element {
 
     const bidActions: DataGridAction<Bid>[] = [
         {
+            type: "edit",
+            icon: <Edit className={styles.actionIcon} />,
+            title: "Edit bid",
+            handler: handleEditClick,
+        },
+        {
             type: "delete",
             icon: <Trash2 className={styles.actionIcon} />,
             title: "Delete bid",
@@ -63,6 +79,14 @@ export function BidsGrid({ bids }: BidsGridProps): JSX.Element {
                     }}
                 />
             </div>
+
+            <EditBidModal
+                isOpen={isEditModalOpen}
+                onClose={() => setIsEditModalOpen(false)}
+                bid={bidToEdit}
+                users={users}
+                items={items}
+            />
 
             {bidToDelete && (
                 <DeleteConfirmationModal

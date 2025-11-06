@@ -101,6 +101,27 @@ class BidController extends Controller
     }
 
     /**
+     * Update a bid.
+     *
+     * @param  mixed  $id
+     * @return RedirectResponse
+     */
+    public function update(Request $request, $id)
+    {
+        $bid = Bid::findOrFail($id);
+
+        $validated = $request->validate([
+            'user_id' => ['required', 'exists:users,id'],
+            'auction_item_id' => ['required', 'exists:auction_items,id'],
+            'amount' => ['required', 'numeric', 'min:0'],
+        ]);
+
+        $bid->update($validated);
+
+        return back()->with('success', 'Bid updated successfully.');
+    }
+
+    /**
      * Delete a bid.
      *
      * @param  mixed  $id
