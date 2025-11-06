@@ -61,30 +61,48 @@
     background: none;
     border: none;
     cursor: pointer;
-    padding: 0;
-    height: 2rem;
-    width: 2rem;
+    padding: 0.25rem;
+    height: 2.5rem;
+    width: 2.5rem;
     display: flex;
     align-items: center;
     justify-content: center;
+    border-radius: var(--radius);
+    transition: all 0.2s ease;
 }
 
 .mobileMenuButton:hover {
     background-color: rgba(0, 0, 0, 0.05);
-    border-radius: var(--radius);
+}
+
+.mobileMenuButton:active {
+    transform: scale(0.95);
 }
 
 .mobileMenuIcon {
-    height: 1.25rem;
-    width: 1.25rem;
+    height: 1.5rem;
+    width: 1.5rem;
     color: #6b7280;
+    transition: color 0.2s ease;
 }
 
 .mobileMenu {
     background-color: white;
     width: 100%;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
     z-index: 20;
+    animation: slideDown 0.2s ease-out;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .mobileMenuContainer {
@@ -114,16 +132,20 @@
 .menuLink {
     color: #6b7280;
     font-weight: 500;
-    padding: 0.5rem 0;
+    padding: 0.75rem 1rem;
     display: flex;
     align-items: center;
     text-decoration: none;
+    border-radius: var(--radius);
+    transition: all 0.2s ease;
+    margin: 0.25rem 0;
+    font-size: 0.875rem;
 }
 
 .menuLink:hover {
     background-color: rgba(0, 0, 0, 0.05);
-    border-radius: var(--radius);
     text-decoration: none;
+    color: #374151;
 }
 
 .menuButton {
@@ -138,7 +160,7 @@
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    border-radius: 0.375rem;
+    border-radius: var(--radius);
     transition: all 0.2s ease;
     margin: 0.25rem 0;
     font-size: 0.875rem;
