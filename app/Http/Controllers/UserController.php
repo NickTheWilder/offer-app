@@ -85,4 +85,20 @@ class UserController extends Controller
             'nextBidderNumber' => $user->bidder_number,
         ]);
     }
+
+    /**
+     * Delete a user.
+     *
+     * @param  mixed  $id
+     * @return RedirectResponse
+     */
+    public function destroy($id)
+    {
+        $user = User::findOrFail($id);
+
+        $user->delete();
+
+        return redirect()->route('admin')
+            ->with('success', 'User deleted successfully.');
+    }
 }

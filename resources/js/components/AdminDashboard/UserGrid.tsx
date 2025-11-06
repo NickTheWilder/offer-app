@@ -1,22 +1,76 @@
-import { type JSX } from "react";
+import { type JSX, useState } from "react";
 import { router } from "@inertiajs/react";
-import { Eye, Edit, Users } from "lucide-react";
+import { Eye, Edit, Users, Trash2 } from "lucide-react";
 import { DataGrid, type DataGridColumn, type DataGridAction, type EmptyStateConfig } from "@/components/ui/DataGrid";
 import { User } from "@/types";
 import { formatDate } from "@/lib/utils";
+import DeleteConfirmationModal from "../DeleteConfirmationModal";
 import styles from "./UserGrid.module.css";
 
 export function UserGrid({ users = [] }: { users: User[] }): JSX.Element {
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [userToDelete, setUserToDelete] = useState<User | null>(null);
+    const [isDeleting, setIsDeleting] = useState(false);
+
+    const handleDeleteClick = (user: User) => {
+        setUserToDelete(user);
+        setShowDeleteModal(true);
+    };
+
+    const handleDeleteConfirm = () => {
+        if (!userToDelete) return;
+
+        setIsDeleting(true);
+
+        router.delete(`/admin/users/${userToDelete.id}`, {
+            preserveScroll: true,
+            onSuccess: () => {
+                setShowDeleteModal(false);
+                setUserToDelete(null);
+            },
+            onError: () => {
+                console.error("Failed to delete user");
+            },
+            onFinish: () => {
+                setIsDeleting(false);
+            },
+        });
+    };
+
+    const userActionsWithDelete: DataGridAction<User>[] = [
+        ...userActions,
+        {
+            type: "delete",
+            icon: <Trash2 className={styles.actionIcon} />,
+            title: "Delete user",
+            handler: handleDeleteClick,
+        },
+    ];
+
     return (
-        <DataGrid
-            data={users}
-            columns={userColumns}
-            actions={userActions}
-            emptyStateConfig={userEmptyState}
-            searchConfig={{ placeholder: "Search..." }}
-            onRowDoubleClick={(user) => router.visit(`/admin/users/${user.id}`)}
-            className={styles.userDashboard}
-        />
+        <>
+            <DataGrid
+                data={users}
+                columns={userColumns}
+                actions={userActionsWithDelete}
+                emptyStateConfig={userEmptyState}
+                searchConfig={{ placeholder: "Search..." }}
+                onRowDoubleClick={(user) => router.visit(`/admin/users/${user.id}`)}
+                className={styles.userDashboard}
+            />
+
+            {userToDelete && (
+                <DeleteConfirmationModal
+                    isOpen={showDeleteModal}
+                    onClose={() => setShowDeleteModal(false)}
+                    onConfirm={handleDeleteConfirm}
+                    title="Delete User"
+                    message={`Are you sure you want to delete "${userToDelete.name}"? This action cannot be undone.`}
+                    itemName={userToDelete.name}
+                    isLoading={isDeleting}
+                />
+            )}
+        </>
     );
 }
 
