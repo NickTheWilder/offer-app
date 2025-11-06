@@ -108,6 +108,18 @@ export default function AuctionItemCard({
                                 </p>
                             </div>
 
+                            <div className={styles.auctionTypeContainer}>
+                                <span
+                                    className={`${styles.auctionTypeBadge} ${
+                                        item.auction_type === "live"
+                                            ? styles.liveAuctionBadge
+                                            : styles.silentAuctionBadge
+                                    }`}
+                                >
+                                    {item.auction_type === "live" ? "Live Auction" : "Silent Auction"}
+                                </span>
+                            </div>
+
                             <div className={styles.bidContainer}>
                                 <div className={styles.bidInfo}>
                                     <p className={styles.label}>Current Bid</p>
