@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\AuctionItem;
 use App\Models\Bid;
+use App\Models\Sale;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -22,6 +23,14 @@ class BidController extends Controller
             return back()->withErrors([
                 'amount' => 'This auction item is not currently accepting bids.',
             ]);
+        }
+
+        // Check if this is a buy now purchase
+        $isBuyNow = $request->boolean('is_buy_now', false);
+
+        if ($isBuyNow) {
+            // Handle Buy Now purchase
+            return $this->handleBuyNow($request, $item);
         }
 
         // Get current high bid
@@ -63,6 +72,65 @@ class BidController extends Controller
         } catch (\Exception $e) {
             return back()->withErrors([
                 'amount' => 'Failed to place bid. Please try again.',
+            ]);
+        }
+    }
+
+    /**
+     * Handle a Buy Now purchase.
+     */
+    private function handleBuyNow(Request $request, AuctionItem $item)
+    {
+        // Validate buy now price is set
+        if (! $item->buy_now_price) {
+            return back()->withErrors([
+                'amount' => 'Buy now is not available for this item.',
+            ]);
+        }
+
+        // Validate the amount matches the buy now price
+        $validated = $request->validate([
+            'amount' => ['required', 'numeric'],
+        ]);
+
+        if ($validated['amount'] != $item->buy_now_price) {
+            return back()->withErrors([
+                'amount' => 'The amount must match the buy now price.',
+            ]);
+        }
+
+        // Create sale and update item status in a transaction
+        try {
+            DB::transaction(function () use ($item, $validated) {
+                // Create the sale record
+                Sale::create([
+                    'user_id' => Auth::id(),
+                    'auction_item_id' => $item->id,
+                    'amount' => $validated['amount'],
+                    'sale_source' => 'auction',
+                    'quantity' => 1,
+                    'notes' => 'Buy Now purchase',
+                    'sale_date' => now()->toDateString(),
+                ]);
+
+                // Create a bid record for tracking
+                Bid::create([
+                    'auction_item_id' => $item->id,
+                    'user_id' => Auth::id(),
+                    'amount' => $validated['amount'],
+                ]);
+
+                // Update auction item status to sold
+                $item->update(['status' => 'sold']);
+            });
+
+            return back()->with([
+                'success' => 'Item purchased successfully!',
+            ]);
+
+        } catch (\Exception $e) {
+            return back()->withErrors([
+                'amount' => 'Failed to complete purchase. Please try again.',
             ]);
         }
     }

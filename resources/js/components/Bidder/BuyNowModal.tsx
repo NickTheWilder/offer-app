@@ -21,7 +21,7 @@ export default function BuyNowModal({ item, onClose }: BuyNowModalProps): JSX.El
     });
 
     const handleConfirm = () => {
-        post("/bids", {
+        post(`/auction-items/${item.id}/bids`, {
             onSuccess: () => {
                 toast({
                     title: "Purchase successful",
