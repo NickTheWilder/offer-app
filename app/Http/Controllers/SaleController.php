@@ -30,4 +30,19 @@ class SaleController extends Controller
 
         return back()->with('success', 'Sale created successfully.');
     }
+
+    /**
+     * Delete a sale.
+     *
+     * @param  mixed  $id
+     * @return RedirectResponse
+     */
+    public function destroy($id)
+    {
+        $sale = Sale::findOrFail($id);
+
+        $sale->delete();
+
+        return back()->with('success', 'Sale deleted successfully.');
+    }
 }
