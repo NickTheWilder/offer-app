@@ -1,22 +1,38 @@
-import { type JSX } from "react";
+import { type JSX, useState } from "react";
 import { router } from "@inertiajs/react";
-import { Eye, Edit, Users } from "lucide-react";
+import { Eye, Edit, Users, UserPlus } from "lucide-react";
 import { DataGrid, type DataGridColumn, type DataGridAction, type EmptyStateConfig } from "@/components/ui/DataGrid";
 import { User } from "@/types";
 import { formatDate } from "@/lib/utils";
+import CreateUserModal from "./CreateUserModal";
 import styles from "./UserGrid.module.css";
 
 export function UserGrid({ users = [] }: { users: User[] }): JSX.Element {
+    const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+
     return (
-        <DataGrid
-            data={users}
-            columns={userColumns}
-            actions={userActions}
-            emptyStateConfig={userEmptyState}
-            searchConfig={{ placeholder: "Search..." }}
-            onRowDoubleClick={(user) => router.visit(`/admin/users/${user.id}`)}
-            className={styles.userDashboard}
-        />
+        <>
+            <div className={styles.userGridContainer}>
+                <div className={styles.headerActions}>
+                    <button className={styles.createButton} onClick={() => setIsCreateModalOpen(true)}>
+                        <UserPlus size={16} />
+                        Create User
+                    </button>
+                </div>
+
+                <DataGrid
+                    data={users}
+                    columns={userColumns}
+                    actions={userActions}
+                    emptyStateConfig={userEmptyState}
+                    searchConfig={{ placeholder: "Search..." }}
+                    onRowDoubleClick={(user) => router.visit(`/admin/users/${user.id}`)}
+                    className={styles.userDashboard}
+                />
+            </div>
+
+            <CreateUserModal isOpen={isCreateModalOpen} onClose={() => setIsCreateModalOpen(false)} />
+        </>
     );
 }
 
