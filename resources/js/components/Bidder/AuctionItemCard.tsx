@@ -1,13 +1,9 @@
-import { formatCurrency } from "@/lib/utils";
 import { AuctionItem, Bid, User } from "@/types";
 import { type JSX } from "react";
-import { Link } from "@inertiajs/react";
 import styles from "./AuctionItemCard.module.css";
-
-interface UserBidStatus {
-    amount: number;
-    isWinning: boolean;
-}
+import { UserBidStatus } from "@/lib/types";
+import { SilentItemCardFooter } from "./SilentItemCardFooter";
+import { LiveItemCardFooter } from "./LiveItemCardFooter";
 
 interface AuctionItemCardProps {
     items: AuctionItem[];
@@ -120,67 +116,16 @@ export default function AuctionItemCard({
                                 </span>
                             </div>
 
-                            <div className={styles.bidContainer}>
-                                <div className={styles.bidInfo}>
-                                    <p className={styles.label}>Current Bid</p>
-                                    <p className={styles.currentBid}>
-                                        {formatCurrency(item.current_bid || item.starting_bid)}
-                                    </p>
-                                </div>
-
-                                <div className={styles.userBidInfo}>
-                                    {userBidStatus ? (
-                                        <>
-                                            <p className={styles.label}>Your Bid</p>
-                                            <p
-                                                className={
-                                                    userBidStatus.isWinning
-                                                        ? styles.userBidWinning
-                                                        : styles.userBidOutbid
-                                                }
-                                            >
-                                                {formatCurrency(userBidStatus.amount)}
-                                            </p>
-                                        </>
-                                    ) : (
-                                        <>
-                                            <p className={styles.label}>Starting Bid</p>
-                                            <p className={styles.startingBid}>{formatCurrency(item.starting_bid)}</p>
-                                        </>
-                                    )}
-                                </div>
-                            </div>
-
-                            <div className={styles.footerContainer}>
-                                <div className={styles.buttonsContainer}>
-                                    <button
-                                        onClick={() => onBidClick(item)}
-                                        className={`${styles.bidButton} ${userBidStatus && !userBidStatus.isWinning ? styles.bidButtonOutbid : userBidStatus && userBidStatus.isWinning ? styles.bidButtonWinning : ""}`}
-                                    >
-                                        {userBidStatus && !userBidStatus.isWinning
-                                            ? "Bid Again"
-                                            : userBidStatus && userBidStatus.isWinning
-                                              ? "Increase Bid"
-                                              : "Place Bid"}
-                                    </button>
-
-                                    {item.buy_now_price && (
-                                        <button
-                                            onClick={() => onBuyNowClick(item)}
-                                            className={styles.buyNowButton}
-                                        >
-                                            Buy Now
-                                        </button>
-                                    )}
-                                </div>
-
-                                <Link
-                                    href={`/auction-items/${item.id}`}
-                                    className={styles.viewDetailsLink}
-                                >
-                                    View Details →
-                                </Link>
-                            </div>
+                            {item.auction_type === "silent" ? (
+                                <SilentItemCardFooter
+                                    userBidStatus={userBidStatus}
+                                    item={item}
+                                    onBidClick={onBidClick}
+                                    onBuyNowClick={onBuyNowClick}
+                                />
+                            ) : (
+                                <LiveItemCardFooter />
+                            )}
                         </div>
                     </div>
                 );
