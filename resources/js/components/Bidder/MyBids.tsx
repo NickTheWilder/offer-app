@@ -68,9 +68,26 @@ export default function MyBids({ bids, isLoading = false }: MyBidsProps): JSX.El
     });
 
     const highestBids = Object.values(groupedBids);
+
     // Determine winning vs outbid based on current bid
-    const winningBids = highestBids.filter((bid) => bid.auction_item.current_bid === bid.amount);
-    const outbidBids = highestBids.filter((bid) => bid.auction_item.current_bid !== bid.amount);
+    // Need to safely handle current_bid which might be undefined
+    const winningBids = highestBids.filter((bid) => {
+        // If no current_bid exists and user has only the starting bid, they're winning
+        if (!bid.auction_item.current_bid) {
+            return bid.amount === bid.auction_item.starting_bid;
+        }
+        // User is winning if their bid matches the current high bid
+        return bid.amount === bid.auction_item.current_bid;
+    });
+
+    const outbidBids = highestBids.filter((bid) => {
+        // If no current_bid exists and user's bid is less than starting bid, they're not winning
+        if (!bid.auction_item.current_bid) {
+            return bid.amount < bid.auction_item.starting_bid;
+        }
+        // User is outbid if their bid is less than the current high bid
+        return bid.amount < bid.auction_item.current_bid;
+    });
 
     return (
         <div className={styles.container}>
