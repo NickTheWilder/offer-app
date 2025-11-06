@@ -39,9 +39,28 @@ class UserController extends Controller
                 ];
             });
 
+        // Load user's sales with auction item details
+        $sales = $user->sales()
+            ->with(['auctionItem.files'])
+            ->orderBy('sale_date', 'desc')
+            ->get()
+            ->map(function ($sale) {
+                return [
+                    'id' => $sale->id,
+                    'amount' => $sale->amount,
+                    'auction_item_id' => $sale->auction_item_id,
+                    'auction_item_name' => $sale->auctionItem->name,
+                    'auction_item' => $sale->auctionItem,
+                    'sale_date' => $sale->sale_date,
+                    'transaction_id' => $sale->transaction_id,
+                    'sale_source' => $sale->sale_source,
+                ];
+            });
+
         return Inertia::render('Users/UserDetail', [
             'user' => $user,
             'bids' => $bids,
+            'sales' => $sales,
         ]);
     }
 

@@ -62,6 +62,16 @@ class User extends Authenticatable
     }
 
     /**
+     * Get the sales for the user.
+     *
+     * @return HasMany<Sale,User>
+     */
+    public function sales(): HasMany
+    {
+        return $this->hasMany(Sale::class);
+    }
+
+    /**
      * Get the auction items donated by the user.
      *
      * @return HasMany<AuctionItem,User>
