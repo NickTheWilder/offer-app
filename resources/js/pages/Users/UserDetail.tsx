@@ -6,15 +6,17 @@ import UserHeader from "@/components/UserDetail/UserHeader";
 import Tabs from "@/components/ui/Tabs";
 import UserInfoView from "@/components/UserDetail/UserInfoView";
 import UserEditForm from "@/components/UserDetail/UserEditForm";
+import UserBidsGrid from "@/components/UserDetail/UserBidsGrid";
 import PlaceholderTab from "@/components/ui/PlaceholderTab";
-import type { PageProps, User } from "@/types";
+import type { PageProps, User, Bid } from "@/types";
 import styles from "./UserDetail.module.css";
 
 type UserDetailProps = PageProps<{
     user: User;
+    bids: Bid[];
 }>;
 
-export default function UserDetail({ auth, user, flash }: UserDetailProps): JSX.Element {
+export default function UserDetail({ auth, user, bids, flash }: UserDetailProps): JSX.Element {
     // Check if we should start in edit mode
     const urlParams = new URLSearchParams(window.location.search);
     const startInEditMode = urlParams.get("edit") === "true";
@@ -142,12 +144,7 @@ export default function UserDetail({ auth, user, flash }: UserDetailProps): JSX.
                                 </div>
                             )}
 
-                            {activeTab === "bids" && (
-                                <PlaceholderTab
-                                    title="Bid History"
-                                    description="View and manage all bids placed by this user."
-                                />
-                            )}
+                            {activeTab === "bids" && <UserBidsGrid bids={bids} />}
 
                             {activeTab === "sales" && (
                                 <PlaceholderTab

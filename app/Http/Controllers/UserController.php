@@ -23,8 +23,25 @@ class UserController extends Controller
     {
         $user = User::findOrFail($id);
 
+        // Load user's bids with auction item details
+        $bids = $user->bids()
+            ->with(['auctionItem.files'])
+            ->orderBy('created_at', 'desc')
+            ->get()
+            ->map(function ($bid) {
+                return [
+                    'id' => $bid->id,
+                    'amount' => $bid->amount,
+                    'auction_item_id' => $bid->auction_item_id,
+                    'auction_item_name' => $bid->auctionItem->name,
+                    'auction_item' => $bid->auctionItem,
+                    'created_at' => $bid->created_at,
+                ];
+            });
+
         return Inertia::render('Users/UserDetail', [
             'user' => $user,
+            'bids' => $bids,
         ]);
     }
 
