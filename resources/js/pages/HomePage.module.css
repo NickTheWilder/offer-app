@@ -26,6 +26,7 @@
     display: flex;
     flex-direction: column;
     margin-bottom: 1.5rem;
+    width: 100%;
 }
 
 @media (min-width: 768px) {
@@ -56,6 +57,7 @@
     font-size: 1.25rem;
     font-weight: 600;
     color: #1f2937;
+    padding-right: 1rem;
 }
 
 .timeLeft {
@@ -90,6 +92,7 @@
         flex-direction: row;
         align-items: center;
         gap: 1rem;
+        flex-shrink: 0;
     }
 }
 
@@ -101,6 +104,8 @@
 @media (min-width: 768px) {
     .searchContainer {
         width: 16rem;
+        min-width: 16rem;
+        flex-shrink: 0;
     }
 }
 
@@ -151,27 +156,40 @@
 
 .emptyContainer {
     text-align: center;
-    padding: 5rem 0;
+    padding: 3rem 1.5rem;
+    margin: 2rem 1rem;
     background-color: white;
-    border-radius: 0.5rem;
-    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    border-radius: 0.75rem;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+    border: 2px dashed #e5e7eb;
+}
+
+@media (min-width: 768px) {
+    .emptyContainer {
+        padding: 5rem 2rem;
+        margin: 2rem auto;
+        max-width: 600px;
+    }
 }
 
 .emptyIcon {
-    height: 4rem;
-    width: 4rem;
-    margin: 0 auto 1rem auto;
-    color: #d1d5db;
+    height: 5rem;
+    width: 5rem;
+    margin: 0 auto 1.5rem auto;
+    color: #9ca3af;
 }
 
 .emptyTitle {
-    font-size: 1.125rem;
-    font-weight: 500;
-    color: #4b5563;
-    margin-bottom: 0.5rem;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: 0.75rem;
 }
 
 .emptyText {
     color: #6b7280;
-    font-size: 0.875rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    max-width: 400px;
+    margin: 0 auto;
 }
