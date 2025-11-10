@@ -96,10 +96,11 @@ export default function Header({ user }: HeaderProps): JSX.Element {
             </div>
 
             {/* Mobile menu */}
-            {mobileMenuOpen && user && (
-                <div className={styles.mobileMenu}>
-                    <div className={styles.mobileMenuContainer}>
-                        <div className={styles.mobileMenuContent}>
+            {user && (
+                <div className={`${styles.mobileMenu} ${mobileMenuOpen ? styles.open : ''}`}>
+                    <div className={styles.mobileMenuWrapper}>
+                        <div className={styles.mobileMenuContainer}>
+                            <div className={styles.mobileMenuContent}>
                             <div className={styles.userInfoMobile}>
                                 <span className={styles.welcomeText}>{user.name}</span>
                                 <span className={styles.bidderBadge}>Bidder #{user.bidder_number}</span>
@@ -132,6 +133,7 @@ export default function Header({ user }: HeaderProps): JSX.Element {
                                 Logout
                             </button>
                         </div>
+                    </div>
                     </div>
                 </div>
             )}

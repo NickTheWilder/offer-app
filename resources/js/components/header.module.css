@@ -91,7 +91,17 @@
     width: 100%;
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
     z-index: 20;
-    animation: slideDown 0.2s ease-out;
+    display: grid;
+    grid-template-rows: 0fr;
+    opacity: 0;
+    transition: grid-template-rows 0.2s ease-out, opacity 0.2s ease-out;
+    pointer-events: none;
+}
+
+.mobileMenu.open {
+    grid-template-rows: 1fr;
+    opacity: 1;
+    pointer-events: auto;
 }
 
 @keyframes slideDown {
@@ -103,6 +113,21 @@
         opacity: 1;
         transform: translateY(0);
     }
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 1;
+        transform: translateY(10px)
+    }
+    to {
+      opacity: 0;
+      transform: translateY(0)
+    }
+}
+
+.mobileMenuWrapper {
+    overflow: hidden;
 }
 
 .mobileMenuContainer {
