@@ -58,6 +58,24 @@ export default function Home({ auth, auctionItems, userBids, settings }: HomePro
                 <main className={styles.main}>
                     {activeTab === "bidderDashboard" && (
                         <div className={styles.dashboardSection}>
+                            {/* Preview Mode Banner */}
+                            {settings.preview_mode && (
+                                <div
+                                    style={{
+                                        backgroundColor: "#fef3c7",
+                                        border: "1px solid #f59e0b",
+                                        color: "#92400e",
+                                        padding: "0.75rem 1rem",
+                                        borderRadius: "0.5rem",
+                                        marginBottom: "1.5rem",
+                                        textAlign: "center",
+                                        fontWeight: 500,
+                                    }}
+                                >
+                                    Preview Mode: Bidding is currently disabled. Items are shown for preview only.
+                                </div>
+                            )}
+
                             {/* Top section with filtering */}
                             <div className={styles.sectionHeader}>
                                 <div className={styles.titleRow}>
@@ -151,6 +169,7 @@ export default function Home({ auth, auctionItems, userBids, settings }: HomePro
                                     userBids={(userBids || []) as Bid[]}
                                     onBidClick={handleBidClick}
                                     onBuyNowClick={handleBuyNowClick}
+                                    previewMode={settings.preview_mode}
                                 />
                             )}
                         </div>

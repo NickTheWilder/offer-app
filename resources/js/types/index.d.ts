@@ -82,6 +82,7 @@ export type PageProps<T extends Record<string, unknown> = Record<string, unknown
         event_name: string;
         event_location: string | null;
         primary_color: string;
+        preview_mode: boolean;
         auction_start: string | null;
         auction_end: string | null;
     };

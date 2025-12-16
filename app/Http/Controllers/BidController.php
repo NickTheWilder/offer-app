@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\AuctionItem;
 use App\Models\Bid;
+use App\Models\Setting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -21,6 +22,14 @@ class BidController extends Controller
         if ($item->status !== 'active') {
             return back()->withErrors([
                 'amount' => 'This auction item is not currently accepting bids.',
+            ]);
+        }
+
+        // Check if preview mode is enabled
+        $settings = Setting::get();
+        if ($settings->preview_mode) {
+            return back()->withErrors([
+                'amount' => 'Bidding is currently disabled. The auction is in preview mode.',
             ]);
         }
 

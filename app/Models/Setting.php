@@ -10,6 +10,7 @@ class Setting extends Model
         'event_name',
         'event_location',
         'primary_color',
+        'preview_mode',
         'auction_start',
         'auction_end',
     ];
@@ -17,6 +18,7 @@ class Setting extends Model
     protected function casts(): array
     {
         return [
+            'preview_mode' => 'boolean',
             'auction_start' => 'datetime',
             'auction_end' => 'datetime',
         ];
