@@ -21,13 +21,14 @@ type HomeProps = PageProps<{
 export default function Home({ auth, auctionItems, userBids, settings }: HomeProps): JSX.Element {
     const [activeTab, setActiveTab] = useState("bidderDashboard");
     const [searchQuery, setSearchQuery] = useState("");
+    const [sortBy, setSortBy] = useState<"all" | "silent" | "live">("all");
     const [bidModalItem, setBidModalItem] = useState<AuctionItem | null>(null);
     const [buyNowModalItem, setBuyNowModalItem] = useState<AuctionItem | null>(null);
 
-    // Filter items by search query
+    // Filter and sort items by search query and auction type
     const filteredItems = useMemo(
-        () =>
-            auctionItems?.filter((item) => {
+        () => {
+            let items = auctionItems?.filter((item) => {
                 if (!searchQuery) return true;
                 const query = searchQuery.toLowerCase();
                 return (
@@ -35,8 +36,16 @@ export default function Home({ auth, auctionItems, userBids, settings }: HomePro
                     (item.description || "").toLowerCase().includes(query) ||
                     (item.category || "").toLowerCase().includes(query)
                 );
-            }),
-        [auctionItems, searchQuery]
+            });
+
+            // Filter by auction type
+            if (sortBy !== "all") {
+                items = items?.filter((item) => item.auction_type === sortBy);
+            }
+
+            return items;
+        },
+        [auctionItems, searchQuery, sortBy]
     );
 
     // Handle bid button click
@@ -115,6 +124,24 @@ export default function Home({ auth, auctionItems, userBids, settings }: HomePro
                                                 />
                                             </svg>
                                         </span>
+                                    </div>
+                                    <div className={styles.sortContainer}>
+                                        <label
+                                            htmlFor="auctionTypeSort"
+                                            className={styles.sortLabel}
+                                        >
+                                            Auction Type:
+                                        </label>
+                                        <select
+                                            id="auctionTypeSort"
+                                            className={styles.sortSelect}
+                                            value={sortBy}
+                                            onChange={(e) => setSortBy(e.target.value as "all" | "silent" | "live")}
+                                        >
+                                            <option value="all">All Items</option>
+                                            <option value="silent">Silent Auction</option>
+                                            <option value="live">Live Auction</option>
+                                        </select>
                                     </div>
                                 </div>
                             </div>
