@@ -5,20 +5,23 @@ import Tabs from "./ui/Tabs";
 import { SystemDashboard } from "./AdminDashboard/SystemDashboard";
 import { ReportDashboard } from "./AdminDashboard/ReportDashboard";
 import { UserGrid } from "./AdminDashboard/UserGrid";
+import { SalesGrid } from "./AdminDashboard/SalesGrid";
 import ItemDashboard from "./AdminDashboard/ItemDashboard";
-import type { AuctionItem, User } from "@/types";
+import type { AuctionItem, User, Sale } from "@/types";
 import { fetchAdminData } from "@/utils/adminApi";
 
 interface LoadingState {
     items: boolean;
     users: boolean;
     reports: boolean;
+    sales: boolean;
 }
 
 interface DataState {
     items: AuctionItem[] | null;
     users: User[] | null;
     reports: unknown[] | null;
+    sales: Sale[] | null;
 }
 
 export default function AdminDashboard(): JSX.Element {
@@ -31,11 +34,13 @@ export default function AdminDashboard(): JSX.Element {
         items: false,
         users: false,
         reports: false,
+        sales: false,
     });
     const [data, setData] = useState<DataState>({
         items: null,
         users: null,
         reports: null,
+        sales: null,
     });
     const [errors, setErrors] = useState<Record<string, string>>({});
 
@@ -85,6 +90,17 @@ export default function AdminDashboard(): JSX.Element {
         });
     }, [data.reports, loading.reports]);
 
+    const fetchSales = useCallback(async () => {
+        await fetchAdminData({
+            type: "sales",
+            currentData: data.sales,
+            isLoading: loading.sales,
+            setLoading: (isLoading) => setLoading((prev) => ({ ...prev, sales: isLoading })),
+            setData: (sales) => setData((prev) => ({ ...prev, sales })),
+            setError: (error) => setErrors((prev) => ({ ...prev, sales: error })),
+        });
+    }, [data.sales, loading.sales]);
+
     // Handle tab changes with data fetching
     const handleTabChange = useCallback(
         async (tab: string) => {
@@ -101,6 +117,9 @@ export default function AdminDashboard(): JSX.Element {
                 case "users":
                     await fetchUsers();
                     break;
+                case "sales":
+                    await fetchSales();
+                    break;
                 case "reports":
                     await fetchReports();
                     break;
@@ -109,7 +128,7 @@ export default function AdminDashboard(): JSX.Element {
                     break;
             }
         },
-        [fetchItems, fetchUsers, fetchReports]
+        [fetchItems, fetchUsers, fetchSales, fetchReports]
     );
 
     // First load, fetch data based on initial tab
@@ -121,6 +140,9 @@ export default function AdminDashboard(): JSX.Element {
             case "users":
                 fetchUsers();
                 break;
+            case "sales":
+                fetchSales();
+                break;
             case "reports":
                 fetchReports();
                 break;
@@ -130,7 +152,7 @@ export default function AdminDashboard(): JSX.Element {
             default:
                 fetchItems();
         }
-    }, [initialTab, fetchItems, fetchUsers, fetchReports]);
+    }, [initialTab, fetchItems, fetchUsers, fetchSales, fetchReports]);
 
     return (
         <div className={styles.adminLayout}>
@@ -138,6 +160,7 @@ export default function AdminDashboard(): JSX.Element {
                 items={[
                     { key: "items", label: "Items" },
                     { key: "users", label: "Users" },
+                    { key: "sales", label: "Sales" },
                     { key: "reports", label: "Reports" },
                     { key: "system", label: "System" },
                 ]}
@@ -191,6 +214,27 @@ export default function AdminDashboard(): JSX.Element {
                             </div>
                         ) : (
                             <UserGrid users={data.users || []} />
+                        )}
+                    </>
+                ) : activeAdminTab === "sales" ? (
+                    <>
+                        {loading.sales ? (
+                            <div className={styles.loadingContainer}>
+                                <Loader2 className={styles.loadingSpinner} />
+                                <p>Loading sales...</p>
+                            </div>
+                        ) : errors.sales ? (
+                            <div className={styles.errorContainer}>
+                                <p className={styles.errorText}>Error: {errors.sales}</p>
+                                <button
+                                    onClick={fetchSales}
+                                    className={styles.retryButton}
+                                >
+                                    Retry
+                                </button>
+                            </div>
+                        ) : (
+                            <SalesGrid sales={data.sales || []} />
                         )}
                     </>
                 ) : activeAdminTab === "system" ? (

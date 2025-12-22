@@ -96,6 +96,29 @@ Route::middleware(['auth', 'admin'])->group(function () {
         return response()->json([]);
     });
 
+    Route::get('/api/admin/sales', function () {
+        $sales = \App\Models\Sale::with(['user', 'auctionItem.files'])
+            ->orderBy('sale_date', 'desc')
+            ->get()
+            ->map(function ($sale) {
+                return [
+                    'id' => $sale->id,
+                    'amount' => $sale->amount,
+                    'user_id' => $sale->user_id,
+                    'user_name' => $sale->user->name,
+                    'user_bidder_number' => $sale->user->bidder_number,
+                    'auction_item_id' => $sale->auction_item_id,
+                    'auction_item_name' => $sale->auctionItem->name,
+                    'auction_item' => $sale->auctionItem,
+                    'sale_date' => $sale->sale_date,
+                    'transaction_id' => $sale->transaction_id,
+                    'sale_source' => $sale->sale_source,
+                ];
+            });
+
+        return response()->json($sales);
+    });
+
     // Auction item management (except index and show which are public)
     Route::post('/auction-items', [AuctionItemController::class, 'store'])->name('auction-items.store');
     Route::get('/auction-items/{id}/edit', [AuctionItemController::class, 'edit'])->name('auction-items.edit');
