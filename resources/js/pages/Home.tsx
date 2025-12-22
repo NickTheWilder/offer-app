@@ -16,9 +16,10 @@ interface BidWithItem extends Bid {
 type HomeProps = PageProps<{
     auctionItems: AuctionItem[];
     userBids?: BidWithItem[];
+    favoriteItemIds?: number[];
 }>;
 
-export default function Home({ auth, auctionItems, userBids, settings }: HomeProps): JSX.Element {
+export default function Home({ auth, auctionItems, userBids, favoriteItemIds, settings }: HomeProps): JSX.Element {
     const [activeTab, setActiveTab] = useState("bidderDashboard");
     const [searchQuery, setSearchQuery] = useState("");
     const [bidModalItem, setBidModalItem] = useState<AuctionItem | null>(null);
@@ -149,6 +150,7 @@ export default function Home({ auth, auctionItems, userBids, settings }: HomePro
                                     items={filteredItems}
                                     user={auth.user}
                                     userBids={(userBids || []) as Bid[]}
+                                    favoriteItemIds={favoriteItemIds || []}
                                     onBidClick={handleBidClick}
                                     onBuyNowClick={handleBuyNowClick}
                                 />
