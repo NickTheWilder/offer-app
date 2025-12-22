@@ -26,9 +26,16 @@ Route::get('/', function () {
     $userBids = null;
     if (Auth::check()) {
         $userBids = \App\Models\Bid::where('user_id', Auth::id())
-            ->with(['auctionItem.files'])
+            ->with(['auctionItem.files', 'auctionItem.bids'])
             ->orderBy('created_at', 'desc')
-            ->get();
+            ->get()
+            ->map(function ($bid) {
+                // Add current_bid to each auction item
+                $highestBid = $bid->auctionItem->bids->max('amount');
+                $bid->auctionItem->current_bid = $highestBid ?: null;
+
+                return $bid;
+            });
     }
 
     return Inertia::render('Home', [
