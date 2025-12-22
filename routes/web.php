@@ -104,6 +104,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/auction-items/create', [AuctionItemController::class, 'create'])->name('auction-items.create');
 
     // User management
+    Route::post('/admin/users', [UserController::class, 'store'])->name('admin.users.store');
     Route::get('/admin/users/{id}', [UserController::class, 'show'])->name('admin.users.show');
     Route::put('/admin/users/{id}', [UserController::class, 'update'])->name('admin.users.update');
     Route::put('/admin/users/{id}/assign-bidder-number', [UserController::class, 'assignBidderNumber']);

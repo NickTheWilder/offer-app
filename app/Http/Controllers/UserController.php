@@ -29,6 +29,31 @@ class UserController extends Controller
     }
 
     /**
+     * Store a new user.
+     *
+     * @return RedirectResponse
+     */
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'phone' => ['nullable', 'string', 'max:20'],
+            'address' => ['nullable', 'string', 'max:500'],
+            'role' => ['required', 'in:admin,bidder'],
+            'bidder_number' => ['nullable', 'string', 'max:20', 'unique:users,bidder_number'],
+            'password' => ['required', 'string', 'min:8'],
+        ]);
+
+        $validated['password'] = Hash::make($validated['password']);
+
+        $user = User::create($validated);
+
+        return redirect()->route('admin.users.show', $user->id)
+            ->with('success', 'User created successfully.');
+    }
+
+    /**
      * Update the user.
      *
      * @param  mixed  $id
