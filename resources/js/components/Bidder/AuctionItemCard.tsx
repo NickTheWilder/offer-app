@@ -3,7 +3,6 @@ import { type JSX } from "react";
 import styles from "./AuctionItemCard.module.css";
 import { UserBidStatus } from "@/lib/types";
 import { SilentItemCardFooter } from "./SilentItemCardFooter";
-import { LiveItemCardFooter } from "./LiveItemCardFooter";
 
 interface AuctionItemCardProps {
     items: AuctionItem[];
@@ -123,9 +122,7 @@ export default function AuctionItemCard({
                                     onBidClick={onBidClick}
                                     onBuyNowClick={onBuyNowClick}
                                 />
-                            ) : (
-                                <LiveItemCardFooter />
-                            )}
+                            ) : null}
                         </div>
                     </div>
                 );
