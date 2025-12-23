@@ -1,4 +1,4 @@
-import { type JSX, FormEvent, useState } from "react";
+import { type JSX, FormEvent, useState, useMemo } from "react";
 import { useForm, router } from "@inertiajs/react";
 import sharedStyles from "./fields/Fields.module.css";
 import styles from "./AuctionItemForm.module.css";
@@ -35,6 +35,53 @@ export function AuctionItemForm({ selectedItem, users, onSuccess }: AuctionItemF
         restrictions: selectedItem?.restrictions || "",
         files: null as File[] | null,
     });
+
+    // Store initial form data for comparison
+    const initialData = useMemo(
+        () => ({
+            name: selectedItem?.name || "",
+            description: selectedItem?.description || "",
+            starting_bid: selectedItem?.starting_bid || 0,
+            minimum_bid_increment: selectedItem?.minimum_bid_increment || 5,
+            buy_now_price: selectedItem?.buy_now_price,
+            estimated_value: selectedItem?.estimated_value,
+            category: selectedItem?.category || "",
+            donor_id: selectedItem?.donor_id || null,
+            donor_name: selectedItem?.donor_name || "",
+            is_donor_public: selectedItem?.is_donor_public || false,
+            auction_type: selectedItem?.auction_type || "silent",
+            status: selectedItem?.status || "active",
+            restrictions: selectedItem?.restrictions || "",
+        }),
+        [selectedItem]
+    );
+
+    // Check if form has been modified
+    const hasChanges = useMemo(() => {
+        // For new items, always allow submission
+        if (!selectedItem) return true;
+
+        // Check if any form field has changed
+        const fieldsChanged =
+            form.data.name !== initialData.name ||
+            form.data.description !== initialData.description ||
+            form.data.starting_bid !== initialData.starting_bid ||
+            form.data.minimum_bid_increment !== initialData.minimum_bid_increment ||
+            form.data.buy_now_price !== initialData.buy_now_price ||
+            form.data.estimated_value !== initialData.estimated_value ||
+            form.data.category !== initialData.category ||
+            form.data.donor_id !== initialData.donor_id ||
+            form.data.donor_name !== initialData.donor_name ||
+            form.data.is_donor_public !== initialData.is_donor_public ||
+            form.data.auction_type !== initialData.auction_type ||
+            form.data.status !== initialData.status ||
+            form.data.restrictions !== initialData.restrictions;
+
+        // Check if files have been added or removed
+        const filesChanged = (form.data.files && form.data.files.length > 0) || filesToRemove.length > 0;
+
+        return fieldsChanged || filesChanged;
+    }, [form.data, initialData, filesToRemove, selectedItem]);
 
     const onSubmit = (e: FormEvent) => {
         e.preventDefault();
@@ -124,12 +171,22 @@ export function AuctionItemForm({ selectedItem, users, onSuccess }: AuctionItemF
 
     return (
         <div className={styles.itemForm}>
-            <form onSubmit={onSubmit}>
-                <div className={styles.formHeader}>
-                    <h2 className={styles.formTitle}>{selectedItem ? "Edit Item" : "Add New Item"}</h2>
-                </div>
+            <form onSubmit={onSubmit} className={styles.form}>
+                <div className={styles.formContent}>
+                    <div className={styles.formHeader}>
+                        <h2 className={styles.formTitle}>{selectedItem ? "Edit Item" : "Add New Item"}</h2>
+                        <div className={styles.formActions}>
+                            <button
+                                type="submit"
+                                className={styles.addButton}
+                                disabled={form.processing || !hasChanges}
+                            >
+                                {form.processing ? "Saving..." : selectedItem ? "Update Item" : "Create Item"}
+                            </button>
+                        </div>
+                    </div>
 
-                <div className={sharedStyles.formGrid}>
+                    <div className={sharedStyles.formGrid}>
                     <div className={sharedStyles.formLeftColumn}>
                         <FormInput
                             label="Name"
@@ -285,15 +342,6 @@ export function AuctionItemForm({ selectedItem, users, onSuccess }: AuctionItemF
                         </FormSelect>
                     </div>
                 </div>
-
-                <div className={styles.formActions}>
-                    <button
-                        type="submit"
-                        className={styles.addButton}
-                        disabled={form.processing}
-                    >
-                        {form.processing ? "Saving..." : selectedItem ? "Update Item" : "Create Item"}
-                    </button>
                 </div>
             </form>
         </div>

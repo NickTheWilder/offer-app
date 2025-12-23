@@ -6,8 +6,26 @@
     flex-direction: column;
 }
 
+.form {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.formContent {
+    flex: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+}
+
 .formHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #e5e7eb;
 }
 
 .formTitle {
@@ -18,10 +36,7 @@
 
 .formActions {
     display: flex;
-    justify-content: flex-start;
     gap: 0.75rem;
-    margin-top: auto;
-    padding-top: 1.5rem;
 }
 
 .addButton {
@@ -41,4 +56,13 @@
 
 .addButton:hover {
     background-color: var(--primary-color-dark);
+}
+
+.addButton:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+.addButton:disabled:hover {
+    background-color: var(--primary-color);
 }
