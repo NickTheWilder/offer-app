@@ -27,11 +27,19 @@ const bidColumns: DataGridColumn<Bid>[] = [
         header: "Amount",
         accessor: (bid) => bid.amount,
         render: (value) => <span style={{ fontWeight: 600 }}>{formatCurrency(value)}</span>,
+        searchable: true,
         sortable: true,
     },
     {
+        key: "auction_item_id",
+        header: "Item ID",
+        accessor: (bid) => bid.auction_item_id,
+        render: (value) => <span># {value}</span>,
+        searchable: true,
+    },
+    {
         key: "auction_item",
-        header: "Auction Item",
+        header: "Item Name",
         accessor: (bid) => bid.auction_item_name,
         render: (value) => <span>{value}</span>,
         searchable: true,
@@ -42,6 +50,7 @@ const bidColumns: DataGridColumn<Bid>[] = [
         header: "Timestamp",
         accessor: (bid) => bid.created_at,
         render: (value) => <span>{formatDate(value)}</span>,
+        searchable: true,
         sortable: true,
     },
 ];
